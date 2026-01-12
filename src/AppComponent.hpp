@@ -1,4 +1,3 @@
-
 #ifndef AppComponent_hpp
 #define AppComponent_hpp
 
@@ -14,6 +13,7 @@
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/web/server/HttpConnectionHandler.hpp"
 #include <DeviceDescriptorComponent.hpp>
+
 
 /**
  *  Class which creates and holds Application components and registers components in oatpp::base::Environment
@@ -62,11 +62,12 @@ OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, serve
     auto objectMapper = oatpp::parser::json::mapping::ObjectMapper::createShared(serializerConfig, deserializerConfig);
     return objectMapper;
   }());
-  
+
 OATPP_CREATE_COMPONENT(std::shared_ptr<StaticFilesManager>, staticFilesManager)([] {
-    return std::make_shared<StaticFilesManager>(EXAMPLE_MEDIA_FOLDER /* path to '<this-repo>/Media-Stream/video' folder. Put full, absolute path here */) ;
+   return std::make_shared<StaticFilesManager>(EXAMPLE_MEDIA_FOLDER /* path to '<this-repo>/Media-Stream/video' folder. Put full, absolute path here */) ;
   }());
  
+
   /*
    OATPP_CREATE_COMPONENT(std::shared_ptr<Database>, database)([] {
     return std::make_shared<Database>();
@@ -91,11 +92,13 @@ OATPP_CREATE_COMPONENT(std::shared_ptr<StaticFilesManager>, staticFilesManager)(
    *  Create SsdpStreamHandler component which uses Router component to route requests.
    *  It looks like a normal ConnectionHandler but is specialized on SsdpStreams and returns something conceptually very different
    */
+  
   OATPP_CREATE_COMPONENT(std::shared_ptr<oatpp::ssdp::SsdpStreamHandler>, ssdpStreamHandler)("ssdpStreamHandler", [] {
     OATPP_COMPONENT(std::shared_ptr<oatpp::web::server::HttpRouter>, router, "ssdpRouter"); // get Router component
     return oatpp::ssdp::SsdpStreamHandler::createShared(router);
   }());
 
+  
 };
 
 

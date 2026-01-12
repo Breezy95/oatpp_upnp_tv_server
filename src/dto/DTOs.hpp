@@ -7,13 +7,19 @@
 
 #include OATPP_CODEGEN_BEGIN(DTO)
 
-class ActionArgsDTO : public oatpp::DTO {
-  DTO_INIT(ActionArgsDTO, DTO)
+
+class ActionArgDTO : public oatpp::DTO {
+  DTO_INIT(ActionArgDTO, DTO)
 
   DTO_FIELD(String, name);
-  DTO_FIELD(String, direction);
-  DTO_FIELD(String, relatedStateVariable);
+  DTO_FIELD(String, direction)="in";
+  DTO_FIELD(String, relatedStateVariable)="";
+  DTO_FIELD(String, value)="";
 };
+
+
+
+
 // TV DTOS for simple reqs from client to controller
 
 class DeviceInfoDTO : public oatpp::DTO {
@@ -29,16 +35,32 @@ class DeviceInfoDTO : public oatpp::DTO {
   DTO_FIELD(String, ipAddr);
   DTO_FIELD(Int32, port);
   DTO_FIELD(String, locationUrl);
+  DTO_FIELD(String, xmlString);
 };
 
 class BaseTVDTO : public oatpp::DTO {
-  DTO_INIT(BaseTVDTO, BaseTVDTO)
+  DTO_INIT(BaseTVDTO, DTO)
   DTO_FIELD(String, deviceAddress);
-  DTO_FIELD(String, actionURL); 
-  DTO_FIELD(String, serviceType); 
   DTO_FIELD(String, devUDN);
   DTO_FIELD(Int32, statusCode);
 };
+
+class ActionDTO : public BaseTVDTO{
+  DTO_INIT(ActionDTO, BaseTVDTO)
+  DTO_FIELD(String, actionUrl, "actionUrl");
+  DTO_FIELD(String, serviceId, "serviceId");
+  DTO_FIELD(String, actionName);
+  DTO_FIELD(String, serviceType, "serviceType");
+  DTO_FIELD(List<Object<ActionArgDTO>>, actionArgsList);
+};
+
+class SetResourceUriDTO: public ActionDTO{
+  DTO_INIT(SetResourceUriDTO, ActionDTO)
+  DTO_FIELD(Int32, isAudio) = 0;
+  DTO_FIELD(Int32, serverGen) = 0;
+  DTO_FIELD(Fields<String>, fileInfo)= {};
+};
+
 class UpnpDeviceListResponse : public oatpp::DTO {
   DTO_INIT(UpnpDeviceListResponse, DTO)
   DTO_FIELD(List<Object<DeviceInfoDTO>>, devices) = oatpp::List<Object<DeviceInfoDTO>>::createShared();
@@ -56,19 +78,16 @@ class EnqueueVidRequestDTO : public BaseTVDTO {
   DTO_FIELD(String, userAgent, "user-id");
   DTO_FIELD(String, mediaResourceUrl, "resourceUrl");
   DTO_FIELD(String,  xmlAction, "xmlActionDocument");
-  //const void *Cookie in the future we are going to want to implement some form of value keeping
-
 };
 
 class MessageDto : public oatpp::DTO {
   
-  DTO_INIT(MessageDto, oatpp::DTO)
+  DTO_INIT(MessageDto, DTO)
   DTO_FIELD(Int32, statusCode);
   DTO_FIELD(String, message);
   
 };
-
-
+ 
 class UpnpErrorDTO : public MessageDto {
   DTO_INIT(UpnpErrorDTO, MessageDto)
   DTO_FIELD(Int16, upnpErrorCode);
@@ -76,7 +95,7 @@ class UpnpErrorDTO : public MessageDto {
 
 
 
-// Between client and server NOT controller
+// Between client and server funcs
 class BaseControllerReqDTO : public oatpp::DTO {
 DTO_INIT(BaseControllerReqDTO, DTO)
 DTO_FIELD(String, actionUrl);
@@ -85,10 +104,20 @@ DTO_FIELD(String, serviceId);
 };
 
 
-class ActionDTO : public BaseControllerReqDTO {
-  DTO_INIT(ActionDTO, BaseControllerReqDTO)
-  DTO_FIELD(String, actionName);
-  DTO_FIELD(Fields<Object<ActionArgsDTO>>, actionArgsList);
+
+
+class BaseControllerResponseDTO : public oatpp::DTO {
+  DTO_INIT(BaseControllerResponseDTO, DTO)
+  DTO_FIELD(Int8, statusCode);
+
+};
+
+class ListDeviceDTO : public UpnpSearchRequest {
+DTO_INIT(ListDeviceDTO, UpnpSearchRequest)
+DTO_FIELD(String,deviceType);
+DTO_FIELD(String, serviceType);
+DTO_FIELD(String, version) = "1";
+DTO_FIELD(String, locationUrl);
 };
 
 #include OATPP_CODEGEN_END(DTO)

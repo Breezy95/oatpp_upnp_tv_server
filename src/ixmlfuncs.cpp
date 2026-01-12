@@ -1,70 +1,620 @@
 #include "ixmlfuncs.hpp"
+#include <upnp/ixml.h>
+#include <string>
+#include <iostream>
+#include <map>
+#include <sstream>
 
-IXML_Document* createBaseDocument(){
-    IXML_Document* baseDoc = ixmlDocument_createDocument();
-    if (!baseDoc){
-        return nullptr;
-    }
-
-     IXML_Element* envelope = ixmlDocument_createElementNS(
-        baseDoc,
-        "http://schemas.xmlsoap.org/soap/envelope/",
-        "SOAP-ENV:Envelope"
-    );
-
-    if (!envelope) {
-        ixmlDocument_free(baseDoc);
-        return nullptr;
-    }
-
-     ixmlElement_setAttribute(
-        envelope,
-        "SOAP-ENV:encodingStyle",
-        "http://schemas.xmlsoap.org/soap/encoding/"
-    );
-
-    // Create Body element
-    IXML_Element* body = ixmlDocument_createElementNS(
-        baseDoc,
-        "http://schemas.xmlsoap.org/soap/envelope/",
-        "SOAP-ENV:Body"
-    );
-    if (!body) {
-        ixmlDocument_free(baseDoc);
-        return nullptr;
-    }
-
-    ixmlNode_appendChild((IXML_Node*)baseDoc, (IXML_Node*)envelope);
-    ixmlNode_appendChild((IXML_Node*)envelope, (IXML_Node*)body);
-    return baseDoc;
-
+extern "C"
+{
+#include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
+#include <libavutil/dict.h>
+#include "gupnp-av-1.0/libgupnp-av/gupnp-av.h"
+#include "gupnp-dlna-2.0/libgupnp-dlna/gupnp-dlna.h"
 }
 
-IXML_Document* createGetProtocolInfoDocument(){
+IXML_Document *createBaseDocument()
+{
+    IXML_Document *doc = ixmlDocument_createDocument();
+    if (!doc)
+        return nullptr;
 
-    IXML_Document* doc = createBaseDocument();
-    IXML_NodeList* elems = ixmlDocument_getElementsByTagNameNS(doc,
-        "http://schemas.xmlsoap.org/soap/envelope/",
-        "SOAP-ENV:Body");
-    
-    
-    IXML_Node* curr = ixmlNodeList_item(elems,0);
-
-
-    IXML_Element* getProtocolInfo = ixmlDocument_createElementNS(
-        doc,
-        "urn:schemas-upnp-org:service:ConnectionManager:1",
-        "m:GetProtocolInfo"
-    );
-    if (!getProtocolInfo) {
+    // Create Envelope
+    IXML_Element *envelope =
+        ixmlDocument_createElementNS(
+            doc,
+            "http://schemas.xmlsoap.org/soap/envelope/",
+            "s:Envelope");
+    if (!envelope)
+    {
         ixmlDocument_free(doc);
         return nullptr;
     }
 
-    
-    //ixmlNode_appendChild((IXML_Node*)body, (IXML_Node*)getProtocolInfo);
+    ixmlElement_setAttribute(envelope, "xmlns:s", "http://schemas.xmlsoap.org/soap/envelope/");
+    ixmlElement_setAttribute(envelope, "s:encodingStyle", "http://schemas.xmlsoap.org/soap/encoding/");
+
+    ixmlNode_appendChild((IXML_Node *)doc, (IXML_Node *)envelope);
+
+    // Create Body
+    IXML_Element *body =
+        ixmlDocument_createElementNS(
+            doc,
+            "http://schemas.xmlsoap.org/soap/envelope/",
+            "s:Body");
+    if (!body)
+    {
+        ixmlDocument_free(doc);
+        return nullptr;
+    }
+
+    ixmlNode_appendChild((IXML_Node *)envelope, (IXML_Node *)body);
 
     return doc;
-
 }
 
+IXML_Document *createGetProtocolInfoDocument()
+{
+    IXML_Document *baseDoc = ixmlDocument_createDocument();
+    if (!baseDoc)
+    {
+        return nullptr;
+    }
+    /*
+        IXML_Element *envelope = ixmlDocument_createElementNS(
+            baseDoc,
+            "http://schemas.xmlsoap.org/soap/envelope/",
+            "SOAP-ENV:Envelope");
+
+        if (!envelope)
+        {
+            ixmlDocument_free(baseDoc);
+            return nullptr;
+        }
+
+        ixmlElement_setAttribute(envelope, "xmlns:SOAP-ENV", "http://schemas.xmlsoap.org/soap/envelope/");
+        ixmlElement_setAttribute(
+            envelope,
+            "SOAP-ENV:encodingStyle",
+            "http://schemas.xmlsoap.org/soap/encoding/");
+
+        // Create Body element
+        IXML_Element *body = ixmlDocument_createElementNS(
+            baseDoc,
+            "http://schemas.xmlsoap.org/soap/envelope/",
+            "SOAP-ENV:Body");
+        if (!body)
+        {
+            ixmlDocument_free(baseDoc);
+            return nullptr;
+        }
+
+        ixmlNode_appendChild((IXML_Node *)baseDoc, (IXML_Node *)envelope);
+        ixmlNode_appendChild((IXML_Node *)envelope, (IXML_Node *)body);
+
+        IXML_Element *action = ixmlDocument_createElementNS(
+            baseDoc,
+            "urn:schemas-upnp-org:service:ConnectionManager:1", // service type
+            "m:GetProtocolInfo");
+        if (!action)
+        {
+            ixmlDocument_free(baseDoc);
+            return nullptr;
+        }
+
+        ixmlNode_appendChild(&body->n, &action->n);
+        */
+
+    return baseDoc;
+}
+
+IXML_Document *createGetVolumeDocument(unsigned int instanceId, std::string channel)
+{
+    IXML_Document *doc = ixmlDocument_createDocument();
+    if (!doc)
+        return nullptr;
+
+    // Create <u:GetVolume> element with correct namespace
+    IXML_Element *action =
+        ixmlDocument_createElementNS(
+            doc,
+            "urn:upnp-org:serviceId:RenderingControl",
+            "u:GetVolume");
+    ixmlElement_setAttribute(action, "xmlns:u", "urn:upnp-org:serviceId:RenderingControl");
+
+    // InstanceID
+    IXML_Element *instElem = ixmlDocument_createElement(doc, "InstanceID");
+    if (instElem)
+    {
+        const char *idStr = "0000"; // Samsung expects 0000
+        IXML_Node *instText = ixmlDocument_createTextNode(doc, idStr);
+        ixmlNode_appendChild((IXML_Node *)instElem, instText);
+        ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)instElem);
+    }
+
+    // Channel
+    IXML_Element *channelElem = ixmlDocument_createElement(doc, "Channel");
+    if (channelElem)
+    {
+        IXML_Node *channelText = ixmlDocument_createTextNode(doc, "Master");
+        ixmlNode_appendChild((IXML_Node *)channelElem, channelText);
+        ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)channelElem);
+        ixmlNode_appendChild((IXML_Node *)doc, (IXML_Node *)action);
+    }
+
+    return doc;
+}
+
+IXML_Document *createSetVolumeDocument(unsigned int desiredVolume, unsigned int instanceId, const char *channel)
+{
+    IXML_Document *doc = createBaseDocument();
+    if (!doc)
+        return nullptr;
+
+    // Find the Body element
+    IXML_NodeList *bodyList = ixmlDocument_getElementsByTagName(doc, "Body");
+    if (!bodyList || ixmlNodeList_length(bodyList) == 0)
+    {
+        if (bodyList)
+            ixmlNodeList_free(bodyList);
+        ixmlDocument_free(doc);
+        return nullptr;
+    }
+
+    IXML_Node *bodyNode = ixmlNodeList_item(bodyList, 0);
+    ixmlNodeList_free(bodyList);
+
+    // Create the SetVolume action element in the RenderingControl namespace
+    IXML_Element *action = ixmlDocument_createElementNS(doc, "urn:schemas-upnp-org:service:RenderingControl:1", "m:SetVolume");
+    if (!action)
+    {
+        ixmlDocument_free(doc);
+        return nullptr;
+    }
+
+    // InstanceID
+    IXML_Element *instElem = ixmlDocument_createElement(doc, "InstanceID");
+    if (instElem)
+    {
+        std::string instStr = std::to_string(instanceId);
+        IXML_Node *instText = ixmlDocument_createTextNode(doc, instStr.c_str());
+        if (instText)
+            ixmlNode_appendChild((IXML_Node *)instElem, instText);
+        ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)instElem);
+    }
+
+    // Channel
+    IXML_Element *chanElem = ixmlDocument_createElement(doc, "Channel");
+    if (chanElem)
+    {
+        IXML_Node *chanText = ixmlDocument_createTextNode(doc, channel);
+        if (chanText)
+            ixmlNode_appendChild((IXML_Node *)chanElem, chanText);
+        ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)chanElem);
+    }
+
+    // DesiredVolume
+    IXML_Element *volElem = ixmlDocument_createElement(doc, "DesiredVolume");
+    if (volElem)
+    {
+        std::string volStr = std::to_string(desiredVolume);
+        IXML_Node *volText = ixmlDocument_createTextNode(doc, volStr.c_str());
+        if (volText)
+            ixmlNode_appendChild((IXML_Node *)volElem, volText);
+        ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)volElem);
+    }
+
+    // Append the action to the body
+    ixmlNode_appendChild(bodyNode, (IXML_Node *)action);
+
+    return doc;
+}
+
+struct MediaMetadata
+{
+    std::string title;
+    std::string artist;
+    std::string album;
+    std::string genre;
+    int durationSec = 0;
+    int bitrate = 0;
+};
+
+MediaMetadata getMetadataFromFile(const std::string &filepath)
+{
+    MediaMetadata meta;
+
+    AVFormatContext *fmt = nullptr;
+
+    if (avformat_open_input(&fmt, filepath.c_str(), nullptr, nullptr) < 0)
+    {
+        return meta;
+    }
+
+    if (avformat_find_stream_info(fmt, nullptr) < 0)
+    {
+        avformat_close_input(&fmt);
+        return meta;
+    }
+
+    AVDictionaryEntry *tag = nullptr;
+
+    if ((tag = av_dict_get(fmt->metadata, "title", nullptr, 0)))
+        meta.title = tag->value;
+
+    if ((tag = av_dict_get(fmt->metadata, "artist", nullptr, 0)))
+        meta.artist = tag->value;
+
+    if ((tag = av_dict_get(fmt->metadata, "album", nullptr, 0)))
+        meta.album = tag->value;
+
+    if ((tag = av_dict_get(fmt->metadata, "genre", nullptr, 0)))
+        meta.genre = tag->value;
+
+    if (fmt->duration != AV_NOPTS_VALUE)
+        meta.durationSec = fmt->duration / AV_TIME_BASE;
+
+    meta.bitrate = fmt->bit_rate / 1000; // kbps
+
+    avformat_close_input(&fmt);
+    return meta;
+}
+
+IXML_Document *createDIDLFromFFmpeg(
+    const std::string &fileUri,
+    const std::string &localFilePath)
+{
+    MediaMetadata meta = getMetadataFromFile(localFilePath);
+
+    IXML_Document *doc = ixmlDocument_createDocument();
+
+    IXML_Element *didl = ixmlDocument_createElementNS(
+        doc,
+        "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/",
+        "DIDL-Lite");
+    ixmlElement_setAttribute(didl, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
+    ixmlElement_setAttribute(didl, "xmlns:upnp", "urn:schemas-upnp-org:metadata-1-0/upnp/");
+    ixmlNode_appendChild(&doc->n, &didl->n);
+
+    IXML_Element *item = ixmlDocument_createElement(doc, "item");
+    ixmlElement_setAttribute(item, "id", "0");
+    ixmlElement_setAttribute(item, "parentID", "-1");
+    ixmlElement_setAttribute(item, "restricted", "false");
+    ixmlNode_appendChild(&didl->n, &item->n);
+
+    auto addText = [&](const char *name, const std::string &value)
+    {
+        if (value.empty())
+            return;
+        IXML_Element *e = ixmlDocument_createElement(doc, name);
+        ixmlNode_appendChild(&e->n,
+                             ixmlDocument_createTextNode(doc, value.c_str()));
+        ixmlNode_appendChild(&item->n, &e->n);
+    };
+
+    addText("upnp:class", "object.item.audioItem.musicTrack");
+    addText("dc:title", meta.title.empty() ? "Unknown Title" : meta.title);
+    addText("dc:creator", meta.artist.empty() ? "Unknown Artist" : meta.artist);
+    addText("upnp:album", meta.album);
+    addText("dc:genre", meta.genre);
+
+    // <res>
+    IXML_Element *res = ixmlDocument_createElement(doc, "res");
+
+    std::string protocolInfo =
+        "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;"
+        "DLNA.ORG_OP=01;"
+        "DLNA.ORG_FLAGS=01700000000000000000000000000000";
+
+    ixmlElement_setAttribute(res, "protocolInfo", protocolInfo.c_str());
+
+    if (meta.bitrate > 0)
+        ixmlElement_setAttribute(res, "bitrate",
+                                 std::to_string(meta.bitrate * 1000).c_str());
+
+    if (meta.durationSec > 0)
+    {
+        char dur[32];
+        snprintf(dur, sizeof(dur), "%d:%02d:%02d",
+                 meta.durationSec / 3600,
+                 (meta.durationSec / 60) % 60,
+                 meta.durationSec % 60);
+        ixmlElement_setAttribute(res, "duration", dur);
+    }
+
+    ixmlNode_appendChild(&res->n,
+                         ixmlDocument_createTextNode(doc, fileUri.c_str()));
+    ixmlNode_appendChild(&item->n, &res->n);
+
+    return doc;
+}
+
+IXML_Document *createMetadataArgs(std::string fp)
+{
+    IXML_Document *doc = ixmlDocument_createDocument();
+    IXML_Element *didlLite = ixmlDocument_createElementNS(doc, "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/", "DIDL-Lite");
+    ixmlElement_setAttribute(didlLite, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
+    ixmlElement_setAttribute(didlLite, "xmlns:upnp", "urn:schemas-upnp-org:metadata-1-0/upnp/");
+    ixmlNode_appendChild(&(doc->n), &(didlLite->n));
+
+    IXML_Element *item = ixmlDocument_createElement(doc, "item");
+    ixmlElement_setAttribute(item, "id", "0");
+    ixmlElement_setAttribute(item, "parentID", "0");
+    ixmlElement_setAttribute(item, "restricted", "false");
+    ixmlNode_appendChild(&(didlLite->n), &(item->n));
+
+    IXML_Element *title = ixmlDocument_createElement(doc, "dc:title");
+    IXML_Node *titleText = ixmlDocument_createTextNode(doc, "BisexualLight");
+    ixmlNode_appendChild(&title->n, titleText);
+    ixmlNode_appendChild(&item->n, &title->n);
+
+    IXML_Element *creator = ixmlDocument_createElement(doc, "dc:creator");
+    IXML_Node *creatorText = ixmlDocument_createTextNode(doc, "Example Artist");
+    ixmlNode_appendChild(&creator->n, creatorText);
+    ixmlNode_appendChild(&item->n, &creator->n);
+
+    IXML_Element *res = ixmlDocument_createElement(doc, "res");
+    ixmlElement_setAttribute(res, "protocolInfo", "http-get:*:audio/mpeg:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    IXML_Node *resText = ixmlDocument_createTextNode(doc, "http://192.168.0.212:8000/media/audio/flashbang-jumpscare-loud.mp3");
+    ixmlNode_appendChild(&res->n, resText);
+    ixmlNode_appendChild(&item->n, &res->n);
+
+    IXML_Element *upnpClass = ixmlDocument_createElement(doc, "upnp:class");
+    IXML_Node *classText = ixmlDocument_createTextNode(doc, "object.item.audioItem");
+    ixmlNode_appendChild(&upnpClass->n, classText);
+    ixmlNode_appendChild(&item->n, &upnpClass->n);
+    return doc;
+}
+
+//pulled from a earlier piece of code that has a bunch of 
+IXML_Document* createMetadataDocument() {
+    IXML_Document* doc = ixmlDocument_createDocument();
+    IXML_Element* didlLite = ixmlDocument_createElementNS(doc, "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/", "DIDL-Lite");
+    ixmlElement_setAttribute(didlLite, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
+    ixmlElement_setAttribute(didlLite, "xmlns:upnp", "urn:schemas-upnp-org:metadata-1-0/upnp/");
+    ixmlNode_appendChild(&(doc->n), &(didlLite->n));
+
+    IXML_Element* item = ixmlDocument_createElement(doc, "item");
+    ixmlElement_setAttribute(item, "id", "0");
+    ixmlElement_setAttribute(item, "parentID", "0");
+    ixmlElement_setAttribute(item, "restricted", "False");
+    ixmlNode_appendChild(&(didlLite->n), &(item->n));
+
+    IXML_Element* title = ixmlDocument_createElement(doc, "dc:title");
+    IXML_Node* titleText = ixmlDocument_createTextNode(doc, "BiLight");
+    ixmlNode_appendChild(&title->n, titleText);
+    ixmlNode_appendChild(&item->n, &title->n);
+
+    IXML_Element* creator = ixmlDocument_createElement(doc, "dc:creator");
+    IXML_Node* creatorText = ixmlDocument_createTextNode(doc, "Example Artist");
+    ixmlNode_appendChild(&creator->n, creatorText);
+    ixmlNode_appendChild(&item->n, &creator->n);
+
+/*
+<res nrAudioChannels="2" duration="1:48:55.701" bitrate="327040"
+microsoft:codec="{34363248-0000-0010-8000-00AA00389B71}"
+protocolInfo="http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_OP=10;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000"
+sampleFrequency="44100" resolution="640x360">
+"http://192.168.0.212:10246/MDEServer/89A83FB7-F5E2-4BE6-B5AC-0676CCB2C3F5/1000.mp4?formatID=00000041-A9AF-4584-84E2-55BFEF0A7D7E,instance=1"
+   </res>
+   */
+
+  /*
+ res bitrate="327040" resolution="640x360"
+            protocolInfo="http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000"
+            sampleFrequency="44100" nrAudioChannels="2"
+            microsoft:codec="{34363248-0000-0010-8000-00AA00389B71}">
+            http://192.168.0.212:10246/MDEServer/9BC98514-6D84-47B9-9E7B-A1E70D6F7E65/1000.mp4?formatID=00000041-A9AF-4584-84E2-55BFEF0A7D7E</res> 
+  */
+    IXML_Element* res = ixmlDocument_createElement(doc, "res");
+    ixmlElement_setAttribute(res, "protocolInfo", 
+    "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    ixmlElement_setAttribute(res, "sampleFrequency", "44100");
+    //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
+    ixmlElement_setAttribute(res, "bitrate", "327040");
+    ixmlElement_setAttribute(res, "microsoft:codec", "{34363248-0000-0010-8000-00AA00389B71}");
+    ixmlElement_setAttribute(res, "resolution","640x360");
+    IXML_Node* resText = ixmlDocument_createTextNode(doc, "http://192.168.0.212:8000/media/audio/flashbang-jumpscare-loud.mp3");
+    ixmlNode_appendChild(&res->n, resText);
+    ixmlNode_appendChild(&item->n, &res->n);
+
+
+    
+    IXML_Element* upnpClass = ixmlDocument_createElement(doc, "upnp:class");
+    IXML_Node* classText = ixmlDocument_createTextNode(doc, "object.item.audioItem");
+    ixmlNode_appendChild(&upnpClass->n, classText);
+    ixmlNode_appendChild(&item->n, &upnpClass->n);
+    return doc;
+}
+
+// action, args, serviceid,
+IXML_Document *createActionDocument(std::string actionName, std::string serviceId, std::vector<actionArg> args)
+{
+    IXML_Document *doc = ixmlDocument_createDocument();
+    if (!doc)
+        return nullptr;
+
+    IXML_Element *action =
+        ixmlDocument_createElementNS(
+            doc,
+            serviceId.c_str(),
+            ("u:" + actionName).c_str());
+
+    ixmlElement_setAttribute(action, "xmlns:u", serviceId.c_str());
+
+    for (int i = 0; i < args.size(); i++)
+    {
+
+        if (args[i].name.compare("CurrentURIMetaData") == 0)
+        {
+            IXML_Element *argElement = ixmlDocument_createElement(doc, args.at(i).name.c_str());
+
+            auto metadatadoc = createMetadataArgs(args[i].val);
+            IXML_Node *metadata = ixmlDocument_createTextNode(doc, ixmlPrintDocument(metadatadoc));
+            // need an escaped xml string
+
+            ixmlNode_appendChild(&argElement->n, metadata);
+            ixmlNode_appendChild(&action->n, &argElement->n);
+        }
+        else
+        {
+            IXML_Element *argNode = ixmlDocument_createElement(doc, args.at(i).name.c_str());
+            IXML_Node *value = ixmlDocument_createTextNode(doc, args.at(i).val.c_str());
+            ixmlNode_appendChild((IXML_Node *)argNode, value);
+            ixmlNode_appendChild((IXML_Node *)action, (IXML_Node *)argNode);
+        }
+    }
+
+    ixmlNode_appendChild((IXML_Node *)doc, (IXML_Node *)action);
+
+    return doc;
+}
+
+IXML_Document* createMetadataAudioDocument(std::map<std::string,std::string> &fileInfo){
+        IXML_Document* doc = ixmlDocument_createDocument();
+    IXML_Element* didlLite = ixmlDocument_createElementNS(doc, "urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/", "DIDL-Lite");
+    ixmlElement_setAttribute(didlLite, "xmlns:dc", "http://purl.org/dc/elements/1.1/");
+    ixmlElement_setAttribute(didlLite, "xmlns:upnp", "urn:schemas-upnp-org:metadata-1-0/upnp/");
+    ixmlNode_appendChild(&(doc->n), &(didlLite->n));
+
+    IXML_Element* item = ixmlDocument_createElement(doc, "item");
+    ixmlElement_setAttribute(item, "id", "0");
+    ixmlElement_setAttribute(item, "parentID", "0");
+    ixmlElement_setAttribute(item, "restricted", "False");
+    ixmlNode_appendChild(&(didlLite->n), &(item->n));
+
+    IXML_Element* title = ixmlDocument_createElement(doc, "dc:title");
+    IXML_Node* titleText = ixmlDocument_createTextNode(doc, fileInfo["title"].c_str());
+    ixmlNode_appendChild(&title->n, titleText);
+    ixmlNode_appendChild(&item->n, &title->n);
+
+    IXML_Element* creator = ixmlDocument_createElement(doc, "dc:creator");
+    IXML_Node* creatorText = ixmlDocument_createTextNode(doc, "Example Artist");
+    ixmlNode_appendChild(&creator->n, creatorText);
+    ixmlNode_appendChild(&item->n, &creator->n);
+
+    IXML_Element* res = ixmlDocument_createElement(doc, "res");
+    ixmlElement_setAttribute(res, "protocolInfo", 
+    "http-get:*:audio/wav:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    //ixmlElement_setAttribute(res, "sampleFrequency", "44100");
+    //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
+    //ixmlElement_setAttribute(res, "bitrate", "327040");
+    //ixmlElement_setAttribute(res, "microsoft:codec", "{34363248-0000-0010-8000-00AA00389B71}");
+    //ixmlElement_setAttribute(res, "resolution","640x360");
+    IXML_Node* resText = ixmlDocument_createTextNode(doc, (std::string(SERVER_ADDRESS) + fileInfo["filename"]).c_str());
+    ixmlNode_appendChild(&res->n, resText);
+    ixmlNode_appendChild(&item->n, &res->n);
+
+
+    
+    IXML_Element* upnpClass = ixmlDocument_createElement(doc, "upnp:class");
+    IXML_Node* classText = ixmlDocument_createTextNode(doc, "object.item.audioItem");
+    ixmlNode_appendChild(&upnpClass->n, classText);
+    ixmlNode_appendChild(&item->n, &upnpClass->n);
+    return doc;
+}
+IXML_Document * createSetAVTransportURIDoc(std::map<std::string, std::string> &args)
+{
+    IXML_Document *doc = ixmlDocument_createDocument();
+
+    IXML_Element *action = ixmlDocument_createElementNS(doc, "urn:schemas-upnp-org:service:AVTransport:1", "u:SetAVTransportURI");
+    int ret = ixmlElement_setAttribute(action, "xmlns:u", "urn:upnp-org:serviceId:AVTransport");
+    if (ret != 0)
+    {
+        std::cout << "operation failed:" << ret << std::endl;
+    }
+    ixmlNode_appendChild(&(doc->n), &(action->n));
+
+    for (const auto &arg : args)
+    {
+        IXML_Element *argElement = ixmlDocument_createElement(doc, arg.first.c_str());
+        IXML_Node *argTextNode = ixmlDocument_createTextNode(doc, arg.second.c_str());
+        ixmlNode_appendChild(&argElement->n, argTextNode);
+        ixmlNode_appendChild(&action->n, &argElement->n);
+    }
+
+    return doc;
+}
+
+
+std::string generateDidlLite(
+    const std::string& filePath,
+    const std::string& streamUrl   // URL the TV will fetch
+) {
+    std::cout << "HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERREEEEEEEEEEE"<< std::endl;
+    AVFormatContext* fmt = nullptr;
+    avformat_open_input(&fmt, filePath.c_str(), nullptr, nullptr);
+    avformat_find_stream_info(fmt, nullptr);
+    //std::cout << 
+    AVStream* audio = nullptr;
+    for (unsigned i = 0; i < fmt->nb_streams; i++) {
+        if (fmt->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+            audio = fmt->streams[i];
+            break;
+        }
+    }
+    if (!audio) {
+        avformat_close_input(&fmt);
+        throw std::runtime_error("No audio stream");
+    }
+
+    AVCodecParameters* cp = audio->codecpar;
+
+    int sampleRate = cp->sample_rate;
+    int channels   = cp->ch_layout.nb_channels;
+    int bitrate    = cp->bit_rate;
+    double durationSec =
+        (audio->duration > 0)
+            ? audio->duration * av_q2d(audio->time_base)
+            : fmt->duration / (double)AV_TIME_BASE;
+
+    std::string mime;
+    std::string dlnaPN;
+
+    // ---- FORMAT DETECTION ----
+    if (cp->codec_id == AV_CODEC_ID_PCM_S16LE) {
+        mime   = "audio/L16;rate=" + std::to_string(sampleRate)
+               + ";channels=" + std::to_string(channels);
+        dlnaPN = "LPCM";
+    } else if (cp->codec_id == AV_CODEC_ID_MP3) {
+        mime   = "audio/mpeg";
+        dlnaPN = "MP3";
+    } else {
+        mime   = "audio/mpeg";
+        dlnaPN = "MP3"; // safe fallback
+    }
+
+    // ---- PROTOCOL INFO ----
+    std::string protocolInfo =
+        "http-get:*:" + mime +
+        ":DLNA.ORG_PN=" + dlnaPN +
+        ";DLNA.ORG_OP=01"
+        ";DLNA.ORG_CI=0"
+        ";DLNA.ORG_FLAGS=01700000000000000000000000000000";
+
+    // ---- TITLE ----
+    std::string title = filePath.substr(filePath.find_last_of("/\\") + 1);
+
+    // ---- DIDL-LITE ----
+    std::ostringstream didl;
+    didl
+        << "<DIDL-Lite "
+        << "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << title << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << "sampleFrequency=\"" << sampleRate << "\" "
+        << "nrAudioChannels=\"" << channels << "\" "
+        << "bitrate=\"" << bitrate << "\">"
+        << streamUrl
+        << "</res>"
+        << "<upnp:class>object.item.audioItem</upnp:class>"
+        << "</item>"
+        << "</DIDL-Lite>";
+
+    avformat_close_input(&fmt);
+    return didl.str();
+}
