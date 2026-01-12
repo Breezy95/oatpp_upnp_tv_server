@@ -17,6 +17,14 @@
 #include <iostream>
 #include <fstream>
 
+extern "C" {
+    #include "libavformat/avformat.h"
+#include "libavcodec/avcodec.h"
+#include <libavutil/dict.h>
+#include "gupnp-av-1.0/libgupnp-av/gupnp-av.h"
+#include "gupnp-dlna-2.0/libgupnp-dlna/gupnp-dlna.h"
+}
+
 enum class AudioKind
 {
     LPCM,
@@ -263,7 +271,7 @@ public:
         return createResponse(Status::CODE_200, ixmlDocumenttoString(resp));
     }
 
-    ENDPOINT("HEAD", "/media/video/{resourcePath}", resourcePathMetadata, PATH(String, resourcePath))
+    ENDPOINT("HEAD", "/media/video/{resourcePath}", resourcePathVideoMetadata, PATH(String, resourcePath))
     {
 
         auto outResp = serveVideoResourceURI(resourcePath);
@@ -301,7 +309,7 @@ public:
         return response;
     }
 
-    ENDPOINT("HEAD", "/media/audio/{resourcePath}", resourcePathMetadata, PATH(String, resourcePath))
+    ENDPOINT("HEAD", "/media/audio/{resourcePath}", resourcePathAudioMetadata, PATH(String, resourcePath))
     {
 
         auto outResp = serveResourceURI(resourcePath);
