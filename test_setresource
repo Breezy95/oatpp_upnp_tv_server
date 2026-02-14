@@ -1,0 +1,30 @@
+curl -X POST http://localhost:8000/upnp/setResource \
+  -H "Content-Type: application/json" \
+  -d '{
+  "serverGen":1,
+  "isAudio":1,
+  "actionUrl": "http://192.168.0.100:52235/upnp/control/AVTransport1",
+  "serviceType": "urn:schemas-upnp-org:service:AVTransport:1",
+  "serviceId": "urn:upnp-org:serviceId:AVTransport",
+  "actionName": "SetAVTransportURI",
+  "actionArgsList": [
+    {
+      "name": "InstanceID",
+      "direction": "in",
+      "relatedStateVariable": "A_ARG_TYPE_InstanceID",
+      "value": "0000"
+    },
+    {
+      "name": "CurrentURI",
+      "direction": "in",
+      "relatedStateVariable": "AVTransportURI",
+      "value": "http://192.68.0.212:8000/resource/media/audio/BisexualLight.mp3"
+    },
+    {
+      "name": "CurrentURIMetaData",
+      "direction": "in",
+      "relatedStateVariable": "AVTransportURIMetaData",
+      "value":  ""
+      }
+  ]
+}'

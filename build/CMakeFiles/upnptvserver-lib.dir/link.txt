@@ -1,0 +1,2 @@
+/usr/bin/ar qc libupnptvserver-lib.a "CMakeFiles/upnptvserver-lib.dir/src/ixmlfuncs.cpp.o" "CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o"
+/usr/bin/ranlib libupnptvserver-lib.a

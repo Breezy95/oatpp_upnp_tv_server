@@ -1,0 +1,28 @@
+curl -X POST http://localhost:8000/upnp/sendAction \
+  -H "Content-Type: application/json" \
+  -d '{
+    "actionUrl": "http://192.168.0.100:52235/upnp/control/AVTransport1",
+    "serviceType": "urn:schemas-upnp-org:service:RenderingControl",
+    "serviceId": "urn:upnp-org:serviceId:RenderingControl",
+    "actionName": "SetVolume",
+    "actionArgsList": [
+      {
+        "name": "InstanceID",
+        "direction": "in",
+        "relatedStateVariable": "A_ARG_TYPE_InstanceID",
+        "value": "0000"
+      },
+      {
+        "name": "Channel",
+        "direction": "in",
+        "relatedStateVariable": "A_ARG_TYPE_Channel",
+        "value": "Master"
+      },
+      {
+      "name": "DesiredVolume",
+      "direction": "in",
+      "relatedStateVariable": "Volume",
+      "value" : "46"
+      }
+    ]
+  }'

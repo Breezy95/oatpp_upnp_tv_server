@@ -1,0 +1,23 @@
+curl -X GET http://localhost:8000/upnp/getVolume \
+  -H "Content-Type: application/json" \
+  -d '{
+    "actionUrl": "http://192.168.0.100:52235/upnp/control/RenderingControl1",
+    "serviceType": "urn:schemas-upnp-org:service:RenderingControl:1",
+    "serviceId": "urn:upnp-org:serviceId:RenderingControl",
+    "actionName": "GetVolume",
+    "devUDN": "uuid:97787e38-ef1e-9008-914a-569a89fa13c2",
+    "actionArgsList": [
+      {
+        "name": "InstanceID",
+        "direction": "in",
+        "relatedStateVariable": "A_ARG_TYPE_InstanceID",
+        "value": "0000"
+      },
+      {
+        "name": "Channel",
+        "direction": "in",
+        "relatedStateVariable": "A_ARG_TYPE_Channel",
+        "value": "Master"
+      }
+    ]
+  }'
