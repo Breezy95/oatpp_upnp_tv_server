@@ -10,6 +10,9 @@ include(FetchContent)
 file(GLOB CONTROLLER_SRC "src/controller/*.cpp" "src/controller/*.hpp")
 add_library(${project_name}-lib
         src/AppComponent.hpp
+        src/MediaLibrary.hpp
+        src/DeviceStore.hpp
+        src/DeviceStore.cpp
         src/dto/DTOs.hpp
         src/ixmlfuncs.cpp
         src/ixmlfuncs.hpp

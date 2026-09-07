@@ -15,6 +15,25 @@ std::string relatedStateVariable;
 std::string val;
 };
 
+// Fields extracted from a UPnP device description document.
+struct deviceDescription {
+std::string friendlyName;
+std::string manufacturer;
+std::string modelName;
+std::string udn;
+// Control URL and service type of the AVTransport service, when advertised.
+std::string controlUrl;
+std::string serviceType;
+std::string serviceId;
+};
+
+// Parses a device description XML document. Relative URLs found in the document
+// are resolved against `baseUrl` (the directory part of the description URL).
+deviceDescription parseDeviceDescription(const std::string &xml, const std::string &baseUrl = "");
+
+// Resolves a possibly relative URL against a base URL.
+std::string resolveUrl(const std::string &baseUrl, const std::string &url);
+
 IXML_Document* createBaseDocument();
 IXML_Document* createGetProtocolInfoDocument();
 // Create a SOAP action document for the RenderingControl:SetVolume action.

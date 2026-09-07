@@ -1,6 +1,8 @@
 #include "TestController.hpp"
 
 #include "controller/upnpDevice.hpp"
+#include "DeviceStore.hpp"
+#include <cstdio>
 #include "controller/UpnpClient.hpp"
 #include "app/MyApiTestClient.hpp"
 #include "app/TestComponent.hpp"
@@ -111,6 +113,144 @@ void testUpnpClientCallbackParsing() {
  OATPP_ASSERT(client.devices().empty());
 }
 
+void testMediaLibraryListing() {
+ OATPP_ASSERT(mediaLibrary::isSafeFileName("movie.mp4"));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName(".."));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName("../secret.mp4"));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName(""));
+
+ OATPP_ASSERT(mediaLibrary::hasVideoExtension("Movie.MKV"));
+ OATPP_ASSERT(mediaLibrary::hasVideoExtension("clip.mp4"));
+ OATPP_ASSERT(!mediaLibrary::hasVideoExtension("song.mp3"));
+
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", "movie.mp4") == mediaLibrary::mediaDir("video") + "/movie.mp4");
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", "../../etc/passwd").empty());
+
+ OATPP_ASSERT(mediaLibrary::urlEncode("my movie&1.mp4") == "my%20movie%261.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("my%20movie%261.mp4") == "my movie&1.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("plain.mp4") == "plain.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("trailing%20") == "trailing ");
+ OATPP_ASSERT(mediaLibrary::urlDecode("truncated%2") == "truncated%2");
+ OATPP_ASSERT(mediaLibrary::urlDecode("my+movie.mp4") == "my+movie.mp4");
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", mediaLibrary::urlDecode("..%2f..%2fetc%2fpasswd")).empty());
+ OATPP_ASSERT(mediaLibrary::formatSize(5 * 1024 * 1024) == "5.0 MB");
+ OATPP_ASSERT(mediaLibrary::formatSize(2048) == "2.0 KB");
+ OATPP_ASSERT(mediaLibrary::formatSize(12) == "12 B");
+ OATPP_ASSERT(mediaLibrary::htmlEscape("<b>&\"") == "&lt;b&gt;&amp;&quot;");
+
+ std::vector<mediaLibrary::MediaFile> files;
+ mediaLibrary::MediaFile file;
+ file.name = "my movie.mp4";
+ file.title = "my movie";
+ file.size = 5 * 1024 * 1024;
+ files.push_back(file);
+
+ const auto page = mediaLibrary::renderBrowsePage(files);
+ OATPP_ASSERT(page.find("/media/video/my%20movie.mp4") != std::string::npos);
+ OATPP_ASSERT(page.find("my movie") != std::string::npos);
+ OATPP_ASSERT(page.find("5.0 MB") != std::string::npos);
+ OATPP_ASSERT(page.find("/upnp/sendMedia") != std::string::npos);
+
+ OATPP_ASSERT(mediaLibrary::renderBrowsePage({}).find("No videos found") != std::string::npos);
+}
+
+void testDeviceDescriptionParsing() {
+ const std::string xml =
+   "<root xmlns=\"urn:schemas-upnp-org:device-1-0\"><device>"
+   "<deviceType>urn:schemas-upnp-org:device:MediaRenderer:1</deviceType>"
+   "<friendlyName>Living room TV</friendlyName>"
+   "<manufacturer>Acme</manufacturer>"
+   "<modelName>TV-3000</modelName>"
+   "<UDN>uuid:1234</UDN>"
+   "<serviceList>"
+   "<service><serviceType>urn:schemas-upnp-org:service:RenderingControl:1</serviceType>"
+   "<serviceId>urn:upnp-org:serviceId:RenderingControl</serviceId>"
+   "<controlURL>/upnp/control/RenderingControl1</controlURL></service>"
+   "<service><serviceType>urn:schemas-upnp-org:service:AVTransport:1</serviceType>"
+   "<serviceId>urn:upnp-org:serviceId:AVTransport</serviceId>"
+   "<controlURL>/upnp/control/AVTransport1</controlURL></service>"
+   "</serviceList></device></root>";
+
+ const auto description = parseDeviceDescription(xml, "http://192.168.0.100:52235/dmr/");
+ OATPP_ASSERT(description.friendlyName == "Living room TV");
+ OATPP_ASSERT(description.manufacturer == "Acme");
+ OATPP_ASSERT(description.modelName == "TV-3000");
+ OATPP_ASSERT(description.udn == "uuid:1234");
+ OATPP_ASSERT(description.serviceType == "urn:schemas-upnp-org:service:AVTransport:1");
+ OATPP_ASSERT(description.serviceId == "urn:upnp-org:serviceId:AVTransport");
+ OATPP_ASSERT(description.controlUrl == "http://192.168.0.100:52235/upnp/control/AVTransport1");
+
+ OATPP_ASSERT(parseDeviceDescription("", "http://host/").friendlyName.empty());
+ OATPP_ASSERT(parseDeviceDescription("not xml", "http://host/").friendlyName.empty());
+
+ OATPP_ASSERT(resolveUrl("http://host:80/dmr/", "control") == "http://host:80/dmr/control");
+ OATPP_ASSERT(resolveUrl("http://host:80/dmr/desc.xml", "/control") == "http://host:80/control");
+ OATPP_ASSERT(resolveUrl("http://host/", "http://other/control") == "http://other/control");
+ OATPP_ASSERT(resolveUrl("", "control") == "control");
+}
+
+void testDeviceStorePersistence() {
+ const std::string path = "/tmp/upnptvserver-devices-test.json";
+ std::remove(path.c_str());
+
+ deviceStore::KnownDevice discovered;
+ discovered.deviceId = "uuid:1234";
+ discovered.friendlyName = "Living room TV";
+ discovered.locationUrl = "http://192.168.0.100:52235/dmr/desc.xml";
+ discovered.controlUrl = "http://192.168.0.100:52235/upnp/control/AVTransport1";
+ discovered.ipAddr = "192.168.0.100";
+ discovered.port = 52235;
+ discovered.lastSeen = 1700000000;
+
+ {
+   deviceStore::DeviceStore store(path);
+   OATPP_ASSERT(store.list().empty());
+   OATPP_ASSERT(store.upsert(discovered));
+
+   deviceStore::KnownDevice missingId;
+   OATPP_ASSERT(!store.upsert(missingId));
+
+   deviceStore::KnownDevice update;
+   update.deviceId = discovered.deviceId;
+   update.modelName = "TV-3000";
+   update.lastSeen = 1700000500;
+   OATPP_ASSERT(store.upsert(update));
+
+   const auto devices = store.list();
+   OATPP_ASSERT(devices.size() == 1);
+   OATPP_ASSERT(devices[0].friendlyName == "Living room TV");
+   OATPP_ASSERT(devices[0].modelName == "TV-3000");
+   OATPP_ASSERT(devices[0].lastSeen == 1700000500);
+ }
+
+ {
+   deviceStore::DeviceStore reopened(path);
+   const auto devices = reopened.list();
+   OATPP_ASSERT(devices.size() == 1);
+   OATPP_ASSERT(devices[0].deviceId == "uuid:1234");
+   OATPP_ASSERT(devices[0].controlUrl == "http://192.168.0.100:52235/upnp/control/AVTransport1");
+   OATPP_ASSERT(devices[0].port == 52235);
+
+   OATPP_ASSERT(!reopened.remove("uuid:unknown"));
+   OATPP_ASSERT(reopened.remove("uuid:1234"));
+   OATPP_ASSERT(reopened.list().empty());
+ }
+
+ OATPP_ASSERT(deviceStore::DeviceStore(path).list().empty());
+ std::remove(path.c_str());
+
+ OATPP_ASSERT(deviceStore::deserializeDevices("").empty());
+ OATPP_ASSERT(deviceStore::deserializeDevices("{ not json").empty());
+ OATPP_ASSERT(deviceStore::deserializeDevices(deviceStore::serializeDevices({discovered})).size() == 1);
+
+ deviceStore::KnownDevice empty;
+ empty.deviceId = "uuid:1234";
+ const auto merged = deviceStore::mergeDevice(discovered, empty);
+ OATPP_ASSERT(merged.friendlyName == "Living room TV");
+ OATPP_ASSERT(merged.port == 52235);
+ OATPP_ASSERT(merged.lastSeen == 1700000000);
+}
+
 } // namespace
 
 void MyControllerTest::onRun() {
@@ -127,7 +267,10 @@ void MyControllerTest::onRun() {
 
    /* Add upnp endpoints to the router of the test server */
    auto upnp = std::make_shared<UpnpClient>();
-   runner.addController(std::make_shared<upnpController>(objectMapper, upnp));
+   const char* deviceStorePath = "/tmp/upnptvserver-devices-endpoint-test.json";
+   std::remove(deviceStorePath);
+   auto devices = std::make_shared<deviceStore::DeviceStore>(deviceStorePath);
+   runner.addController(std::make_shared<upnpController>(objectMapper, upnp, devices));
 
  /* Run test */
  runner.run([this, &runner] {
@@ -154,6 +297,33 @@ void MyControllerTest::onRun() {
    OATPP_ASSERT(helloBody->statusCode == 200);
    OATPP_ASSERT(helloBody->message == "Hello World");
 
+   auto libraryResponse = client->getVideoLibrary();
+   OATPP_ASSERT(libraryResponse);
+   OATPP_ASSERT(libraryResponse->getStatusCode() == 200);
+
+   auto libraryBody = libraryResponse->readBodyToDto<oatpp::Object<MediaLibraryDTO>>(objectMapper.get());
+   OATPP_ASSERT(libraryBody);
+   OATPP_ASSERT(libraryBody->directory);
+   OATPP_ASSERT(std::string(libraryBody->directory->c_str()) == mediaLibrary::mediaDir("video"));
+
+   auto devicesResponse = client->getKnownDevices();
+   OATPP_ASSERT(devicesResponse);
+   OATPP_ASSERT(devicesResponse->getStatusCode() == 200);
+
+   auto devicesBody = devicesResponse->readBodyToDto<oatpp::Object<KnownDeviceListDTO>>(objectMapper.get());
+   OATPP_ASSERT(devicesBody);
+   OATPP_ASSERT(devicesBody->devices);
+   OATPP_ASSERT(devicesBody->devices->empty());
+
+   auto forgetResponse = client->forgetDevice("uuid:unknown");
+   OATPP_ASSERT(forgetResponse);
+   OATPP_ASSERT(forgetResponse->getStatusCode() == 404);
+
+   auto browseResponse = client->getBrowsePage();
+   OATPP_ASSERT(browseResponse);
+   OATPP_ASSERT(browseResponse->getStatusCode() == 200);
+   OATPP_ASSERT(std::string(browseResponse->readBodyToString()->c_str()).find("Pick a video") != std::string::npos);
+
    auto deviceListResponse = client->getDeviceList();
    OATPP_ASSERT(deviceListResponse);
    OATPP_ASSERT(deviceListResponse->getStatusCode() == 200);
@@ -171,6 +341,9 @@ void MyControllerTest::onRun() {
  testLiveStreamMetadata();
  testContentDirectoryContract();
  testUpnpClientCallbackParsing();
+ testMediaLibraryListing();
+ testDeviceDescriptionParsing();
+ testDeviceStorePersistence();
  const auto contentDirectory = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://127.0.0.1:8000/stream/live/desktop.m3u8", "video");
  OATPP_ASSERT(contentDirectory.find("DIDL-Lite") != std::string::npos);
  OATPP_ASSERT(contentDirectory.find("object.item.videoItem") != std::string::npos);
