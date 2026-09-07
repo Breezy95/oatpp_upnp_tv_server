@@ -28,11 +28,17 @@ find_package(LibXml2 REQUIRED)
 pkg_check_modules(PUPNP REQUIRED IMPORTED_TARGET libupnp)
 pkg_check_modules(GLIB IMPORTED_TARGET glib-2.0)
 pkg_check_modules(LIBXML2 REQUIRED IMPORTED_TARGET libxml-2.0)
-pkg_check_modules(GUPNP_AV IMPORTED_TARGET gupnp-av-1.0)
-pkg_check_modules(GUPNP_DLNA IMPORTED_TARGET gupnp-dlna-2.0)
+pkg_check_modules(GUPNP_AV REQUIRED IMPORTED_TARGET gupnp-av-1.0)
+pkg_check_modules(GUPNP_DLNA REQUIRED IMPORTED_TARGET gupnp-dlna-2.0)
 pkg_check_modules(FFM_LIBAVFORMAT IMPORTED_TARGET libavformat)
 pkg_check_modules(FFM_LIBAVCODEC IMPORTED_TARGET libavcodec)
 pkg_check_modules(FFM_LIBAVUTIL IMPORTED_TARGET libavutil)
+
+if(TARGET PkgConfig::GUPNP_AV)
+    target_link_libraries(${project_name}-lib PUBLIC PkgConfig::GUPNP_AV)
+else()
+    message(FATAL_ERROR "gupnp-av-1.0 pkg-config package not found; please install libgupnp-av-1.0-dev")
+endif()
 
 
 target_link_libraries(${project_name}-lib
@@ -94,7 +100,11 @@ add_executable(${project_name}-exe
         src/App.cpp
         test/app/MyApiTestClient.hpp)
 
-target_link_libraries(${project_name}-exe ${project_name}-lib)
+target_link_libraries(${project_name}-exe
+        PRIVATE ${project_name}-lib
+        PRIVATE PkgConfig::FFM_LIBAVFORMAT
+        PRIVATE PkgConfig::FFM_LIBAVCODEC
+        PRIVATE PkgConfig::FFM_LIBAVUTIL)
 add_dependencies(${project_name}-exe ${project_name}-lib)
 
 #testing
@@ -106,7 +116,11 @@ add_executable(${project_name}-test
         test/TestController.hpp
 )
 
-target_link_libraries(${project_name}-test ${project_name}-lib)
+target_link_libraries(${project_name}-test
+        PRIVATE ${project_name}-lib
+        PRIVATE PkgConfig::FFM_LIBAVFORMAT
+        PRIVATE PkgConfig::FFM_LIBAVCODEC
+        PRIVATE PkgConfig::FFM_LIBAVUTIL)
 add_dependencies(${project_name}-test ${project_name}-lib)
 
 set_target_properties(${project_name}-lib ${project_name}-exe ${project_name}-test PROPERTIES

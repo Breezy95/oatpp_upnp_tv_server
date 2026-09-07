@@ -1,4 +1,5 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/upnptvserver-exe.dir/link.d"
   "CMakeFiles/upnptvserver-exe.dir/src/App.cpp.o"
   "CMakeFiles/upnptvserver-exe.dir/src/App.cpp.o.d"
   "upnptvserver-exe"

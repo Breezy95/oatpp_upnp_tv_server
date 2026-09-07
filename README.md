@@ -6,6 +6,8 @@ media (audio/video) to remote UPnP/DLNA-capable clients (TVs, media players).
 ## Features
 
 - Serves media files from the repository `media/` tree.
+- Links a TV to arbitrary media resources by sending a `SetAVTransportURI` + `Play` action to a UPnP renderer.
+- Supports live sources such as desktop capture, VLC-driven streams, or other HTTP/RTSP endpoints through the `/upnp/sendMedia` API.
 - Basic UPnP device & service implementation under `src/controller`.
 - Small C++ project using CMake for cross-platform builds.
 

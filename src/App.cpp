@@ -3,10 +3,10 @@
 #include "./AppComponent.hpp"
 
 #include "oatpp/network/Server.hpp"
-#include "upnp.h"
-#include "upnpdebug.h"
-#include "upnptools.h"
+#include <upnp/upnp.h>
+#include <upnp/upnptools.h>
 #include "controller/UpnpClient.hpp"
+#include <csignal>
 #include <iostream>
 #include <libgupnp-dlna/gupnp-dlna-profile-guesser.h>
 

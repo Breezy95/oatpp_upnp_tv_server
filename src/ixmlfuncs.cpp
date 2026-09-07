@@ -4,15 +4,57 @@
 #include <iostream>
 #include <map>
 #include <sstream>
+#include <algorithm>
+#include <cctype>
 
-extern "C"
+namespace {
+
+std::string xmlEscape(const std::string &value)
 {
-#include "libavformat/avformat.h"
-#include "libavcodec/avcodec.h"
-#include <libavutil/dict.h>
-#include "gupnp-av-1.0/libgupnp-av/gupnp-av.h"
-#include "gupnp-dlna-2.0/libgupnp-dlna/gupnp-dlna.h"
+    std::string result;
+    result.reserve(value.size());
+    for (char ch : value)
+    {
+        switch (ch)
+        {
+            case '&': result += "&amp;"; break;
+            case '<': result += "&lt;"; break;
+            case '>': result += "&gt;"; break;
+            case '"': result += "&quot;"; break;
+            case '\'': result += "&apos;"; break;
+            default: result += ch; break;
+        }
+    }
+    return result;
 }
+
+std::string toLower(std::string value)
+{
+    std::transform(value.begin(), value.end(), value.begin(), [](unsigned char ch) {
+        return static_cast<char>(std::tolower(ch));
+    });
+    return value;
+}
+
+std::string fileStem(const std::string &filePath)
+{
+    const auto slashPos = filePath.find_last_of("/\\");
+    std::string name = slashPos == std::string::npos ? filePath : filePath.substr(slashPos + 1);
+    const auto dotPos = name.find_last_of('.');
+    return dotPos == std::string::npos ? name : name.substr(0, dotPos);
+}
+
+std::string toDlnaMime(const std::string &filePath)
+{
+    const auto lowered = toLower(filePath);
+    if (lowered.find(".wav") != std::string::npos || lowered.find(".pcm") != std::string::npos)
+        return "audio/L16";
+    if (lowered.find(".mp3") != std::string::npos || lowered.find(".m4a") != std::string::npos || lowered.find(".aac") != std::string::npos)
+        return "audio/mpeg";
+    return "audio/mpeg";
+}
+
+} // namespace
 
 IXML_Document *createBaseDocument()
 {
@@ -224,40 +266,25 @@ struct MediaMetadata
 MediaMetadata getMetadataFromFile(const std::string &filepath)
 {
     MediaMetadata meta;
+    meta.title = fileStem(filepath);
+    if (meta.title.empty())
+        meta.title = "Unknown Title";
 
-    AVFormatContext *fmt = nullptr;
-
-    if (avformat_open_input(&fmt, filepath.c_str(), nullptr, nullptr) < 0)
+    const auto lowered = toLower(filepath);
+    if (lowered.find(".mp3") != std::string::npos)
     {
-        return meta;
+        meta.genre = "Audio";
+        meta.bitrate = 320;
     }
-
-    if (avformat_find_stream_info(fmt, nullptr) < 0)
+    else if (lowered.find(".wav") != std::string::npos || lowered.find(".pcm") != std::string::npos)
     {
-        avformat_close_input(&fmt);
-        return meta;
+        meta.genre = "Audio";
+        meta.bitrate = 1411;
     }
-
-    AVDictionaryEntry *tag = nullptr;
-
-    if ((tag = av_dict_get(fmt->metadata, "title", nullptr, 0)))
-        meta.title = tag->value;
-
-    if ((tag = av_dict_get(fmt->metadata, "artist", nullptr, 0)))
-        meta.artist = tag->value;
-
-    if ((tag = av_dict_get(fmt->metadata, "album", nullptr, 0)))
-        meta.album = tag->value;
-
-    if ((tag = av_dict_get(fmt->metadata, "genre", nullptr, 0)))
-        meta.genre = tag->value;
-
-    if (fmt->duration != AV_NOPTS_VALUE)
-        meta.durationSec = fmt->duration / AV_TIME_BASE;
-
-    meta.bitrate = fmt->bit_rate / 1000; // kbps
-
-    avformat_close_input(&fmt);
+    else
+    {
+        meta.genre = "Media";
+    }
     return meta;
 }
 
@@ -304,8 +331,7 @@ IXML_Document *createDIDLFromFFmpeg(
 
     std::string protocolInfo =
         "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;"
-        "DLNA.ORG_OP=01;"
-        "DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     ixmlElement_setAttribute(res, "protocolInfo", protocolInfo.c_str());
 
@@ -355,7 +381,7 @@ IXML_Document *createMetadataArgs(std::string fp)
     ixmlNode_appendChild(&item->n, &creator->n);
 
     IXML_Element *res = ixmlDocument_createElement(doc, "res");
-    ixmlElement_setAttribute(res, "protocolInfo", "http-get:*:audio/mpeg:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    ixmlElement_setAttribute(res, "protocolInfo", "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     IXML_Node *resText = ixmlDocument_createTextNode(doc, "http://192.168.0.212:8000/media/audio/flashbang-jumpscare-loud.mp3");
     ixmlNode_appendChild(&res->n, resText);
     ixmlNode_appendChild(&item->n, &res->n);
@@ -409,7 +435,7 @@ sampleFrequency="44100" resolution="640x360">
   */
     IXML_Element* res = ixmlDocument_createElement(doc, "res");
     ixmlElement_setAttribute(res, "protocolInfo", 
-    "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     ixmlElement_setAttribute(res, "sampleFrequency", "44100");
     //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
     ixmlElement_setAttribute(res, "bitrate", "327040");
@@ -496,7 +522,7 @@ IXML_Document* createMetadataAudioDocument(std::map<std::string,std::string> &fi
 
     IXML_Element* res = ixmlDocument_createElement(doc, "res");
     ixmlElement_setAttribute(res, "protocolInfo", 
-    "http-get:*:audio/wav:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    "http-get:*:audio/wav:DLNA.ORG_PN=LPCM;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     //ixmlElement_setAttribute(res, "sampleFrequency", "44100");
     //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
     //ixmlElement_setAttribute(res, "bitrate", "327040");
@@ -540,63 +566,15 @@ IXML_Document * createSetAVTransportURIDoc(std::map<std::string, std::string> &a
 
 std::string generateDidlLite(
     const std::string& filePath,
-    const std::string& streamUrl   // URL the TV will fetch
-) {
-    std::cout << "HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERREEEEEEEEEEE"<< std::endl;
-    AVFormatContext* fmt = nullptr;
-    avformat_open_input(&fmt, filePath.c_str(), nullptr, nullptr);
-    avformat_find_stream_info(fmt, nullptr);
-    //std::cout << 
-    AVStream* audio = nullptr;
-    for (unsigned i = 0; i < fmt->nb_streams; i++) {
-        if (fmt->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
-            audio = fmt->streams[i];
-            break;
-        }
-    }
-    if (!audio) {
-        avformat_close_input(&fmt);
-        throw std::runtime_error("No audio stream");
-    }
-
-    AVCodecParameters* cp = audio->codecpar;
-
-    int sampleRate = cp->sample_rate;
-    int channels   = cp->ch_layout.nb_channels;
-    int bitrate    = cp->bit_rate;
-    double durationSec =
-        (audio->duration > 0)
-            ? audio->duration * av_q2d(audio->time_base)
-            : fmt->duration / (double)AV_TIME_BASE;
-
-    std::string mime;
-    std::string dlnaPN;
-
-    // ---- FORMAT DETECTION ----
-    if (cp->codec_id == AV_CODEC_ID_PCM_S16LE) {
-        mime   = "audio/L16;rate=" + std::to_string(sampleRate)
-               + ";channels=" + std::to_string(channels);
-        dlnaPN = "LPCM";
-    } else if (cp->codec_id == AV_CODEC_ID_MP3) {
-        mime   = "audio/mpeg";
-        dlnaPN = "MP3";
-    } else {
-        mime   = "audio/mpeg";
-        dlnaPN = "MP3"; // safe fallback
-    }
-
-    // ---- PROTOCOL INFO ----
-    std::string protocolInfo =
+    const std::string& streamUrl)
+{
+    const std::string title = fileStem(filePath);
+    const std::string mime = toDlnaMime(filePath);
+    const std::string pn = mime == "audio/L16" ? "LPCM" : "MP3";
+    const std::string protocolInfo =
         "http-get:*:" + mime +
-        ":DLNA.ORG_PN=" + dlnaPN +
-        ";DLNA.ORG_OP=01"
-        ";DLNA.ORG_CI=0"
-        ";DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        ":DLNA.ORG_PN=" + pn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
-    // ---- TITLE ----
-    std::string title = filePath.substr(filePath.find_last_of("/\\") + 1);
-
-    // ---- DIDL-LITE ----
     std::ostringstream didl;
     didl
         << "<DIDL-Lite "
@@ -604,17 +582,86 @@ std::string generateDidlLite(
         << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
         << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
         << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
-        << "<dc:title>" << title << "</dc:title>"
+        << "<dc:title>" << xmlEscape(title) << "</dc:title>"
         << "<res protocolInfo=\"" << protocolInfo << "\" "
-        << "sampleFrequency=\"" << sampleRate << "\" "
-        << "nrAudioChannels=\"" << channels << "\" "
-        << "bitrate=\"" << bitrate << "\">"
-        << streamUrl
+        << "sampleFrequency=\"44100\" "
+        << "nrAudioChannels=\"2\" "
+        << "bitrate=\"320000\">"
+        << xmlEscape(streamUrl)
         << "</res>"
         << "<upnp:class>object.item.audioItem</upnp:class>"
         << "</item>"
         << "</DIDL-Lite>";
 
-    avformat_close_input(&fmt);
+    return didl.str();
+}
+
+std::string generateVideoDidlLite(
+    const std::string& filePath,
+    const std::string& streamUrl)
+{
+    const std::string title = fileStem(filePath);
+    const std::string lowered = toLower(filePath);
+    const std::string mime = lowered.find(".mp4") != std::string::npos || lowered.find(".mkv") != std::string::npos || lowered.find(".avi") != std::string::npos
+                                ? "video/mp4"
+                                : "video/mpeg";
+    const std::string protocolInfo =
+        "http-get:*:" + mime +
+        ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+
+    std::ostringstream didl;
+    didl
+        << "<DIDL-Lite "
+        << "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << xmlEscape(title) << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << "resolution=\"1280x720\" "
+        << "bitrate=\"4500000\">"
+        << xmlEscape(streamUrl)
+        << "</res>"
+        << "<upnp:class>object.item.videoItem</upnp:class>"
+        << "</item>"
+        << "</DIDL-Lite>";
+
+    return didl.str();
+}
+
+std::string generateStreamDidlLite(
+    const std::string& title,
+    const std::string& streamUrl,
+    const std::string& mediaType,
+    const std::string& mimeType)
+{
+    const std::string lowerType = toLower(mediaType);
+    const bool isAudio = lowerType == "audio" || lowerType == "mp3" || lowerType == "wav" || lowerType == "pcm";
+    const std::string resolvedTitle = title.empty() ? (isAudio ? "Audio stream" : "Video stream") : title;
+    const std::string resolvedMime = mimeType.empty()
+        ? (isAudio ? "audio/mpeg" : "video/mp4")
+        : mimeType;
+    const std::string dlnaPn = isAudio ? (resolvedMime == "audio/L16" ? "LPCM" : "MP3") : "AVC_MP4_BL_L3L_SD_AAC";
+    const std::string protocolInfo = isAudio
+        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=" + dlnaPn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000"
+        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=" + dlnaPn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+
+    std::ostringstream didl;
+    didl
+        << "<DIDL-Lite "
+        << "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << xmlEscape(resolvedTitle) << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
+        << ">"
+        << xmlEscape(streamUrl)
+        << "</res>"
+        << "<upnp:class>object.item." << (isAudio ? "audioItem" : "videoItem") << "</upnp:class>"
+        << "</item>"
+        << "</DIDL-Lite>";
+
     return didl.str();
 }
