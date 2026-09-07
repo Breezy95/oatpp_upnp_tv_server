@@ -5,6 +5,8 @@ media (audio/video) to remote UPnP/DLNA-capable clients (TVs, media players).
 
 ## Features
 
+- Web UI at `http://<host>:8000/` where anyone on the network can pick a video
+  from the local content directory and play it in the browser or send it to a TV.
 - Serves media files from the repository `media/` tree.
 - Links a TV to arbitrary media resources by sending a `SetAVTransportURI` + `Play` action to a UPnP renderer.
 - Supports live sources such as desktop capture, VLC-driven streams, or other HTTP/RTSP endpoints through the `/upnp/sendMedia` API.
@@ -41,6 +43,24 @@ Run the server executable from the repository root or `build/` folder:
 ```
 
 Behavior, options and runtime configuration are implemented in `src/App.cpp`.
+
+## Picking a video from the browser
+
+Open `http://<server-host>:8000/` in a browser. The page lists every video file
+found in the local content directory (`media/video` by default) and offers two
+actions per file:
+
+- **Play here** — streams the file in the browser player.
+- **Send to TV** — calls `/upnp/sendMedia` so a UPnP/DLNA renderer plays the file.
+
+The listing is also available as JSON from `GET /api/media/video`.
+
+Set the `MEDIA_ROOT` environment variable to serve a different content directory
+(it must contain `video/` and, optionally, `audio/` sub-directories):
+
+```bash
+MEDIA_ROOT=/srv/movies ./build/upnptvserver-exe
+```
 
 ## Tests
 

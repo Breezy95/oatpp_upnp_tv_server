@@ -18,6 +18,7 @@
 #include "oatpp/web/protocol/http/incoming/Request.hpp"
 #include "ixmlfuncs.hpp"
 #include "UpnpClient.hpp"
+#include <MediaLibrary.hpp>
 #include <regex>
 
 #include <iostream>
@@ -548,6 +549,30 @@ public:
         return createResponse(Status::CODE_200, ixmlDocumenttoString(resp));
     }
 
+    ENDPOINT("GET", "/", browseLibrary)
+    {
+        auto response = createResponse(Status::CODE_200,
+                                       mediaLibrary::renderBrowsePage(mediaLibrary::listVideos()).c_str());
+        response->putHeader("Content-Type", "text/html; charset=utf-8");
+        return response;
+    }
+
+    ENDPOINT("GET", "/api/media/video", listVideoLibrary)
+    {
+        auto dto = MediaLibraryDTO::createShared();
+        dto->directory = mediaLibrary::mediaDir("video").c_str();
+        for (const auto &file : mediaLibrary::listVideos())
+        {
+            auto item = MediaItemDTO::createShared();
+            item->name = file.name.c_str();
+            item->title = file.title.c_str();
+            item->url = ("/media/video/" + mediaLibrary::urlEncode(file.name)).c_str();
+            item->size = static_cast<v_int64>(file.size);
+            dto->items->push_back(item);
+        }
+        return createDtoResponse(Status::CODE_200, dto);
+    }
+
     ENDPOINT("HEAD", "/media/video/{resourcePath}", resourcePathVideoMetadata, PATH(String, resourcePath))
     {
 
@@ -565,7 +590,11 @@ public:
     ENDPOINT("GET", "/media/video/{resourcePath}", serveVideoResourceURI, PATH(String, resourcePath))
     {
 
-        std::string filePath = std::string("media/video/") + resourcePath;
+        std::string filePath = mediaLibrary::mediaFilePath("video", mediaLibrary::urlDecode(std::string(resourcePath->c_str())));
+        if (filePath.empty())
+        {
+            return createResponse(Status::CODE_404, "File not found");
+        }
 
         std::ifstream file(filePath, std::ios::binary | std::ios::ate);
         if (!file.is_open())
@@ -605,7 +634,11 @@ public:
     // TV will retrieve
     ENDPOINT("GET", "/media/audio/{resourcePath}", serveResourceURI, PATH(String, resourcePath))
     {
-        std::string filePath = std::string("media/audio/") + resourcePath;
+        std::string filePath = mediaLibrary::mediaFilePath("audio", mediaLibrary::urlDecode(std::string(resourcePath->c_str())));
+        if (filePath.empty())
+        {
+            return createResponse(Status::CODE_404, "File not found");
+        }
         const auto audioKind = detectAudioKind(filePath);
         const int sampleRate = 44100;
         const int channels = 2;

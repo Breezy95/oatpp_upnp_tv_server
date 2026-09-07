@@ -111,6 +111,42 @@ void testUpnpClientCallbackParsing() {
  OATPP_ASSERT(client.devices().empty());
 }
 
+void testMediaLibraryListing() {
+ OATPP_ASSERT(mediaLibrary::isSafeFileName("movie.mp4"));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName(".."));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName("../secret.mp4"));
+ OATPP_ASSERT(!mediaLibrary::isSafeFileName(""));
+
+ OATPP_ASSERT(mediaLibrary::hasVideoExtension("Movie.MKV"));
+ OATPP_ASSERT(mediaLibrary::hasVideoExtension("clip.mp4"));
+ OATPP_ASSERT(!mediaLibrary::hasVideoExtension("song.mp3"));
+
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", "movie.mp4") == mediaLibrary::mediaDir("video") + "/movie.mp4");
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", "../../etc/passwd").empty());
+
+ OATPP_ASSERT(mediaLibrary::urlEncode("my movie&1.mp4") == "my%20movie%261.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("my%20movie%261.mp4") == "my movie&1.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("plain.mp4") == "plain.mp4");
+ OATPP_ASSERT(mediaLibrary::mediaFilePath("video", mediaLibrary::urlDecode("..%2f..%2fetc%2fpasswd")).empty());
+ OATPP_ASSERT(mediaLibrary::formatSize(5 * 1024 * 1024) == "5.0 MB");
+ OATPP_ASSERT(mediaLibrary::htmlEscape("<b>&\"") == "&lt;b&gt;&amp;&quot;");
+
+ std::vector<mediaLibrary::MediaFile> files;
+ mediaLibrary::MediaFile file;
+ file.name = "my movie.mp4";
+ file.title = "my movie";
+ file.size = 5 * 1024 * 1024;
+ files.push_back(file);
+
+ const auto page = mediaLibrary::renderBrowsePage(files);
+ OATPP_ASSERT(page.find("/media/video/my%20movie.mp4") != std::string::npos);
+ OATPP_ASSERT(page.find("my movie") != std::string::npos);
+ OATPP_ASSERT(page.find("5.0 MB") != std::string::npos);
+ OATPP_ASSERT(page.find("/upnp/sendMedia") != std::string::npos);
+
+ OATPP_ASSERT(mediaLibrary::renderBrowsePage({}).find("No videos found") != std::string::npos);
+}
+
 } // namespace
 
 void MyControllerTest::onRun() {
@@ -154,6 +190,20 @@ void MyControllerTest::onRun() {
    OATPP_ASSERT(helloBody->statusCode == 200);
    OATPP_ASSERT(helloBody->message == "Hello World");
 
+   auto libraryResponse = client->getVideoLibrary();
+   OATPP_ASSERT(libraryResponse);
+   OATPP_ASSERT(libraryResponse->getStatusCode() == 200);
+
+   auto libraryBody = libraryResponse->readBodyToDto<oatpp::Object<MediaLibraryDTO>>(objectMapper.get());
+   OATPP_ASSERT(libraryBody);
+   OATPP_ASSERT(libraryBody->directory);
+   OATPP_ASSERT(std::string(libraryBody->directory->c_str()) == mediaLibrary::mediaDir("video"));
+
+   auto browseResponse = client->getBrowsePage();
+   OATPP_ASSERT(browseResponse);
+   OATPP_ASSERT(browseResponse->getStatusCode() == 200);
+   OATPP_ASSERT(std::string(browseResponse->readBodyToString()->c_str()).find("Pick a video") != std::string::npos);
+
    auto deviceListResponse = client->getDeviceList();
    OATPP_ASSERT(deviceListResponse);
    OATPP_ASSERT(deviceListResponse->getStatusCode() == 200);
@@ -171,6 +221,7 @@ void MyControllerTest::onRun() {
  testLiveStreamMetadata();
  testContentDirectoryContract();
  testUpnpClientCallbackParsing();
+ testMediaLibraryListing();
  const auto contentDirectory = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://127.0.0.1:8000/stream/live/desktop.m3u8", "video");
  OATPP_ASSERT(contentDirectory.find("DIDL-Lite") != std::string::npos);
  OATPP_ASSERT(contentDirectory.find("object.item.videoItem") != std::string::npos);

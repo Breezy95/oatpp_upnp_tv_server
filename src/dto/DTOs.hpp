@@ -95,6 +95,20 @@ class SendMediaRequestDTO : public BaseTVDTO {
   DTO_FIELD(String, instanceId) = "0";
 };
 
+class MediaItemDTO : public oatpp::DTO {
+  DTO_INIT(MediaItemDTO, DTO)
+  DTO_FIELD(String, name);
+  DTO_FIELD(String, title);
+  DTO_FIELD(String, url);
+  DTO_FIELD(Int64, size);
+};
+
+class MediaLibraryDTO : public oatpp::DTO {
+  DTO_INIT(MediaLibraryDTO, DTO)
+  DTO_FIELD(String, directory);
+  DTO_FIELD(List<Object<MediaItemDTO>>, items) = oatpp::List<Object<MediaItemDTO>>::createShared();
+};
+
 class MessageDto : public oatpp::DTO {
   
   DTO_INIT(MessageDto, DTO)
