@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/upnptvserver-lib.dir/src/controller/UpnpClient.cpp.o"
+  "CMakeFiles/upnptvserver-lib.dir/src/controller/UpnpClient.cpp.o.d"
   "CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o"
   "CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o.d"
   "CMakeFiles/upnptvserver-lib.dir/src/ixmlfuncs.cpp.o"
