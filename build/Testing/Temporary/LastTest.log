@@ -1,30 +1,30 @@
-Start testing: Sep 07 08:16 UTC
+Start testing: Sep 07 08:47 UTC
 ----------------------------------------------------------
 1/1 Testing: project-tests
 1/1 Test: project-tests
 Command: "/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build/upnptvserver-test"
 Directory: /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build
-"project-tests" start time: Sep 07 08:16 UTC
+"project-tests" start time: Sep 07 08:47 UTC
 Output:
 ----------------------------------------------------------
-[32m I [0m|2026-09-07 08:16:10 1788768970181765| TEST[MyControllerTest]:[1mSTART[0m...
-[34m D [0m|2026-09-07 08:16:10 1788768970182959| [1;34mClientServerTestRunner[0m:[1;34mRunning server on port 0. Timeout 600000000(micro)[0m
-[32m I [0m|2026-09-07 08:16:10 1788768970183810| upnpdevice: starting search	ST: ssdp:all, timeout: 1 
-[34m D [0m|2026-09-07 08:16:10 1788768970885325| [1;34mClientServerTestRunner[0m:[1;34mFinished with time 702359(micro). Stopping server...[0m
-[32m I [0m|2026-09-07 08:16:11 1788768971887572| TEST[MyControllerTest]:[1mFINISHED[0m - [1;32msuccess![0m
-[32m I [0m|2026-09-07 08:16:11 1788768971887610| TEST[MyControllerTest]:[33m1705754(micro), 146(objs)[0m
+[32m I [0m|2026-09-07 08:47:06 1788770826085899| TEST[MyControllerTest]:[1mSTART[0m...
+[34m D [0m|2026-09-07 08:47:06 1788770826087189| [1;34mClientServerTestRunner[0m:[1;34mRunning server on port 0. Timeout 600000000(micro)[0m
+[32m I [0m|2026-09-07 08:47:06 1788770826088149| upnpdevice: starting search	ST: ssdp:all, timeout: 1 
+[34m D [0m|2026-09-07 08:47:06 1788770826789557| [1;34mClientServerTestRunner[0m:[1;34mFinished with time 702368(micro). Stopping server...[0m
+[32m I [0m|2026-09-07 08:47:07 1788770827791895| TEST[MyControllerTest]:[1mFINISHED[0m - [1;32msuccess![0m
+[32m I [0m|2026-09-07 08:47:07 1788770827791929| TEST[MyControllerTest]:[33m1705933(micro), 151(objs)[0m
 
 
 Environment:
 objectsCount = 0
-objectsCreated = 146
+objectsCreated = 151
 
 <end of output>
 Test time =   1.71 sec
 ----------------------------------------------------------
 Test Passed.
-"project-tests" end time: Sep 07 08:16 UTC
+"project-tests" end time: Sep 07 08:47 UTC
 "project-tests" time elapsed: 00:00:01
 ----------------------------------------------------------
 
-End testing: Sep 07 08:16 UTC
+End testing: Sep 07 08:47 UTC

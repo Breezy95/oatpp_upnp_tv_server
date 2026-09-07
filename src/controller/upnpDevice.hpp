@@ -285,7 +285,7 @@ public:
 
         auto response = ResponseFactory::createResponse(Status::CODE_200, fileContent);
         response->putHeader("Content-Type", "audio/wav");
-        response->putHeader("ContentFeatures.DLNA.ORG", "DLNA.ORG_PN=LPCM;DLNA.ORG_OP=01;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+        response->putHeader("ContentFeatures.DLNA.ORG", "DLNA.ORG_PN=LPCM;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
         response->putHeader("Scid.DLNA.ORG", "839080694");
         response->putHeader("TransferMode.DLNA.ORG", "Streaming");
         // response->putHeader("Content-Length", "463500");
@@ -403,13 +403,17 @@ public:
             return createDtoResponse(Status::CODE_500, err);
         }
 
-        const std::string sourceType = req->sourceType ? req->sourceType->std_str() : "file";
-        const std::string mediaType = req->mediaType ? req->mediaType->std_str() : "video";
-        const std::string streamUrl = req->streamUrl ? req->streamUrl->std_str() : "";
-        const std::string mimeType = req->mimeType ? req->mimeType->std_str() : "";
-        const std::string title = req->title ? req->title->std_str() : "";
-        std::string mediaUrl = req->mediaUrl ? req->mediaUrl->std_str() : "";
-        std::string filePath = req->filePath ? req->filePath->std_str() : "";
+        const auto asString = [](const oatpp::String &value, const char *fallback) {
+            return value ? std::string(value->c_str()) : std::string(fallback);
+        };
+
+        const std::string sourceType = asString(req->sourceType, "file");
+        const std::string mediaType = asString(req->mediaType, "video");
+        const std::string streamUrl = asString(req->streamUrl, "");
+        const std::string mimeType = asString(req->mimeType, "");
+        const std::string title = asString(req->title, "");
+        std::string mediaUrl = asString(req->mediaUrl, "");
+        std::string filePath = asString(req->filePath, "");
 
         const bool isExplicitStream = !streamUrl.empty() || sourceType == "stream" || sourceType == "screen" || sourceType == "desktop" || sourceType == "vlc" || sourceType == "live";
         const bool isAudio = isExplicitStream
@@ -434,10 +438,10 @@ public:
             return createDtoResponse(Status::CODE_400, err);
         }
 
-        const std::string actionUrl = req->actionUrl ? req->actionUrl->std_str() : "http://192.168.0.100:52235/upnp/control/AVTransport1";
-        const std::string serviceId = req->serviceId ? req->serviceId->std_str() : "urn:upnp-org:serviceId:AVTransport";
-        const std::string serviceType = req->serviceType ? req->serviceType->std_str() : "urn:schemas-upnp-org:service:AVTransport:1";
-        const std::string instanceId = req->instanceId ? req->instanceId->std_str() : "0";
+        const std::string actionUrl = asString(req->actionUrl, "http://192.168.0.100:52235/upnp/control/AVTransport1");
+        const std::string serviceId = asString(req->serviceId, "urn:upnp-org:serviceId:AVTransport");
+        const std::string serviceType = asString(req->serviceType, "urn:schemas-upnp-org:service:AVTransport:1");
+        const std::string instanceId = asString(req->instanceId, "0");
 
         const std::string itemTitle = !title.empty() ? title
             : filePath.empty() ? (isAudio ? "Audio stream" : "Video stream")

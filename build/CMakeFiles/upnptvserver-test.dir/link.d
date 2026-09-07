@@ -10,8 +10,8 @@ upnptvserver-test: \
   /usr/lib/x86_64-linux-gnu/libavutil.so \
   /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so \
   /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a \
-  /usr/local/lib/oatpp-1.3.0/liboatpp-test.a \
-  /usr/local/lib/oatpp-1.3.0/liboatpp.a \
+  /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a \
+  /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libatomic.so \
   /usr/lib/x86_64-linux-gnu/libupnp.so \
   /usr/lib/x86_64-linux-gnu/libixml.so \
@@ -70,9 +70,9 @@ libupnptvserver-lib.a:
 
 /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a:
 
-/usr/local/lib/oatpp-1.3.0/liboatpp-test.a:
+/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a:
 
-/usr/local/lib/oatpp-1.3.0/liboatpp.a:
+/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libatomic.so:
 

@@ -82,6 +82,7 @@ class EnqueueVidRequestDTO : public BaseTVDTO {
 
 class SendMediaRequestDTO : public BaseTVDTO {
   DTO_INIT(SendMediaRequestDTO, BaseTVDTO)
+  DTO_FIELD(String, actionUrl) = "http://192.168.0.100:52235/upnp/control/AVTransport1";
   DTO_FIELD(String, mediaUrl);
   DTO_FIELD(String, streamUrl);
   DTO_FIELD(String, filePath);

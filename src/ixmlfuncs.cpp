@@ -312,8 +312,7 @@ IXML_Document *createDIDLFromFFmpeg(
 
     std::string protocolInfo =
         "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;"
-        "DLNA.ORG_OP=01;"
-        "DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     ixmlElement_setAttribute(res, "protocolInfo", protocolInfo.c_str());
 
@@ -363,7 +362,7 @@ IXML_Document *createMetadataArgs(std::string fp)
     ixmlNode_appendChild(&item->n, &creator->n);
 
     IXML_Element *res = ixmlDocument_createElement(doc, "res");
-    ixmlElement_setAttribute(res, "protocolInfo", "http-get:*:audio/mpeg:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    ixmlElement_setAttribute(res, "protocolInfo", "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     IXML_Node *resText = ixmlDocument_createTextNode(doc, "http://192.168.0.212:8000/media/audio/flashbang-jumpscare-loud.mp3");
     ixmlNode_appendChild(&res->n, resText);
     ixmlNode_appendChild(&item->n, &res->n);
@@ -417,7 +416,7 @@ sampleFrequency="44100" resolution="640x360">
   */
     IXML_Element* res = ixmlDocument_createElement(doc, "res");
     ixmlElement_setAttribute(res, "protocolInfo", 
-    "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     ixmlElement_setAttribute(res, "sampleFrequency", "44100");
     //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
     ixmlElement_setAttribute(res, "bitrate", "327040");
@@ -504,7 +503,7 @@ IXML_Document* createMetadataAudioDocument(std::map<std::string,std::string> &fi
 
     IXML_Element* res = ixmlDocument_createElement(doc, "res");
     ixmlElement_setAttribute(res, "protocolInfo", 
-    "http-get:*:audio/wav:DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000");
+    "http-get:*:audio/wav:DLNA.ORG_PN=LPCM;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
     //ixmlElement_setAttribute(res, "sampleFrequency", "44100");
     //ixmlElement_setAttribute(res, "duration", "1:48:55.701");
     //ixmlElement_setAttribute(res, "bitrate", "327040");
@@ -554,7 +553,7 @@ std::string generateDidlLite(
     const std::string mime = toDlnaMime(filePath);
     const std::string protocolInfo =
         "http-get:*:" + mime +
-        ":DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        ":DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     std::ostringstream didl;
     didl
@@ -588,7 +587,7 @@ std::string generateVideoDidlLite(
                                 : "video/mpeg";
     const std::string protocolInfo =
         "http-get:*:" + mime +
-        ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_OP=10;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     std::ostringstream didl;
     didl
@@ -623,8 +622,8 @@ std::string generateStreamDidlLite(
         ? (isAudio ? "audio/mpeg" : "video/mp4")
         : mimeType;
     const std::string protocolInfo = isAudio
-        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000"
-        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_OP=10;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000";
+        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000"
+        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     std::ostringstream didl;
     didl
