@@ -85,7 +85,7 @@ inline bool hasVideoExtension(const std::string &name)
 }
 
 /**
- * Lists the playable files of a directory, sorted by name.
+ * Lists the playable video files of the content directory, sorted by name.
  * Returns an empty list when the directory does not exist.
  */
 inline std::vector<MediaFile> listVideos()
@@ -101,7 +101,8 @@ inline std::vector<MediaFile> listVideos()
     {
         if (ec)
             break;
-        if (!entry.is_regular_file())
+        std::error_code entryEc;
+        if (!entry.is_regular_file(entryEc) || entryEc)
             continue;
 
         const std::string name = entry.path().filename().string();
@@ -194,10 +195,7 @@ inline std::string urlDecode(const std::string &value)
                 continue;
             }
         }
-        if (value[i] == '+')
-            out += ' ';
-        else
-            out += value[i];
+        out += value[i];
     }
     return out;
 }
@@ -273,27 +271,27 @@ video { width: 100%; max-height: 60vh; background: #000; border-radius: .5rem; m
     page << R"(</ul>
 <script>
 const player = document.getElementById('player');
-const status = document.getElementById('status');
+const statusEl = document.getElementById('status');
 document.querySelectorAll('button.play').forEach(function (btn) {
   btn.addEventListener('click', function () {
     player.src = btn.dataset.url;
     player.play();
-    status.textContent = 'Playing in browser';
+    statusEl.textContent = 'Playing in browser';
   });
 });
 document.querySelectorAll('button.cast').forEach(function (btn) {
   btn.addEventListener('click', function () {
-    status.textContent = 'Sending to TV...';
+    statusEl.textContent = 'Sending to TV...';
     fetch('/upnp/sendMedia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ filePath: btn.dataset.file, mediaType: 'video', sourceType: 'file' })
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {
-        status.textContent = res.ok ? (data.message || 'Sent to TV') : (data.message || 'Failed to send to TV');
+        statusEl.textContent = res.ok ? (data.message || 'Sent to TV') : (data.message || 'Failed to send to TV');
       });
     }).catch(function (err) {
-      status.textContent = 'Failed to send to TV: ' + err;
+      statusEl.textContent = 'Failed to send to TV: ' + err;
     });
   });
 });

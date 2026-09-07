@@ -127,6 +127,9 @@ void testMediaLibraryListing() {
  OATPP_ASSERT(mediaLibrary::urlEncode("my movie&1.mp4") == "my%20movie%261.mp4");
  OATPP_ASSERT(mediaLibrary::urlDecode("my%20movie%261.mp4") == "my movie&1.mp4");
  OATPP_ASSERT(mediaLibrary::urlDecode("plain.mp4") == "plain.mp4");
+ OATPP_ASSERT(mediaLibrary::urlDecode("trailing%20") == "trailing ");
+ OATPP_ASSERT(mediaLibrary::urlDecode("truncated%2") == "truncated%2");
+ OATPP_ASSERT(mediaLibrary::urlDecode("my+movie.mp4") == "my+movie.mp4");
  OATPP_ASSERT(mediaLibrary::mediaFilePath("video", mediaLibrary::urlDecode("..%2f..%2fetc%2fpasswd")).empty());
  OATPP_ASSERT(mediaLibrary::formatSize(5 * 1024 * 1024) == "5.0 MB");
  OATPP_ASSERT(mediaLibrary::htmlEscape("<b>&\"") == "&lt;b&gt;&amp;&quot;");
