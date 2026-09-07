@@ -80,6 +80,16 @@ class EnqueueVidRequestDTO : public BaseTVDTO {
   DTO_FIELD(String,  xmlAction, "xmlActionDocument");
 };
 
+class SendMediaRequestDTO : public BaseTVDTO {
+  DTO_INIT(SendMediaRequestDTO, BaseTVDTO)
+  DTO_FIELD(String, mediaUrl);
+  DTO_FIELD(String, filePath);
+  DTO_FIELD(String, mediaType) = "audio";
+  DTO_FIELD(String, serviceType) = "urn:schemas-upnp-org:service:AVTransport:1";
+  DTO_FIELD(String, serviceId) = "urn:upnp-org:serviceId:AVTransport";
+  DTO_FIELD(String, instanceId) = "0";
+};
+
 class MessageDto : public oatpp::DTO {
   
   DTO_INIT(MessageDto, DTO)

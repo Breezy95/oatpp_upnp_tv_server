@@ -49,6 +49,14 @@ void testUpnpClientCallbackParsing() {
  OATPP_ASSERT(discovered.deviceType == "urn:schemas-upnp-org:device:MediaRenderer:1");
  OATPP_ASSERT(discovered.serviceType == "urn:schemas-upnp-org:service:AVTransport:1");
 
+ const auto audioDidl = generateDidlLite("media/audio/song.mp3", "http://192.168.0.212:8000/media/audio/song.mp3");
+ OATPP_ASSERT(audioDidl.find("object.item.audioItem") != std::string::npos);
+ OATPP_ASSERT(audioDidl.find("http://192.168.0.212:8000/media/audio/song.mp3") != std::string::npos);
+
+ const auto videoDidl = generateVideoDidlLite("media/video/movie.mp4", "http://192.168.0.212:8000/media/video/movie.mp4");
+ OATPP_ASSERT(videoDidl.find("object.item.videoItem") != std::string::npos);
+ OATPP_ASSERT(videoDidl.find("http://192.168.0.212:8000/media/video/movie.mp4") != std::string::npos);
+
  UpnpClient client(0, false);
  OATPP_ASSERT(UpnpClient::callback(UPNP_DISCOVERY_SEARCH_TIMEOUT, nullptr, &client) == 0);
  OATPP_ASSERT(UpnpClient::callback(UPNP_DISCOVERY_SEARCH_RESULT, nullptr, &client) == 0);

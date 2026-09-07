@@ -19,6 +19,7 @@ class MyApiTestClient : public oatpp::web::client::ApiClient {
   API_CALL("GET", "/upnp/hello", getHelloWorld)
   API_CALL("GET", "/upnp/devices", getDeviceList)
   API_CALL("POST", "/upnp/search", searchDevices, BODY_DTO(Object<UpnpSearchRequest>, body))
+  API_CALL("POST", "/upnp/sendMedia", sendMedia, BODY_DTO(Object<SendMediaRequestDTO>, body))
 
 };
 

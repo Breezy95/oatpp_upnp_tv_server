@@ -385,6 +385,86 @@ public:
         return createResponse(Status::CODE_200, ixmlDocumenttoString(resp));
     }
 
+    ENDPOINT("POST", "/upnp/sendMedia", sendMediaToTv, BODY_DTO(Object<SendMediaRequestDTO>, req))
+    {
+        if (!m_upnp || m_upnp->handle() == -1)
+        {
+            auto err = UpnpErrorDTO::createShared();
+            err->statusCode = 500;
+            err->message = "UPnP client is not initialized";
+            return createDtoResponse(Status::CODE_500, err);
+        }
+
+        const std::string mediaType = req->mediaType ? req->mediaType->std_str() : "audio";
+        const bool isAudio = mediaType == "audio" || mediaType == "mp3" || mediaType == "wav";
+        std::string mediaUrl = req->mediaUrl ? req->mediaUrl->std_str() : "";
+        std::string filePath = req->filePath ? req->filePath->std_str() : "";
+        if (mediaUrl.empty() && !filePath.empty())
+        {
+            std::string cleanPath = filePath;
+            if (cleanPath.rfind("/", 0) != 0 && cleanPath.rfind("http", 0) != 0)
+                cleanPath = std::string("/") + cleanPath;
+            mediaUrl = std::string(SERVER_ADDRESS) + "/media/" + (isAudio ? "audio" : "video") + cleanPath;
+        }
+        if (mediaUrl.empty())
+        {
+            auto err = UpnpErrorDTO::createShared();
+            err->statusCode = 400;
+            err->message = "mediaUrl or filePath is required";
+            return createDtoResponse(Status::CODE_400, err);
+        }
+
+        const std::string actionUrl = req->actionUrl ? req->actionUrl->std_str() : "http://192.168.0.100:52235/upnp/control/AVTransport1";
+        const std::string serviceId = req->serviceId ? req->serviceId->std_str() : "urn:upnp-org:serviceId:AVTransport";
+        const std::string serviceType = req->serviceType ? req->serviceType->std_str() : "urn:schemas-upnp-org:service:AVTransport:1";
+        const std::string instanceId = req->instanceId ? req->instanceId->std_str() : "0";
+
+        std::vector<actionArg> setArgs = {
+            {"InstanceID", "in", "A_ARG_TYPE_InstanceID", instanceId},
+            {"CurrentURI", "in", "AVTransportURI", mediaUrl},
+            {"CurrentURIMetaData", "in", "AVTransportURIMetaData",
+             isAudio ? generateDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl)
+                     : generateVideoDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl)}
+        };
+
+        IXML_Document *setDoc = createActionDocument("SetAVTransportURI", serviceId, setArgs);
+        IXML_Document *setResp = nullptr;
+        int ret = UpnpSendAction(m_upnp->handle(), actionUrl.c_str(), serviceType.c_str(), nullptr, setDoc, &setResp);
+        ixmlDocument_free(setDoc);
+        if (ret != UPNP_E_SUCCESS)
+        {
+            auto err = UpnpErrorDTO::createShared();
+            err->upnpErrorCode = ret;
+            err->message = setResp ? ixmlDocumenttoString(setResp) : "SetAVTransportURI failed";
+            ixmlDocument_free(setResp);
+            return createDtoResponse(Status::CODE_422, err);
+        }
+        ixmlDocument_free(setResp);
+
+        std::vector<actionArg> playArgs = {
+            {"InstanceID", "in", "A_ARG_TYPE_InstanceID", instanceId},
+            {"Speed", "in", "TransportPlaySpeed", "1"}
+        };
+        IXML_Document *playDoc = createActionDocument("Play", serviceId, playArgs);
+        IXML_Document *playResp = nullptr;
+        ret = UpnpSendAction(m_upnp->handle(), actionUrl.c_str(), serviceType.c_str(), nullptr, playDoc, &playResp);
+        ixmlDocument_free(playDoc);
+        if (ret != UPNP_E_SUCCESS)
+        {
+            auto err = UpnpErrorDTO::createShared();
+            err->upnpErrorCode = ret;
+            err->message = playResp ? ixmlDocumenttoString(playResp) : "Play failed";
+            ixmlDocument_free(playResp);
+            return createDtoResponse(Status::CODE_422, err);
+        }
+        ixmlDocument_free(playResp);
+
+        auto response = MessageDto::createShared();
+        response->statusCode = 200;
+        response->message = isAudio ? "Audio queued on TV" : "Video queued on TV";
+        return createDtoResponse(Status::CODE_200, response);
+    }
+
     ENDPOINT("POST", "/upnp/search", upnpSearch, BODY_DTO(Object<UpnpSearchRequest>, req))
     {
         auto retDTO = MessageDto::createShared();

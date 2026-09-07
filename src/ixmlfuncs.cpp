@@ -576,3 +576,36 @@ std::string generateDidlLite(
 
     return didl.str();
 }
+
+std::string generateVideoDidlLite(
+    const std::string& filePath,
+    const std::string& streamUrl)
+{
+    const std::string title = fileStem(filePath);
+    const std::string lowered = toLower(filePath);
+    const std::string mime = lowered.find(".mp4") != std::string::npos || lowered.find(".mkv") != std::string::npos || lowered.find(".avi") != std::string::npos
+                                ? "video/mp4"
+                                : "video/mpeg";
+    const std::string protocolInfo =
+        "http-get:*:" + mime +
+        ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_OP=10;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000";
+
+    std::ostringstream didl;
+    didl
+        << "<DIDL-Lite "
+        << "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << title << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << "resolution=\"1280x720\" "
+        << "bitrate=\"4500000\">"
+        << streamUrl
+        << "</res>"
+        << "<upnp:class>object.item.videoItem</upnp:class>"
+        << "</item>"
+        << "</DIDL-Lite>";
+
+    return didl.str();
+}

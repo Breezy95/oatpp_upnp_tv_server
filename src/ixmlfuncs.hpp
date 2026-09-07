@@ -31,5 +31,6 @@ IXML_Document* createMetadataDocument();
 IXML_Document* createMetadataAudioDocument(std::map<std::string, std::string> &args);
 IXML_Document *createMetadataArgs(std::string fp);
 std::string generateDidlLite(const std::string& filePath,const std::string& streamUrl);
+std::string generateVideoDidlLite(const std::string& filePath,const std::string& streamUrl);
 
 #endif // IXML_FUNCS_HPP

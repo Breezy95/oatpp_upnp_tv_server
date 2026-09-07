@@ -250,7 +250,7 @@ PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
 oatpp-ssdp_DIR:PATH=/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp
 
 //The directory containing a CMake configuration file for oatpp.
-oatpp_DIR:PATH=/usr/local/lib/cmake/oatpp-1.3.0
+oatpp_DIR:PATH=oatpp_DIR-NOTFOUND
 
 //Path to a library.
 pkgcfg_lib_FFM_LIBAVCODEC_avcodec:FILEPATH=/usr/lib/x86_64-linux-gnu/libavcodec.so
@@ -287,9 +287,6 @@ pkgcfg_lib_PUPNP_ixml:FILEPATH=/usr/lib/x86_64-linux-gnu/libixml.so
 
 //Path to a library.
 pkgcfg_lib_PUPNP_upnp:FILEPATH=/usr/lib/x86_64-linux-gnu/libupnp.so
-
-//Dependencies for the target
-upnptvserver-lib_LIB_DEPENDS:STATIC=general;oatpp::oatpp;general;oatpp::oatpp-test;general;oatpp::oatpp-ssdp;
 
 //Value Computed by CMake
 upnptvserver_BINARY_DIR:STATIC=/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build
