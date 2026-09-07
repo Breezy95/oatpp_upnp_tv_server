@@ -247,10 +247,23 @@ button.secondary { background: #4b5563; }
 video { width: 100%; max-height: 60vh; background: #000; border-radius: .5rem; margin-bottom: 1rem; }
 #status { min-height: 1.2rem; color: #99a0ad; font-size: .9rem; }
 .empty { color: #99a0ad; }
+section.devices { background: #1e2128; border-radius: .5rem; padding: .8rem; margin-bottom: 1rem; }
+section.devices h2 { font-size: 1rem; margin: 0 0 .6rem; }
+section.devices .row { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+select { background: #14161a; color: #f2f4f8; border: 1px solid #4b5563; border-radius: .35rem; padding: .4rem; flex: 1; min-width: 12rem; }
 </style>
 </head>
 <body>
 <h1>Pick a video</h1>
+<section class="devices">
+<h2>Renderers</h2>
+<div class="row">
+<select id="devices"><option value="">No known devices yet</option></select>
+<button id="scan">Scan network</button>
+<button id="forget" class="secondary">Forget</button>
+</div>
+<div id="deviceStatus"></div>
+</section>
 <video id="player" controls></video>
 <div id="status"></div>
 <ul>
@@ -277,6 +290,67 @@ video { width: 100%; max-height: 60vh; background: #000; border-radius: .5rem; m
 <script>
 const player = document.getElementById('player');
 const statusEl = document.getElementById('status');
+const deviceSelect = document.getElementById('devices');
+const deviceStatusEl = document.getElementById('deviceStatus');
+
+function renderDevices(data) {
+  const devices = (data && data.devices) || [];
+  deviceSelect.innerHTML = '';
+  if (!devices.length) {
+    const option = document.createElement('option');
+    option.value = '';
+    option.textContent = 'No known devices yet';
+    deviceSelect.appendChild(option);
+  } else {
+    devices.forEach(function (device) {
+      const option = document.createElement('option');
+      option.value = device.deviceId || '';
+      option.textContent = (device.friendlyName || device.deviceId || 'Unknown device') +
+        (device.ipAddr ? ' (' + device.ipAddr + ')' : '');
+      option.dataset.controlUrl = device.controlUrl || '';
+      option.dataset.serviceType = device.serviceType || '';
+      option.dataset.serviceId = device.serviceId || '';
+      deviceSelect.appendChild(option);
+    });
+  }
+  deviceStatusEl.textContent = devices.length
+    ? devices.length + ' device(s) remembered in ' + (data.storePath || 'the device store')
+    : 'No devices remembered yet. Run a scan.';
+}
+
+function loadDevices() {
+  fetch('/api/devices').then(function (res) { return res.json(); })
+    .then(renderDevices)
+    .catch(function (err) { deviceStatusEl.textContent = 'Failed to load devices: ' + err; });
+}
+
+document.getElementById('scan').addEventListener('click', function () {
+  deviceStatusEl.textContent = 'Scanning...';
+  fetch('/api/devices/scan', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ searchType: 'urn:schemas-upnp-org:device:MediaRenderer:1', mx: 3 })
+  }).then(function (res) {
+    return res.json().then(function (data) {
+      if (res.ok) { renderDevices(data); }
+      else { deviceStatusEl.textContent = data.message || 'Scan failed'; }
+    });
+  }).catch(function (err) { deviceStatusEl.textContent = 'Scan failed: ' + err; });
+});
+
+document.getElementById('forget').addEventListener('click', function () {
+  const deviceId = deviceSelect.value;
+  if (!deviceId) { return; }
+  fetch('/api/devices/' + encodeURIComponent(deviceId), { method: 'DELETE' })
+    .then(function (res) { return res.json(); })
+    .then(function (data) {
+      if (data && data.devices) { renderDevices(data); }
+      else { deviceStatusEl.textContent = (data && data.message) || 'Failed to forget device'; loadDevices(); }
+    })
+    .catch(function (err) { deviceStatusEl.textContent = 'Failed to forget device: ' + err; });
+});
+
+loadDevices();
 document.querySelectorAll('button.play').forEach(function (btn) {
   btn.addEventListener('click', function () {
     player.src = btn.dataset.url;
@@ -287,10 +361,17 @@ document.querySelectorAll('button.play').forEach(function (btn) {
 document.querySelectorAll('button.cast').forEach(function (btn) {
   btn.addEventListener('click', function () {
     statusEl.textContent = 'Sending to TV...';
+    const payload = { filePath: btn.dataset.file, mediaType: 'video', sourceType: 'file' };
+    const selected = deviceSelect.selectedOptions[0];
+    if (selected && selected.dataset.controlUrl) {
+      payload.actionUrl = selected.dataset.controlUrl;
+      if (selected.dataset.serviceType) { payload.serviceType = selected.dataset.serviceType; }
+      if (selected.dataset.serviceId) { payload.serviceId = selected.dataset.serviceId; }
+    }
     fetch('/upnp/sendMedia', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ filePath: btn.dataset.file, mediaType: 'video', sourceType: 'file' })
+      body: JSON.stringify(payload)
     }).then(function (res) {
       return res.json().catch(function () { return {}; }).then(function (data) {
         statusEl.textContent = res.ok ? (data.message || 'Sent to TV') : (data.message || 'Failed to send to TV');

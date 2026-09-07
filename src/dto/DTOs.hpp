@@ -109,6 +109,39 @@ class MediaLibraryDTO : public oatpp::DTO {
   DTO_FIELD(List<Object<MediaItemDTO>>, items) = oatpp::List<Object<MediaItemDTO>>::createShared();
 };
 
+class KnownDeviceDTO : public oatpp::DTO {
+  DTO_INIT(KnownDeviceDTO, DTO)
+  DTO_FIELD(String, deviceId);
+  DTO_FIELD(String, friendlyName);
+  DTO_FIELD(String, deviceType);
+  DTO_FIELD(String, locationUrl);
+  DTO_FIELD(String, controlUrl);
+  DTO_FIELD(String, serviceType);
+  DTO_FIELD(String, serviceId);
+  DTO_FIELD(String, manufacturer);
+  DTO_FIELD(String, modelName);
+  DTO_FIELD(String, ipAddr);
+  DTO_FIELD(UInt16, port);
+  DTO_FIELD(Int64, lastSeen);
+};
+
+// On-disk format of the device store.
+class StoredDevicesDTO : public oatpp::DTO {
+  DTO_INIT(StoredDevicesDTO, DTO)
+  DTO_FIELD(List<Object<KnownDeviceDTO>>, devices) = oatpp::List<Object<KnownDeviceDTO>>::createShared();
+};
+
+class KnownDeviceListDTO : public StoredDevicesDTO {
+  DTO_INIT(KnownDeviceListDTO, StoredDevicesDTO)
+  DTO_FIELD(String, storePath);
+};
+
+class ScanRequestDTO : public oatpp::DTO {
+  DTO_INIT(ScanRequestDTO, DTO)
+  DTO_FIELD(String, searchType) = "urn:schemas-upnp-org:device:MediaRenderer:1";
+  DTO_FIELD(Int32, mx) = 3;
+};
+
 class MessageDto : public oatpp::DTO {
   
   DTO_INIT(MessageDto, DTO)

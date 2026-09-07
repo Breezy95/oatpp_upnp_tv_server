@@ -665,3 +665,100 @@ std::string generateStreamDidlLite(
 
     return didl.str();
 }
+
+namespace {
+
+std::string firstChildText(IXML_Element *parent, const char *tag)
+{
+    if (!parent)
+        return std::string();
+
+    IXML_NodeList *nodes = ixmlElement_getElementsByTagName(parent, tag);
+    std::string value;
+    if (nodes && ixmlNodeList_length(nodes) > 0)
+    {
+        IXML_Node *node = ixmlNodeList_item(nodes, 0);
+        if (node)
+        {
+            const char *text = ixmlNode_getNodeValue(ixmlNode_getFirstChild(node));
+            if (text)
+                value = text;
+        }
+    }
+    if (nodes)
+        ixmlNodeList_free(nodes);
+    return value;
+}
+
+} // namespace
+
+std::string resolveUrl(const std::string &baseUrl, const std::string &url)
+{
+    if (url.empty())
+        return url;
+    if (url.rfind("http://", 0) == 0 || url.rfind("https://", 0) == 0)
+        return url;
+    if (baseUrl.empty())
+        return url;
+
+    std::string base = baseUrl;
+    if (url.front() == '/')
+    {
+        // Absolute path: keep only scheme and authority of the base URL.
+        const auto schemeEnd = base.find("://");
+        const auto pathStart = schemeEnd == std::string::npos
+                                   ? base.find('/')
+                                   : base.find('/', schemeEnd + 3);
+        if (pathStart != std::string::npos)
+            base = base.substr(0, pathStart);
+        return base + url;
+    }
+
+    if (base.back() != '/')
+        base += '/';
+    return base + url;
+}
+
+deviceDescription parseDeviceDescription(const std::string &xml, const std::string &baseUrl)
+{
+    deviceDescription description;
+    if (xml.empty())
+        return description;
+
+    IXML_Document *doc = nullptr;
+    if (ixmlParseBufferEx(xml.c_str(), &doc) != IXML_SUCCESS || !doc)
+        return description;
+
+    IXML_NodeList *devices = ixmlDocument_getElementsByTagName(doc, "device");
+    if (devices && ixmlNodeList_length(devices) > 0)
+    {
+        auto *device = (IXML_Element *)ixmlNodeList_item(devices, 0);
+        description.friendlyName = firstChildText(device, "friendlyName");
+        description.manufacturer = firstChildText(device, "manufacturer");
+        description.modelName = firstChildText(device, "modelName");
+        description.udn = firstChildText(device, "UDN");
+    }
+    if (devices)
+        ixmlNodeList_free(devices);
+
+    IXML_NodeList *services = ixmlDocument_getElementsByTagName(doc, "service");
+    if (services)
+    {
+        for (unsigned long i = 0; i < ixmlNodeList_length(services); ++i)
+        {
+            auto *service = (IXML_Element *)ixmlNodeList_item(services, i);
+            const std::string serviceType = firstChildText(service, "serviceType");
+            if (serviceType.find("AVTransport") == std::string::npos)
+                continue;
+
+            description.serviceType = serviceType;
+            description.serviceId = firstChildText(service, "serviceId");
+            description.controlUrl = resolveUrl(baseUrl, firstChildText(service, "controlURL"));
+            break;
+        }
+        ixmlNodeList_free(services);
+    }
+
+    ixmlDocument_free(doc);
+    return description;
+}

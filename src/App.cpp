@@ -18,12 +18,15 @@
  */
 void run() {
   auto upnp = std::make_shared<UpnpClient>(8001);
+  auto devices = std::make_shared<deviceStore::DeviceStore>();
   AppComponent components;
   
 
   auto router = components.httpRouter.getObject();
   OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
-  router->addController(upnpController::createShared(objectMapper, upnp));
+  router->addController(upnpController::createShared(objectMapper, upnp, devices));
+
+  OATPP_LOGI("Devices", "Known devices stored in %s", devices->path().c_str());
   
 
   OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);

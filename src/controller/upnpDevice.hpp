@@ -19,6 +19,10 @@
 #include "ixmlfuncs.hpp"
 #include "UpnpClient.hpp"
 #include <MediaLibrary.hpp>
+#include <DeviceStore.hpp>
+#include <chrono>
+#include <ctime>
+#include <thread>
 #include <regex>
 
 #include <iostream>
@@ -320,18 +324,107 @@ class upnpController : public oatpp::web::server::api::ApiController
 private:
     OATPP_COMPONENT(std::shared_ptr<DeviceDescriptorComponent::DeviceDescriptor>, m_desc);
     std::shared_ptr<UpnpClient> m_upnp;
+    std::shared_ptr<deviceStore::DeviceStore> m_deviceStore;
+
+    /**
+     * Copies the devices currently known by the control point into the store,
+     * enriching them with the data of their description document when it can
+     * be downloaded.
+     */
+    void rememberDiscoveredDevices()
+    {
+        const auto now = static_cast<std::int64_t>(
+            std::chrono::duration_cast<std::chrono::seconds>(
+                std::chrono::system_clock::now().time_since_epoch())
+                .count());
+
+        for (const auto &entry : m_upnp->devices())
+        {
+            deviceStore::KnownDevice device;
+            device.deviceId = entry.second.deviceId.empty() ? entry.first : entry.second.deviceId;
+            device.deviceType = entry.second.deviceType;
+            device.locationUrl = entry.second.locationUrl;
+            device.serviceType = entry.second.serviceType;
+            device.serviceId = entry.second.serviceId;
+            device.friendlyName = entry.second.friendlyName;
+            device.manufacturer = entry.second.manufacturer;
+            device.modelName = entry.second.modelName;
+            device.ipAddr = entry.second.ipAddr;
+            device.port = entry.second.port;
+            device.lastSeen = now;
+
+            if (!device.locationUrl.empty())
+            {
+                IXML_Document *doc = nullptr;
+                if (UpnpDownloadXmlDoc(device.locationUrl.c_str(), &doc) == UPNP_E_SUCCESS && doc)
+                {
+                    std::string baseUrl = device.locationUrl;
+                    const auto pos = baseUrl.rfind('/');
+                    if (pos != std::string::npos)
+                        baseUrl = baseUrl.substr(0, pos + 1);
+
+                    const char *xml = ixmlDocumenttoString(doc);
+                    const auto description = parseDeviceDescription(xml ? xml : "", baseUrl);
+                    ixmlDocument_free(doc);
+
+                    if (!description.friendlyName.empty())
+                        device.friendlyName = description.friendlyName;
+                    if (!description.manufacturer.empty())
+                        device.manufacturer = description.manufacturer;
+                    if (!description.modelName.empty())
+                        device.modelName = description.modelName;
+                    if (!description.controlUrl.empty())
+                        device.controlUrl = description.controlUrl;
+                    if (!description.serviceType.empty())
+                        device.serviceType = description.serviceType;
+                    if (!description.serviceId.empty())
+                        device.serviceId = description.serviceId;
+                }
+            }
+
+            m_deviceStore->upsert(device);
+        }
+    }
+
+    oatpp::Object<KnownDeviceListDTO> knownDevicesDto() const
+    {
+        auto dto = KnownDeviceListDTO::createShared();
+        dto->storePath = m_deviceStore->path().c_str();
+        for (const auto &device : m_deviceStore->list())
+        {
+            auto deviceDto = KnownDeviceDTO::createShared();
+            deviceDto->deviceId = device.deviceId.c_str();
+            deviceDto->friendlyName = device.friendlyName.c_str();
+            deviceDto->deviceType = device.deviceType.c_str();
+            deviceDto->locationUrl = device.locationUrl.c_str();
+            deviceDto->controlUrl = device.controlUrl.c_str();
+            deviceDto->serviceType = device.serviceType.c_str();
+            deviceDto->serviceId = device.serviceId.c_str();
+            deviceDto->manufacturer = device.manufacturer.c_str();
+            deviceDto->modelName = device.modelName.c_str();
+            deviceDto->ipAddr = device.ipAddr.c_str();
+            deviceDto->port = device.port;
+            deviceDto->lastSeen = device.lastSeen;
+            dto->devices->push_back(deviceDto);
+        }
+        return dto;
+    }
 
 public:
     static std::shared_ptr<upnpController> createShared(
         const std::shared_ptr<ObjectMapper> &objectMapper,
-        const std::shared_ptr<UpnpClient> &upnp)
+        const std::shared_ptr<UpnpClient> &upnp,
+        const std::shared_ptr<deviceStore::DeviceStore> &devices = nullptr)
     {
-        return std::make_shared<upnpController>(objectMapper, upnp);
+        return std::make_shared<upnpController>(objectMapper, upnp, devices);
     }
 
     upnpController(const std::shared_ptr<ObjectMapper> &objectMapper,
-                   const std::shared_ptr<UpnpClient> &upnp)
-        : oatpp::web::server::api::ApiController(objectMapper), m_upnp(upnp) {}
+                   const std::shared_ptr<UpnpClient> &upnp,
+                   const std::shared_ptr<deviceStore::DeviceStore> &devices = nullptr)
+        : oatpp::web::server::api::ApiController(objectMapper)
+        , m_upnp(upnp)
+        , m_deviceStore(devices ? devices : std::make_shared<deviceStore::DeviceStore>()) {}
 
 public:
 #include OATPP_CODEGEN_BEGIN(ApiController)
@@ -555,6 +648,50 @@ public:
                                        mediaLibrary::renderBrowsePage(mediaLibrary::listVideos()).c_str());
         response->putHeader("Content-Type", "text/html; charset=utf-8");
         return response;
+    }
+
+    ENDPOINT("GET", "/api/devices", listKnownDevices)
+    {
+        return createDtoResponse(Status::CODE_200, knownDevicesDto());
+    }
+
+    ENDPOINT("POST", "/api/devices/scan", scanForDevices, BODY_DTO(Object<ScanRequestDTO>, req))
+    {
+        const std::string searchTarget = req && req->searchType
+            ? std::string(req->searchType->c_str())
+            : std::string("urn:schemas-upnp-org:device:MediaRenderer:1");
+        int waitSeconds = req && req->mx ? static_cast<int>(*req->mx) : 3;
+        waitSeconds = std::max(1, std::min(waitSeconds, 30));
+
+        const int ret = m_upnp->search(waitSeconds, searchTarget);
+        if (ret != UPNP_E_SUCCESS)
+        {
+            auto err = UpnpErrorDTO::createShared();
+            err->statusCode = 422;
+            err->upnpErrorCode = ret;
+            err->message = "UPnP search failed";
+            return createDtoResponse(Status::CODE_422, err);
+        }
+
+        // Discovery replies arrive asynchronously, so give the renderers the
+        // advertised amount of time to answer before collecting the results.
+        std::this_thread::sleep_for(std::chrono::seconds(waitSeconds));
+        rememberDiscoveredDevices();
+
+        return createDtoResponse(Status::CODE_200, knownDevicesDto());
+    }
+
+    ENDPOINT("DELETE", "/api/devices/{deviceId}", forgetKnownDevice, PATH(String, deviceId))
+    {
+        const std::string id = mediaLibrary::urlDecode(std::string(deviceId->c_str()));
+        if (!m_deviceStore->remove(id))
+        {
+            auto err = MessageDto::createShared();
+            err->statusCode = 404;
+            err->message = "Unknown device";
+            return createDtoResponse(Status::CODE_404, err);
+        }
+        return createDtoResponse(Status::CODE_200, knownDevicesDto());
     }
 
     ENDPOINT("GET", "/api/media/video", listVideoLibrary)

@@ -7,6 +7,8 @@ media (audio/video) to remote UPnP/DLNA-capable clients (TVs, media players).
 
 - Web UI at `http://<host>:8000/` where anyone on the network can pick a video
   from the local content directory and play it in the browser or send it to a TV.
+- Control point discovery from the same page: scan the network for UPnP/DLNA
+  renderers and remember them in a JSON store between restarts.
 - Serves media files from the repository `media/` tree.
 - Links a TV to arbitrary media resources by sending a `SetAVTransportURI` + `Play` action to a UPnP renderer.
 - Supports live sources such as desktop capture, VLC-driven streams, or other HTTP/RTSP endpoints through the `/upnp/sendMedia` API.
@@ -54,6 +56,24 @@ actions per file:
 - **Send to TV** — calls `/upnp/sendMedia` so a UPnP/DLNA renderer plays the file.
 
 The listing is also available as JSON from `GET /api/media/video`.
+
+### Finding and remembering renderers
+
+The **Renderers** panel of the same page drives the control point:
+
+- **Scan network** (`POST /api/devices/scan`) sends an SSDP search, waits for the
+  replies, downloads each device description to pick up its friendly name and
+  AVTransport control URL, and stores the result.
+- The dropdown lists the remembered devices (`GET /api/devices`); the selected
+  one is used as the target of **Send to TV**.
+- **Forget** removes a device from the store (`DELETE /api/devices/{deviceId}`).
+
+Known devices are persisted as JSON in `devices.json`. Point the `DEVICE_STORE`
+environment variable at another file to change the location:
+
+```bash
+DEVICE_STORE=/etc/upnptvserver/devices.json ./build/upnptvserver-exe
+```
 
 Set the `MEDIA_ROOT` environment variable to serve a different content directory
 (it must contain `video/` and, optionally, `audio/` sub-directories):
