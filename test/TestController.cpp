@@ -27,6 +27,10 @@ void testDlnaFileDetectionAndHeaders() {
  OATPP_ASSERT(pcmHeaders.contentFeatures.find("DLNA.ORG_PN=LPCM") != std::string::npos);
  OATPP_ASSERT(pcmHeaders.contentFeatures.find("DLNA.ORG_FLAGS=ED100000000000000000000000000000") != std::string::npos);
 
+ const auto mp4VideoHeaders = pickVideoDlnaHeaders("media/video/movie.mp4");
+ OATPP_ASSERT(mp4VideoHeaders.contentType == "video/mp4");
+ OATPP_ASSERT(mp4VideoHeaders.contentFeatures.find("DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC") != std::string::npos);
+
  const auto didl = generateDidlLite("media/audio/song.mp3", "http://127.0.0.1:8000/media/audio/song.mp3");
  OATPP_ASSERT(didl.find("<dc:title>song</dc:title>") != std::string::npos);
  OATPP_ASSERT(didl.find("http://127.0.0.1:8000/media/audio/song.mp3") != std::string::npos);

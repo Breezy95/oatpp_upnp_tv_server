@@ -3,10 +3,10 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/stdc-predef.h \
  /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src/controller/upnpDevice.hpp \
  /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src/dto/DTOs.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp \
  /usr/include/c++/13/memory /usr/include/c++/13/bits/memoryfwd.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++config.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/os_defines.h \
@@ -121,9 +121,9 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/c++/13/backward/auto_ptr.h \
  /usr/include/c++/13/pstl/glue_memory_defs.h \
  /usr/include/c++/13/pstl/execution_defs.h \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Compiler.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Compiler.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
  /usr/include/c++/13/cstdarg /usr/include/c++/13/cstdio \
  /usr/include/stdio.h /usr/include/x86_64-linux-gnu/bits/types/__fpos_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h \
@@ -174,14 +174,14 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/c++/13/bits/enable_special_members.h \
  /usr/include/c++/13/bits/node_handle.h \
  /usr/include/c++/13/bits/erase_if.h /usr/include/c++/13/stdexcept \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
  /usr/include/c++/13/list /usr/include/c++/13/bits/stl_list.h \
  /usr/include/c++/13/bits/list.tcc /usr/include/c++/13/vector \
  /usr/include/c++/13/bits/stl_vector.h \
  /usr/include/c++/13/bits/stl_bvector.h \
  /usr/include/c++/13/bits/vector.tcc \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
  /usr/include/c++/13/algorithm /usr/include/c++/13/bits/stl_algo.h \
  /usr/include/c++/13/bits/algorithmfwd.h \
  /usr/include/c++/13/bits/stl_heap.h \
@@ -193,35 +193,35 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/c++/13/bits/locale_classes.h \
  /usr/include/c++/13/bits/locale_classes.tcc \
  /usr/include/c++/13/system_error /usr/include/c++/13/bits/streambuf.tcc \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp \
  /usr/include/c++/13/cstring /usr/include/string.h /usr/include/strings.h \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp \
  /usr/include/c++/13/utility /usr/include/c++/13/bits/stl_relops.h \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp \
  /usr/include/c++/13/unordered_set \
  /usr/include/c++/13/bits/unordered_set.h \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
  /usr/include/x86_64-linux-gnu/sys/socket.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
  /usr/include/x86_64-linux-gnu/bits/socket.h \
@@ -239,53 +239,53 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/asm-generic/sockios.h \
  /usr/include/x86_64-linux-gnu/bits/types/struct_osockaddr.h \
  /usr/include/c++/13/chrono \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp \
  /usr/include/c++/13/functional /usr/include/c++/13/bits/std_function.h \
  /usr/include/c++/13/array /usr/include/c++/13/compare \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp \
  /usr/include/c++/13/sstream /usr/include/c++/13/istream \
  /usr/include/c++/13/ios /usr/include/c++/13/bits/basic_ios.h \
  /usr/include/c++/13/bits/locale_facets.h /usr/include/c++/13/cwctype \
@@ -380,8 +380,8 @@ CMakeFiles/upnptvserver-lib.dir/src/controller/upnpDevice.cpp.o: \
  /usr/include/x86_64-linux-gnu/c++/13/bits/basic_file.h \
  /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h \
  /usr/include/c++/13/bits/fstream.tcc \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp \
- /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp \
+ /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp

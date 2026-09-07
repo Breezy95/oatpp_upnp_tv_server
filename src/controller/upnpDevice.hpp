@@ -91,6 +91,30 @@ inline DlnaHeaders pickAudioDlnaHeaders(AudioKind codec,
     return h;
 }
 
+inline DlnaHeaders pickVideoDlnaHeaders(const std::string &filePath)
+{
+    DlnaHeaders h;
+    const auto normalized = toLower(filePath);
+
+    if (normalized.find(".mp4") != std::string::npos ||
+        normalized.find(".m4v") != std::string::npos ||
+        normalized.find(".mkv") != std::string::npos ||
+        normalized.find(".avi") != std::string::npos)
+    {
+        h.contentType = "video/mp4";
+        h.contentFeatures =
+            "DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;"
+            "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+        return h;
+    }
+
+    h.contentType = "video/mpeg";
+    h.contentFeatures =
+        "DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;"
+        "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+    return h;
+}
+
 void parseDeviceForSCPDs(IXML_Document *deviceMainXML,
                          std::vector<std::string> &scpd_urls,
                          const std::string &baseUrl);
@@ -499,7 +523,9 @@ public:
         auto headers = outResp->getHeaders();
         for (auto &pair : headers.getAll())
         {
-            OATPP_LOGI("REQUEST_HEADERS", "%s: %s", pair.first.toString(), pair.second.toString());
+            const auto key = pair.first.toString();
+            const auto value = pair.second.toString();
+            OATPP_LOGI("REQUEST_HEADERS", "%s: %s", key->c_str(), value->c_str());
         }
         return outResp;
     }
@@ -521,11 +547,11 @@ public:
         file.close();
 
         auto response = ResponseFactory::createResponse(Status::CODE_200, fileContent);
-        response->putHeader("Content-Type", "audio/wav");
-        response->putHeader("ContentFeatures.DLNA.ORG", "DLNA.ORG_PN=LPCM;DLNA.ORG_FLAGS=ED100000000000000000000000000000");
+        const auto headers = pickVideoDlnaHeaders(filePath);
+        response->putHeader("Content-Type", headers.contentType.c_str());
+        response->putHeader("ContentFeatures.DLNA.ORG", headers.contentFeatures.c_str());
         response->putHeader("Scid.DLNA.ORG", "839080694");
         response->putHeader("TransferMode.DLNA.ORG", "Streaming");
-        // response->putHeader("Content-Length", "463500");
         response->putHeader("Connection", "Keep-Alive");
         return response;
     }
@@ -537,7 +563,9 @@ public:
         auto headers = outResp->getHeaders();
         for (auto &pair : headers.getAll())
         {
-            OATPP_LOGI("REQUEST_HEADERS", "%s: %s", pair.first.toString(), pair.second.toString());
+            const auto key = pair.first.toString();
+            const auto value = pair.second.toString();
+            OATPP_LOGI("REQUEST_HEADERS", "%s: %s", key->c_str(), value->c_str());
         }
         return outResp;
     }

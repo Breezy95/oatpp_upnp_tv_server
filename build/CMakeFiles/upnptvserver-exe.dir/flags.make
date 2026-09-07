@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/c++
 CXX_DEFINES = -DEXAMPLE_MEDIA_FOLDER=\"/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/video\" -DSERVER_ADDRESS=\"http://192.168.0.212:8000\"
 
-CXX_INCLUDES = -I/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src -isystem /usr/include/gupnp-av-1.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/x86_64-linux-gnu/glib-2.0/include -isystem /usr/include/libxml2 -isystem /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp -isystem /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp-ssdp -isystem /usr/include/upnp -isystem /usr/include/gupnp-dlna-2.0
+CXX_INCLUDES = -I/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src -isystem /usr/include/gupnp-av-1.0 -isystem /usr/include/glib-2.0 -isystem /usr/lib/x86_64-linux-gnu/glib-2.0/include -isystem /usr/include/libxml2 -isystem /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp -isystem /tmp/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp-ssdp -isystem /usr/include/upnp -isystem /usr/include/gupnp-dlna-2.0
 
 CXX_FLAGS = -g -std=c++17 -pthread
 

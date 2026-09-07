@@ -751,9 +751,6 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/Scrt1.o \
   /usr/lib/x86_64-linux-gnu/crti.o \
   /usr/lib/x86_64-linux-gnu/crtn.o \
-  /usr/lib/x86_64-linux-gnu/libavcodec.so \
-  /usr/lib/x86_64-linux-gnu/libavformat.so \
-  /usr/lib/x86_64-linux-gnu/libavutil.so \
   /usr/lib/x86_64-linux-gnu/libc.so \
   /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 \
   /usr/lib/x86_64-linux-gnu/libm.so \
@@ -763,6 +760,9 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
+  /usr/lib/x86_64-linux-gnu/libavcodec.so \
+  /usr/lib/x86_64-linux-gnu/libavformat.so \
+  /usr/lib/x86_64-linux-gnu/libavutil.so \
   /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
   /usr/lib/x86_64-linux-gnu/libglib-2.0.so \
   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so \
@@ -793,9 +793,9 @@ libupnptvserver-lib.a:
 
 /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
-
 /usr/lib/x86_64-linux-gnu/libavutil.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 
 /usr/lib/x86_64-linux-gnu/crtn.o:
 

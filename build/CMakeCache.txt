@@ -142,7 +142,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //No help, variable specified on the command line.
-CMAKE_PREFIX_PATH:UNINITIALIZED=/usr/local/share/vcpkg/installed/x64-linux
+CMAKE_PREFIX_PATH:UNINITIALIZED=/tmp/vcpkg/installed/x64-linux
 
 //Value Computed by CMake
 CMAKE_PROJECT_DESCRIPTION:STATIC=
@@ -256,10 +256,10 @@ PKG_CONFIG_USE_CMAKE_PREFIX_PATH:UNINITIALIZED=ON
 VCPKG_TARGET_TRIPLET:UNINITIALIZED=x64-linux
 
 //The directory containing a CMake configuration file for oatpp-ssdp.
-oatpp-ssdp_DIR:PATH=/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp
+oatpp-ssdp_DIR:PATH=/tmp/vcpkg/installed/x64-linux/share/oatpp-ssdp
 
 //The directory containing a CMake configuration file for oatpp.
-oatpp_DIR:PATH=/usr/local/share/vcpkg/installed/x64-linux/share/oatpp
+oatpp_DIR:PATH=/tmp/vcpkg/installed/x64-linux/share/oatpp
 
 //Path to a library.
 pkgcfg_lib_FFM_LIBAVCODEC_avcodec:FILEPATH=/usr/lib/x86_64-linux-gnu/libavcodec.so
