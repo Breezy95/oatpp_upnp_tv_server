@@ -63,6 +63,14 @@ void testUpnpClientCallbackParsing() {
  OATPP_ASSERT(discovered.port == 8000);
  OATPP_ASSERT(discovered.deviceType == "urn:schemas-upnp-org:device:MediaRenderer:1");
  OATPP_ASSERT(discovered.serviceType == "urn:schemas-upnp-org:service:AVTransport:1");
+ OATPP_ASSERT(discovered.serviceTypes.size() == 1);
+
+ const auto contentDirectory = UpnpClient::parseDiscoveredDevice(
+     "uuid:demo-content", "http://192.168.0.42:8000/description.xml",
+     "urn:schemas-upnp-org:device:MediaServer:1",
+     "urn:schemas-upnp-org:service:ContentDirectory:1");
+ OATPP_ASSERT(contentDirectory.serviceType == "urn:schemas-upnp-org:service:ContentDirectory:1");
+ OATPP_ASSERT(contentDirectory.serviceTypes.front() == "urn:schemas-upnp-org:service:ContentDirectory:1");
 
  const auto audioDidl = generateDidlLite("media/audio/song.mp3", "http://192.168.0.212:8000/media/audio/song.mp3");
  OATPP_ASSERT(audioDidl.find("object.item.audioItem") != std::string::npos);
@@ -71,6 +79,11 @@ void testUpnpClientCallbackParsing() {
  const auto videoDidl = generateVideoDidlLite("media/video/movie.mp4", "http://192.168.0.212:8000/media/video/movie.mp4");
  OATPP_ASSERT(videoDidl.find("object.item.videoItem") != std::string::npos);
  OATPP_ASSERT(videoDidl.find("http://192.168.0.212:8000/media/video/movie.mp4") != std::string::npos);
+
+ const auto browse = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://192.168.0.212:8000/stream/live/desktop.m3u8", "video");
+ OATPP_ASSERT(browse.find("BrowseResponse") != std::string::npos);
+ OATPP_ASSERT(browse.find("Desktop Stream") != std::string::npos);
+ OATPP_ASSERT(browse.find("http://192.168.0.212:8000/stream/live/desktop.m3u8") != std::string::npos);
 
  UpnpClient client(0, false);
  OATPP_ASSERT(UpnpClient::callback(UPNP_DISCOVERY_SEARCH_TIMEOUT, nullptr, &client) == 0);
@@ -137,6 +150,9 @@ void MyControllerTest::onRun() {
  testDlnaFileDetectionAndHeaders();
  testLiveStreamMetadata();
  testUpnpClientCallbackParsing();
+ const auto contentDirectory = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://127.0.0.1:8000/stream/live/desktop.m3u8", "video");
+ OATPP_ASSERT(contentDirectory.find("DIDL-Lite") != std::string::npos);
+ OATPP_ASSERT(contentDirectory.find("object.item.videoItem") != std::string::npos);
 
  //Test getting an scpd from tv
 

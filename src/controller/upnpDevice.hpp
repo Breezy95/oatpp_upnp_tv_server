@@ -8,6 +8,7 @@
 #include <string>
 #include <algorithm>
 #include <cctype>
+#include <sstream>
 #include <upnp/upnp.h>
 #include <upnp/upnptools.h>
 #include <iostream>
@@ -93,6 +94,175 @@ inline DlnaHeaders pickAudioDlnaHeaders(AudioKind codec,
 void parseDeviceForSCPDs(IXML_Document *deviceMainXML,
                          std::vector<std::string> &scpd_urls,
                          const std::string &baseUrl);
+
+inline std::string xmlEscape(const std::string &value)
+{
+    std::string result;
+    result.reserve(value.size());
+    for (char ch : value)
+    {
+        switch (ch)
+        {
+            case '&': result += "&amp;"; break;
+            case '<': result += "&lt;"; break;
+            case '>': result += "&gt;"; break;
+            case '"': result += "&quot;"; break;
+            case '\'': result += "&apos;"; break;
+            default: result += ch; break;
+        }
+    }
+    return result;
+}
+
+inline std::string buildContentDirectoryDIDL(const std::string &objectId,
+                                           const std::string &title,
+                                           const std::string &streamUrl,
+                                           const std::string &mediaType)
+{
+    const std::string normalizedType = toLower(mediaType);
+    const bool isAudio = normalizedType == "audio" || normalizedType == "mp3" || normalizedType == "wav" || normalizedType == "pcm";
+    const std::string itemClass = isAudio ? "object.item.audioItem" : "object.item.videoItem";
+    const std::string protocolInfo = isAudio
+        ? "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000"
+        : "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+    const std::string resolvedObjectId = objectId.empty() ? "0" : objectId;
+
+    std::ostringstream oss;
+    oss << "<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"" << xmlEscape(resolvedObjectId) << "\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << xmlEscape(title.empty() ? (isAudio ? "Audio stream" : "Video stream") : title) << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
+        << ">" << xmlEscape(streamUrl) << "</res>"
+        << "<upnp:class>" << itemClass << "</upnp:class>"
+        << "</item></DIDL-Lite>";
+    return oss.str();
+}
+
+inline std::string buildContentDirectoryBrowseResponse(const std::string &objectId,
+                                                    const std::string &title,
+                                                    const std::string &streamUrl,
+                                                    const std::string &mediaType)
+{
+    const std::string result = buildContentDirectoryDIDL(objectId, title, streamUrl, mediaType);
+    std::ostringstream oss;
+    oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+        << "<s:Body><u:BrowseResponse xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
+        << "<Result>" << xmlEscape(result) << "</Result>"
+        << "<NumberReturned>1</NumberReturned>"
+        << "<TotalMatches>1</TotalMatches>"
+        << "<UpdateID>0</UpdateID>"
+        << "</u:BrowseResponse></s:Body></s:Envelope>";
+    return oss.str();
+}
+
+inline std::string buildContentDirectoryActionResponse(const std::string &actionName,
+                                                    const std::string &payload)
+{
+    std::ostringstream oss;
+    oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+        << "<s:Body><u:" << actionName << "Response xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
+        << payload
+        << "</u:" << actionName << "Response></s:Body></s:Envelope>";
+    return oss.str();
+}
+
+inline std::string contentDirectoryProfileXml()
+{
+    return R"(<?xml version="1.0" encoding="utf-8"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion><major>1</major><minor>0</minor></specVersion>
+  <actionList>
+    <action>
+      <name>Browse</name>
+      <argumentList>
+        <argument><name>ObjectID</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_ObjectID</relatedStateVariable></argument>
+        <argument><name>BrowseFlag</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_BrowseFlag</relatedStateVariable></argument>
+        <argument><name>Filter</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_Filter</relatedStateVariable></argument>
+        <argument><name>StartingIndex</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_Index</relatedStateVariable></argument>
+        <argument><name>RequestedCount</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_Count</relatedStateVariable></argument>
+        <argument><name>SortCriteria</name><direction>in</direction><relatedStateVariable>A_ARG_TYPE_SortCriteria</relatedStateVariable></argument>
+        <argument><name>Result</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_Result</relatedStateVariable></argument>
+        <argument><name>NumberReturned</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_Count</relatedStateVariable></argument>
+        <argument><name>TotalMatches</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_Count</relatedStateVariable></argument>
+        <argument><name>UpdateID</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_UpdateID</relatedStateVariable></argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetSystemUpdateID</name>
+      <argumentList><argument><name>Id</name><direction>out</direction><relatedStateVariable>SystemUpdateID</relatedStateVariable></argument></argumentList>
+    </action>
+  </actionList>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes"><name>SystemUpdateID</name><dataType>ui4</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>SearchCapabilities</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>SortCapabilities</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_ObjectID</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_BrowseFlag</name><dataType>string</dataType><allowedValueList><allowedValue>BrowseMetadata</allowedValue><allowedValue>BrowseDirectChildren</allowedValue></allowedValueList></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_Filter</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_Index</name><dataType>ui4</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_Count</name><dataType>ui4</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_SortCriteria</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_Result</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="no"><name>A_ARG_TYPE_UpdateID</name><dataType>ui4</dataType></stateVariable>
+  </serviceStateTable>
+</scpd>)";
+}
+
+inline std::string descriptionProfileXml()
+{
+    return R"(<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion><major>1</major><minor>0</minor></specVersion>
+  <device>
+    <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>
+    <friendlyName>Oat++ UPnP TV Server</friendlyName>
+    <manufacturer>Oat++ UPnP TV Server</manufacturer>
+    <manufacturerURL>https://github.com/Breezy95/oatpp_upnp_tv_server</manufacturerURL>
+    <modelDescription>UPnP/DLNA media server</modelDescription>
+    <modelName>OatppUpnpTvServer</modelName>
+    <modelNumber>1</modelNumber>
+    <serialNumber>1000000471337</serialNumber>
+    <UDN>uuid:2f402f80-da50-11e1-9b23-be5a0a70cafe</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-upnp-org:service:ContentDirectory:1</serviceType>
+        <serviceId>urn:upnp-org:serviceId:ContentDirectory</serviceId>
+        <SCPDURL>/profiles/contentdirectory.xml</SCPDURL>
+        <controlURL>/upnp/services/content-directory/control</controlURL>
+        <eventSubURL>/upnp/services/content-directory/events</eventSubURL>
+      </service>
+      <service>
+        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
+        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+        <SCPDURL>/profiles/connectionmanager.xml</SCPDURL>
+        <controlURL>/upnp/services/connection-manager/control</controlURL>
+        <eventSubURL>/upnp/services/connection-manager/events</eventSubURL>
+      </service>
+    </serviceList>
+  </device>
+</root>)";
+}
+
+inline std::string connectionManagerProfileXml()
+{
+    return R"(<?xml version="1.0" encoding="utf-8"?>
+<scpd xmlns="urn:schemas-upnp-org:service-1-0">
+  <specVersion><major>1</major><minor>0</minor></specVersion>
+  <actionList>
+    <action><name>GetProtocolInfo</name><argumentList>
+      <argument><name>Source</name><direction>out</direction><relatedStateVariable>SourceProtocolInfo</relatedStateVariable></argument>
+      <argument><name>Sink</name><direction>out</direction><relatedStateVariable>SinkProtocolInfo</relatedStateVariable></argument>
+    </argumentList></action>
+  </actionList>
+  <serviceStateTable>
+    <stateVariable sendEvents="yes"><name>SourceProtocolInfo</name><dataType>string</dataType></stateVariable>
+    <stateVariable sendEvents="yes"><name>SinkProtocolInfo</name><dataType>string</dataType><defaultValue>http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000,http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000</defaultValue></stateVariable>
+  </serviceStateTable>
+</scpd>)";
+}
 
 class upnpController : public oatpp::web::server::api::ApiController
 {
@@ -181,6 +351,73 @@ public:
 
         m_upnp->updateXml(msg->c_str(), xmlStr);
         return createResponse(Status::CODE_200, xmlStr);
+    }
+
+    ENDPOINT("GET", "/description.xml", descriptionXml)
+    {
+        return createResponse(Status::CODE_200, descriptionProfileXml());
+    }
+
+    ENDPOINT("GET", "/profiles/{profileName}", profileXml, PATH(String, profileName))
+    {
+        const std::string name = profileName->c_str();
+        if (name == "description.xml")
+            return createResponse(Status::CODE_200, descriptionProfileXml());
+        if (name == "contentdirectory.xml")
+            return createResponse(Status::CODE_200, contentDirectoryProfileXml());
+        if (name == "connectionmanager.xml")
+            return createResponse(Status::CODE_200, connectionManagerProfileXml());
+        return createResponse(Status::CODE_404, "Profile not found");
+    }
+
+    ENDPOINT("GET", "/stream/live/{streamName}", liveStream, PATH(String, streamName))
+    {
+        const std::string resourceName = streamName->c_str();
+        const std::string host = m_desc && m_desc->ipPort ? std::string(m_desc->ipPort->c_str()) : std::string("127.0.0.1:8000");
+        const std::string streamUrl = std::string("http://") + host + "/media/video/" + resourceName + ".mp4";
+        std::ostringstream playlist;
+        playlist << "#EXTM3U\n#EXT-X-VERSION:3\n#EXTINF:0,"
+                 << (resourceName.empty() ? "desktop" : resourceName)
+                 << "\n"
+                 << streamUrl
+                 << "\n";
+        auto response = createResponse(Status::CODE_200, playlist.str());
+        response->putHeader("Content-Type", "application/vnd.apple.mpegurl");
+        response->putHeader("Cache-Control", "no-cache");
+        return response;
+    }
+
+    ENDPOINT("POST", "/upnp/services/content-directory/control", contentDirectoryControl, BODY_STRING(String, body))
+    {
+        const std::string soapBody = body;
+        const std::string actionName = soapBody.find("GetSystemUpdateID") != std::string::npos ? "GetSystemUpdateID"
+            : soapBody.find("GetSearchCapabilities") != std::string::npos ? "GetSearchCapabilities"
+            : soapBody.find("GetSortCapabilities") != std::string::npos ? "GetSortCapabilities"
+            : "Browse";
+
+        std::string responseBody;
+        const std::string host = m_desc && m_desc->ipPort ? std::string(m_desc->ipPort->c_str()) : std::string("127.0.0.1:8000");
+        if (actionName == "Browse")
+        {
+            std::string title = "Desktop Stream";
+            std::string mediaType = "video";
+            std::string streamUrl = std::string("http://") + host + "/stream/live/desktop.m3u8";
+            responseBody = buildContentDirectoryBrowseResponse("0", title, streamUrl, mediaType);
+        }
+        else if (actionName == "GetSystemUpdateID")
+        {
+            responseBody = buildContentDirectoryActionResponse(actionName, "<Id>0</Id>");
+        }
+        else if (actionName == "GetSearchCapabilities")
+        {
+            responseBody = buildContentDirectoryActionResponse(actionName, "<SearchCaps></SearchCaps>");
+        }
+        else if (actionName == "GetSortCapabilities")
+        {
+            responseBody = buildContentDirectoryActionResponse(actionName, "<SortCaps></SortCaps>");
+        }
+
+        return createResponse(Status::CODE_200, responseBody);
     }
 
     // try with a simple volume change

@@ -9,6 +9,25 @@
 
 namespace {
 
+std::string xmlEscape(const std::string &value)
+{
+    std::string result;
+    result.reserve(value.size());
+    for (char ch : value)
+    {
+        switch (ch)
+        {
+            case '&': result += "&amp;"; break;
+            case '<': result += "&lt;"; break;
+            case '>': result += "&gt;"; break;
+            case '"': result += "&quot;"; break;
+            case '\'': result += "&apos;"; break;
+            default: result += ch; break;
+        }
+    }
+    return result;
+}
+
 std::string toLower(std::string value)
 {
     std::transform(value.begin(), value.end(), value.begin(), [](unsigned char ch) {
@@ -551,9 +570,10 @@ std::string generateDidlLite(
 {
     const std::string title = fileStem(filePath);
     const std::string mime = toDlnaMime(filePath);
+    const std::string pn = mime == "audio/L16" ? "LPCM" : "MP3";
     const std::string protocolInfo =
         "http-get:*:" + mime +
-        ":DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+        ":DLNA.ORG_PN=" + pn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     std::ostringstream didl;
     didl
@@ -562,12 +582,12 @@ std::string generateDidlLite(
         << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
         << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
         << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
-        << "<dc:title>" << title << "</dc:title>"
+        << "<dc:title>" << xmlEscape(title) << "</dc:title>"
         << "<res protocolInfo=\"" << protocolInfo << "\" "
         << "sampleFrequency=\"44100\" "
         << "nrAudioChannels=\"2\" "
         << "bitrate=\"320000\">"
-        << streamUrl
+        << xmlEscape(streamUrl)
         << "</res>"
         << "<upnp:class>object.item.audioItem</upnp:class>"
         << "</item>"
@@ -596,11 +616,11 @@ std::string generateVideoDidlLite(
         << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
         << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
         << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
-        << "<dc:title>" << title << "</dc:title>"
+        << "<dc:title>" << xmlEscape(title) << "</dc:title>"
         << "<res protocolInfo=\"" << protocolInfo << "\" "
         << "resolution=\"1280x720\" "
         << "bitrate=\"4500000\">"
-        << streamUrl
+        << xmlEscape(streamUrl)
         << "</res>"
         << "<upnp:class>object.item.videoItem</upnp:class>"
         << "</item>"
@@ -621,9 +641,10 @@ std::string generateStreamDidlLite(
     const std::string resolvedMime = mimeType.empty()
         ? (isAudio ? "audio/mpeg" : "video/mp4")
         : mimeType;
+    const std::string dlnaPn = isAudio ? (resolvedMime == "audio/L16" ? "LPCM" : "MP3") : "AVC_MP4_BL_L3L_SD_AAC";
     const std::string protocolInfo = isAudio
-        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000"
-        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
+        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=" + dlnaPn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000"
+        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=" + dlnaPn + ";DLNA.ORG_FLAGS=ED100000000000000000000000000000";
 
     std::ostringstream didl;
     didl
@@ -632,11 +653,11 @@ std::string generateStreamDidlLite(
         << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
         << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
         << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
-        << "<dc:title>" << resolvedTitle << "</dc:title>"
+        << "<dc:title>" << xmlEscape(resolvedTitle) << "</dc:title>"
         << "<res protocolInfo=\"" << protocolInfo << "\" "
         << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
         << ">"
-        << streamUrl
+        << xmlEscape(streamUrl)
         << "</res>"
         << "<upnp:class>object.item." << (isAudio ? "audioItem" : "videoItem") << "</upnp:class>"
         << "</item>"

@@ -1,5 +1,6 @@
 #include "UpnpClient.hpp"
 
+#include <algorithm>
 #include <regex>
 #include <stdexcept>
 
@@ -85,7 +86,10 @@ deviceInfo UpnpClient::parseDiscoveredDevice(const std::string &deviceId,
     if (deviceType)
         info.deviceType = deviceType;
     if (serviceType)
+    {
         info.serviceType = serviceType;
+        info.serviceTypes.push_back(serviceType);
+    }
 
     const auto [host, port] = parseLocationHostAndPort(location);
     if (!host.empty())
@@ -139,5 +143,26 @@ void UpnpClient::handleDiscoveryEvent(Upnp_EventType eventType, const UpnpDiscov
         UpnpDiscovery_get_ServiceType_cstr(event));
 
     std::lock_guard<std::mutex> lock(m_mutex);
+    auto it = m_devices.find(key);
+    if (it != m_devices.end())
+    {
+        if (!info.serviceType.empty())
+        {
+            auto &serviceTypes = it->second.serviceTypes;
+            if (std::find(serviceTypes.begin(), serviceTypes.end(), info.serviceType) == serviceTypes.end())
+                serviceTypes.push_back(info.serviceType);
+            it->second.serviceType = info.serviceType;
+        }
+        if (!info.locationUrl.empty())
+            it->second.locationUrl = info.locationUrl;
+        if (!info.deviceType.empty())
+            it->second.deviceType = info.deviceType;
+        if (!info.ipAddr.empty())
+            it->second.ipAddr = info.ipAddr;
+        if (info.port != 0)
+            it->second.port = info.port;
+        return;
+    }
+
     m_devices[key] = std::move(info);
 }

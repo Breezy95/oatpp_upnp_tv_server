@@ -22,6 +22,7 @@ struct deviceInfo
     uint16_t port = 0;
     std::string locationUrl;
     std::vector<std::string> scpd_urls;
+    std::vector<std::string> serviceTypes;
     std::string xmlString;
 };
 

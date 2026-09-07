@@ -148,6 +148,7 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o: /home/runner/work/oa
   /usr/include/c++/13/clocale \
   /usr/include/c++/13/compare \
   /usr/include/c++/13/condition_variable \
+  /usr/include/c++/13/cstdarg \
   /usr/include/c++/13/cstddef \
   /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
@@ -389,114 +390,115 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o: /home/runner/work/oa
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp-test/web/ClientServerTestRunner.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_undef.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/CoroutineWaitList.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Processor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/FIFOBuffer.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/StringTemplate.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/StreamBufferedProxy.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Pool.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/encoding/Base64.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionPool.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionProvider.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/Server.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Interface.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Pipe.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Socket.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/client/ConnectionProvider.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/server/ConnectionProvider.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/ApiClient.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/HttpRequestExecutor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/RequestExecutor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/RetryPolicy.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/ProviderCollection.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/RequestHeadersReader.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/SimpleBodyDecoder.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/BufferBody.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/utils/CommunicationUtils.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpProcessor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/RequestInterceptor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/ResponseInterceptor.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Router.hpp
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp-test/web/ClientServerTestRunner.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_undef.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/CoroutineWaitList.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Processor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Compiler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/FIFOBuffer.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/StringTemplate.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/StreamBufferedProxy.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Pool.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/encoding/Base64.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionPool.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionProvider.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Server.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Interface.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Pipe.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Socket.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/client/ConnectionProvider.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/server/ConnectionProvider.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/ApiClient.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/HttpRequestExecutor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/RequestExecutor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/RetryPolicy.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/ProviderCollection.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/RequestHeadersReader.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/SimpleBodyDecoder.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/BufferBody.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/utils/CommunicationUtils.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpProcessor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/RequestInterceptor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/ResponseInterceptor.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Router.hpp
 
 CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o: /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/test/tests.cpp \
   /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/test/TestController.hpp \
@@ -595,6 +597,7 @@ CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o: /home/runner/work/oatpp_upnp_
   /usr/include/c++/13/cerrno \
   /usr/include/c++/13/clocale \
   /usr/include/c++/13/compare \
+  /usr/include/c++/13/cstdarg \
   /usr/include/c++/13/cstddef \
   /usr/include/c++/13/cstdint \
   /usr/include/c++/13/cstdio \
@@ -735,10 +738,11 @@ CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o: /home/runner/work/oatpp_upnp_
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h \
   /usr/lib/gcc/x86_64-linux-gnu/13/include/stdint.h \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
-  /usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Compiler.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp \
+  /usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp
 
 upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /lib/x86_64-linux-gnu/libm.so.6 \
@@ -747,6 +751,9 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/Scrt1.o \
   /usr/lib/x86_64-linux-gnu/crti.o \
   /usr/lib/x86_64-linux-gnu/crtn.o \
+  /usr/lib/x86_64-linux-gnu/libavcodec.so \
+  /usr/lib/x86_64-linux-gnu/libavformat.so \
+  /usr/lib/x86_64-linux-gnu/libavutil.so \
   /usr/lib/x86_64-linux-gnu/libc.so \
   /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 \
   /usr/lib/x86_64-linux-gnu/libm.so \
@@ -756,9 +763,6 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a \
   /usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so \
   /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so \
-  /usr/lib/x86_64-linux-gnu/libavcodec.so \
-  /usr/lib/x86_64-linux-gnu/libavformat.so \
-  /usr/lib/x86_64-linux-gnu/libavutil.so \
   /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
   /usr/lib/x86_64-linux-gnu/libglib-2.0.so \
   /usr/lib/x86_64-linux-gnu/libgobject-2.0.so \
@@ -767,9 +771,9 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
   /usr/lib/x86_64-linux-gnu/libixml.so \
   /usr/lib/x86_64-linux-gnu/libupnp.so \
   /usr/lib/x86_64-linux-gnu/libxml2.so \
-  /usr/local/lib/oatpp-1.3.0/liboatpp-test.a \
-  /usr/local/lib/oatpp-1.3.0/liboatpp.a \
   /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a \
+  /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a \
+  /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a \
   CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o \
   CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o \
   libupnptvserver-lib.a
@@ -777,9 +781,9 @@ upnptvserver-test: /lib/x86_64-linux-gnu/libc.so.6 \
 
 libupnptvserver-lib.a:
 
-/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a:
+/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a:
 
-/usr/local/lib/oatpp-1.3.0/liboatpp.a:
+/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a:
 
 /usr/lib/x86_64-linux-gnu/libxml2.so:
 
@@ -789,11 +793,9 @@ libupnptvserver-lib.a:
 
 /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so:
 
-/usr/lib/x86_64-linux-gnu/libavcodec.so:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/libstdc++.so:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o:
+/usr/lib/x86_64-linux-gnu/libavutil.so:
 
 /usr/lib/x86_64-linux-gnu/crtn.o:
 
@@ -801,157 +803,139 @@ libupnptvserver-lib.a:
 
 /usr/lib/x86_64-linux-gnu/Scrt1.o:
 
-/lib64/ld-linux-x86-64.so.2:
+/lib/x86_64-linux-gnu/libmvec.so.1:
 
 /lib/x86_64-linux-gnu/libc.so.6:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/RequestInterceptor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Router.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/ErrorHandler.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/Endpoint.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpProcessor.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/SimpleBodyDecoder.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp:
 
-/lib/x86_64-linux-gnu/libmvec.so.1:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/RequestHeadersReader.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/ProviderCollection.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Request.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/utils/CommunicationUtils.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/Http.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/RetryPolicy.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/ApiClient.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/HttpRequestExecutor.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/server/ConnectionProvider.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Utils.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Pipe.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/client/ConnectionProvider.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Socket.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/Server.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Pipe.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionProvider.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Pool.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/StringTemplate.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp:
-
-/usr/lib/x86_64-linux-gnu/libavutil.so:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Interface.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libgcc_s.so:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Server.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionProvider.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionHandler.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/String.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/utils/ConversionUtils.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/FIFOBuffer.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Provider.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Pool.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Processor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/ParsingError.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/CoroutineWaitList.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/parser/Caret.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/codegen.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/StreamBufferedProxy.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/Stream.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp:
+/usr/lib/gcc/x86_64-linux-gnu/13/crtendS.o:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpProcessor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/MemoryLabel.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Vector.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedMap.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Collection.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/ResponseInterceptor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/ObjectMapper.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Deserializer.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_undef.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/FIFOBuffer.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_define.hpp:
+/lib64/ld-linux-x86-64.so.2:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/utils/FastQueue.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/IODefinitions.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_undef.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/enum_define.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp:
+
+/usr/lib/x86_64-linux-gnu/libavcodec.so:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_undef.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp-test/web/ClientServerTestRunner.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp-test/UnitTest.hpp:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/include/stdarg.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp:
-
 /usr/lib/gcc/x86_64-linux-gnu/13/include/limits.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_undef.hpp:
 
 /usr/include/x86_64-linux-gnu/sys/ucontext.h:
 
@@ -963,15 +947,11 @@ libupnptvserver-lib.a:
 
 /usr/include/x86_64-linux-gnu/sys/cdefs.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Environment.hpp:
-
 /usr/include/x86_64-linux-gnu/gnu/stubs.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/messages_members.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/Config.hpp:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/error_constants.h:
 
@@ -988,6 +968,8 @@ libupnptvserver-lib.a:
 /usr/include/x86_64-linux-gnu/bits/xopen_lim.h:
 
 /usr/include/x86_64-linux-gnu/bits/wordsize.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/StringTemplate.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/wctype-wchar.h:
 
@@ -1013,21 +995,21 @@ libupnptvserver-lib.a:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/tcp/Connection.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_itimerspec.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Type.hpp:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/gthr.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct___jmp_buf_tag.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp-test/web/ClientServerTestRunner.hpp:
-
 /usr/include/c++/13/ext/concurrence.h:
 
 /usr/include/c++/13/bits/hashtable.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRouter.hpp:
 
 /usr/include/c++/13/debug/debug.h:
 
@@ -1035,11 +1017,15 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/cwctype:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/UnorderedSet.hpp:
+
 /usr/include/c++/13/bits/postypes.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp:
 
 /usr/include/c++/13/cstring:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/RequestExecutor.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/CoroutineWaitList.hpp:
 
 /usr/include/asm-generic/bitsperlong.h:
 
@@ -1051,7 +1037,11 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/bits/locale_classes.tcc:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Compiler.hpp:
+
 /usr/include/c++/13/iterator:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp:
 
 /usr/include/c++/13/bits/vector.tcc:
 
@@ -1062,6 +1052,8 @@ libupnptvserver-lib.a:
 /usr/include/c++/13/bits/stringfwd.h:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/RequestInterceptor.hpp:
 
 /usr/include/c++/13/bits/streambuf.tcc:
 
@@ -1085,6 +1077,8 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/ext/atomicity.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Request.hpp:
+
 /usr/include/c++/13/bits/stl_list.h:
 
 /usr/include/x86_64-linux-gnu/bits/waitstatus.h:
@@ -1096,8 +1090,6 @@ libupnptvserver-lib.a:
 /usr/include/c++/13/bits/string_view.tcc:
 
 /usr/include/c++/13/bits/localefwd.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/Serializer.hpp:
 
 /usr/include/c++/13/bits/stl_function.h:
 
@@ -1114,6 +1106,10 @@ libupnptvserver-lib.a:
 /usr/include/c++/13/bits/stl_construct.h:
 
 /usr/include/c++/13/bits/regex_executor.h:
+
+/usr/include/c++/13/cstdarg:
+
+/usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/c++/13/bits/stl_heap.h:
 
@@ -1133,8 +1129,6 @@ libupnptvserver-lib.a:
 
 /usr/lib/x86_64-linux-gnu/libavformat.so:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionPool.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/types/struct_FILE.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__sigset_t.h:
@@ -1151,15 +1145,11 @@ libupnptvserver-lib.a:
 
 /usr/include/x86_64-linux-gnu/bits/stdlib-float.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_undef.hpp:
+
 /usr/include/c++/13/bits/shared_ptr_atomic.h:
 
 /usr/include/c++/13/bits/concept_check.h:
-
-/usr/include/c++/13/exception:
-
-/usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
-
-/usr/include/c++/13/ext/type_traits.h:
 
 /usr/include/c++/13/bits/shared_ptr.h:
 
@@ -1217,11 +1207,13 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/backward/auto_ptr.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++io.h:
 
 /usr/include/c++/13/bits/regex.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/encoding/Base64.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/base_define.hpp:
 
 /usr/include/c++/13/condition_variable:
 
@@ -1231,11 +1223,13 @@ libupnptvserver-lib.a:
 
 /usr/include/upnp/upnpconfig.h:
 
-/usr/local/lib/oatpp-1.3.0/liboatpp-test.a:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Primitive.hpp:
 
 /usr/include/c++/13/bits/ptr_traits.h:
 
 /usr/include/c++/13/bits/istream.tcc:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/mapping/ObjectMapper.hpp:
 
 /usr/include/c++/13/cerrno:
 
@@ -1247,27 +1241,29 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/bits/locale_conv.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/Countable.hpp:
+
 /usr/include/c++/13/set:
 
 /usr/include/x86_64-linux-gnu/bits/sigthread.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/sigval_t.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpConnectionHandler.hpp:
-
 /usr/include/c++/13/bits/atomic_lockfree_defines.h:
 
 /usr/include/c++/13/bits/stl_relops.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp:
 
 /usr/include/c++/13/bits/atomic_base.h:
 
 /usr/lib/x86_64-linux-gnu/libupnp.so:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/ResponseFactory.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/atomic_wide_counter.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Socket.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/floatn-common.h:
 
@@ -1275,9 +1271,13 @@ libupnptvserver-lib.a:
 
 /usr/include/c++/13/bits/functexcept.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/ProviderCollection.hpp:
+
 /usr/include/c++/13/bits/unordered_set.h:
 
 /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src/ixmlfuncs.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/CommunicationError.hpp:
 
 /usr/include/c++/13/bits/locale_facets_nonio.tcc:
 
@@ -1286,8 +1286,6 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/stdlib.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/__fpos64_t.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Any.hpp:
 
 /usr/include/stdio.h:
 
@@ -1307,17 +1305,15 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/fstream.tcc:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/RetryPolicy.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/byteswap.h:
 
 /usr/include/c++/13/vector:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/client/HttpRequestExecutor.hpp:
-
 /usr/include/x86_64-linux-gnu/c++/13/bits/atomic_word.h:
 
 /usr/include/c++/13/array:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/BufferStream.hpp:
 
 /usr/include/c++/13/bits/stl_set.h:
 
@@ -1331,15 +1327,11 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/basic_string.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Coroutine.hpp:
-
 /usr/include/c++/13/cctype:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
 
 /usr/include/asm-generic/errno-base.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/client/ConnectionProvider.hpp:
 
 /usr/include/c++/13/list:
 
@@ -1356,6 +1348,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/src/controller/upnpDevice.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/sigcontext.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/ApiClient.hpp:
 
 /usr/include/c++/13/bits/alloc_traits.h:
 
@@ -1381,6 +1375,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/std_function.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Processor.hpp:
+
 /usr/include/c++/13/ext/alloc_traits.h:
 
 /usr/include/asm-generic/socket.h:
@@ -1391,8 +1387,6 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/erase_if.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/auth_define.hpp:
-
 /usr/include/c++/13/cwchar:
 
 /usr/include/c++/13/regex:
@@ -1401,6 +1395,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/asm-generic/errno.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/Types.hpp:
+
 /usr/include/c++/13/bits/stl_raw_storage_iter.h:
 
 /usr/include/x86_64-linux-gnu/bits/posix2_lim.h:
@@ -1408,8 +1404,6 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/c++/13/bits/allocator.h:
 
 /usr/include/c++/13/functional:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/basic.hpp:
 
 /usr/include/asm-generic/param.h:
 
@@ -1421,7 +1415,11 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/cpp_type_traits.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/share/LazyStringMap.hpp:
+
 /usr/include/c++/13/bits/parse_numbers.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/encoding/EncoderProvider.hpp:
 
 /usr/include/c++/13/bits/cxxabi_forced.h:
 
@@ -1431,11 +1429,13 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/ostream:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Map.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp:
+
 /usr/include/upnp/upnptools.h:
 
 /usr/include/c++/13/bits/enable_special_members.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/Response.hpp:
 
 /usr/include/c++/13/bits/exception_ptr.h:
 
@@ -1443,23 +1443,15 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/bits/ios_base.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp:
-
 /usr/include/c++/13/bits/list.tcc:
 
 /usr/include/c++/13/bits/locale_facets.tcc:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/DTO_define.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiController_define.hpp:
 
 /usr/include/c++/13/bits/stl_iterator_base_types.h:
 
 /usr/include/c++/13/bits/stl_iterator.h:
 
 /usr/lib/gcc/x86_64-linux-gnu/13/libgcc.a:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp:
 
 /usr/include/c++/13/bits/memoryfwd.h:
 
@@ -1468,6 +1460,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/c++/13/bits/char_traits.h:
 
 /usr/include/c++/13/bits/move.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/base/ObjectHandle.hpp:
 
 /usr/include/c++/13/bits/stl_iterator_base_funcs.h:
 
@@ -1484,6 +1478,12 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/c++/13/bits/ostream_insert.h:
 
 /usr/include/upnp/UpnpUniStd.h:
+
+/usr/include/c++/13/exception:
+
+/usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
+
+/usr/include/c++/13/ext/type_traits.h:
 
 /usr/include/c++/13/initializer_list:
 
@@ -1503,21 +1503,21 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/istream:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Enum.hpp:
+
 /usr/include/c++/13/limits:
 
 /usr/include/x86_64-linux-gnu/bits/signal_ext.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/ApiClient_define.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/sched.h:
 
 /usr/include/c++/13/locale:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Router.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp:
-
 /usr/include/c++/13/map:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/Interface.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/utils/CommunicationUtils.hpp:
 
 /usr/include/c++/13/memory:
 
@@ -1529,6 +1529,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/pstl/execution_defs.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/BufferBody.hpp:
+
 /usr/include/c++/13/bits/stl_bvector.h:
 
 /usr/include/x86_64-linux-gnu/bits/sigstack.h:
@@ -1536,8 +1538,6 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/upnp/ixml.h:
 
 /usr/include/c++/13/pstl/glue_memory_defs.h:
-
-/usr/include/c++/13/pstl/pstl_config.h:
 
 /usr/include/c++/13/ratio:
 
@@ -1547,19 +1547,31 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/c++/13/stack:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/stream/StreamBufferedProxy.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/Processor.hpp:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/cors_define.hpp:
 
 /usr/include/alloca.h:
 
 /usr/include/c++/13/stdlib.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp:
+
 /usr/include/c++/13/streambuf:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/client/RequestExecutor.hpp:
 
 /usr/include/c++/13/string_view:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/SimpleBodyDecoder.hpp:
+
 /usr/include/c++/13/system_error:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/HttpRequestHandler.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/timesize.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/url/mapping/Pattern.hpp:
 
 /usr/include/c++/13/pstl/glue_algorithm_defs.h:
 
@@ -1591,25 +1603,27 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/ctype.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/codegen/dto/base_define.hpp:
+
 /usr/include/linux/errno.h:
 
 /usr/include/endian.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/PairList.hpp:
 
 /usr/include/features-time64.h:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-consts.h:
 
-/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Body.hpp:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/codegen/api_controller/bundle_define.hpp:
+/usr/include/x86_64-linux-gnu/bits/struct_mutex.h:
 
 /usr/include/limits.h:
 
 /usr/include/signal.h:
 
 /usr/include/linux/close_range.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/handler/AuthorizationHandler.hpp:
 
 /usr/include/linux/limits.h:
 
@@ -1625,7 +1639,7 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/linux/posix_types.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/BufferBody.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/parser/json/Beautifier.hpp:
 
 /usr/include/linux/stddef.h:
 
@@ -1635,25 +1649,17 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/netinet/in.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/RequestHeadersReader.hpp:
-
 /usr/include/sched.h:
 
 /usr/include/x86_64-linux-gnu/bits/in.h:
 
 /usr/include/stdint.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/encoding/Base64.hpp:
-
 /usr/include/strings.h:
 
 /usr/lib/x86_64-linux-gnu/libgobject-2.0.so:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/buffer/IOBuffer.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/sigaction.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/server/api/ApiController.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/stack_t.h:
 
@@ -1689,6 +1695,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/sigevent_t.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/web/server/interceptor/ResponseInterceptor.hpp:
+
 /usr/include/upnp/list.h:
 
 /usr/include/c++/13/bits/sstream.tcc:
@@ -1696,6 +1704,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/test/app/MyApiTestClient.hpp:
 
 /usr/include/upnp/upnp.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/ConnectionPool.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/clock_t.h:
 
@@ -1709,6 +1719,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/x86_64-linux-gnu/asm/param.h:
 
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/List.hpp:
+
 /usr/lib/gcc/x86_64-linux-gnu/13/include/syslimits.h:
 
 /usr/include/x86_64-linux-gnu/asm/posix_types.h:
@@ -1719,19 +1731,23 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/confname.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/cpu-set.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/mapping/type/Object.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/signum-arch.h:
 
 /usr/include/x86_64-linux-gnu/bits/stdint-least.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/data/Bundle.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/endian.h:
 
 /usr/include/x86_64-linux-gnu/bits/endianness.h:
 
 /usr/include/x86_64-linux-gnu/bits/floatn.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/virtual_/server/ConnectionProvider.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/pthread_stack_min-dynamic.h:
 
@@ -1742,6 +1758,8 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/libc-header-start.h:
 
 /usr/include/x86_64-linux-gnu/bits/local_lim.h:
+
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/long-double.h:
 
@@ -1759,8 +1777,6 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/types/clockid_t.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/macro/component.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/posix_opt.h:
 
 /usr/include/c++/13/bits/stl_vector.h:
@@ -1771,13 +1787,9 @@ CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o:
 
 /usr/include/x86_64-linux-gnu/bits/siginfo-arch.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/concurrency/SpinLock.hpp:
-
 /usr/include/x86_64-linux-gnu/bits/signum-generic.h:
 
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/outgoing/Response.hpp:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/provider/Invalidator.hpp:
+/usr/local/share/vcpkg/installed/x64-linux/include/oatpp-1.3.0/oatpp/oatpp/network/Url.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/sockaddr.h:
 
@@ -1796,8 +1808,6 @@ CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o:
 /usr/include/x86_64-linux-gnu/bits/thread-shared-types.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/web/protocol/http/incoming/BodyDecoder.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
 
@@ -1830,7 +1840,5 @@ CMakeFiles/upnptvserver-test.dir/test/tests.cpp.o:
 /usr/include/features.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/sig_atomic_t.h:
-
-/usr/local/include/oatpp-1.3.0/oatpp/oatpp/core/async/Error.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types/siginfo_t.h:
