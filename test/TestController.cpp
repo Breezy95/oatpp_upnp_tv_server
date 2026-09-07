@@ -35,6 +35,21 @@ void testDlnaFileDetectionAndHeaders() {
  OATPP_ASSERT(didl.find("object.item.audioItem") != std::string::npos);
 }
 
+void testLiveStreamMetadata() {
+ const auto desktopStream = generateStreamDidlLite("Desktop Capture", "http://192.168.0.212:8080/desktop.mjpeg", "video", "video/mp4");
+ OATPP_ASSERT(desktopStream.find("object.item.videoItem") != std::string::npos);
+ OATPP_ASSERT(desktopStream.find("Desktop Capture") != std::string::npos);
+ OATPP_ASSERT(desktopStream.find("http://192.168.0.212:8080/desktop.mjpeg") != std::string::npos);
+
+ const auto vlcStream = generateStreamDidlLite("Laptop Camera", "rtsp://192.168.0.50:8554/live", "video");
+ OATPP_ASSERT(vlcStream.find("object.item.videoItem") != std::string::npos);
+ OATPP_ASSERT(vlcStream.find("rtsp://192.168.0.50:8554/live") != std::string::npos);
+
+ const auto audioStream = generateStreamDidlLite("Pi Audio Feed", "http://192.168.0.42:5001/audio", "audio");
+ OATPP_ASSERT(audioStream.find("object.item.audioItem") != std::string::npos);
+ OATPP_ASSERT(audioStream.find("http://192.168.0.42:5001/audio") != std::string::npos);
+}
+
 void testUpnpClientCallbackParsing() {
  const auto discovered = UpnpClient::parseDiscoveredDevice(
      "uuid:demo-device",
@@ -120,6 +135,7 @@ void MyControllerTest::onRun() {
  }, std::chrono::minutes(10) /* test timeout */);
 
  testDlnaFileDetectionAndHeaders();
+ testLiveStreamMetadata();
  testUpnpClientCallbackParsing();
 
  //Test getting an scpd from tv

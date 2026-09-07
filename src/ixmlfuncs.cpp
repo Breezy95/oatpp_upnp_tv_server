@@ -609,3 +609,39 @@ std::string generateVideoDidlLite(
 
     return didl.str();
 }
+
+std::string generateStreamDidlLite(
+    const std::string& title,
+    const std::string& streamUrl,
+    const std::string& mediaType,
+    const std::string& mimeType)
+{
+    const std::string lowerType = toLower(mediaType);
+    const bool isAudio = lowerType == "audio" || lowerType == "mp3" || lowerType == "wav" || lowerType == "pcm";
+    const std::string resolvedTitle = title.empty() ? (isAudio ? "Audio stream" : "Video stream") : title;
+    const std::string resolvedMime = mimeType.empty()
+        ? (isAudio ? "audio/mpeg" : "video/mp4")
+        : mimeType;
+    const std::string protocolInfo = isAudio
+        ? "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=MP3;DLNA.ORG_OP=01;DLNA.ORG_CI=0;DLNA.ORG_FLAGS=01700000000000000000000000000000"
+        : "http-get:*:" + resolvedMime + ":DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_OP=10;DLNA.ORG_CI=1;DLNA.ORG_FLAGS=01700000000000000000000000000000";
+
+    std::ostringstream didl;
+    didl
+        << "<DIDL-Lite "
+        << "xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+        << "<item id=\"0\" parentID=\"0\" restricted=\"false\">"
+        << "<dc:title>" << resolvedTitle << "</dc:title>"
+        << "<res protocolInfo=\"" << protocolInfo << "\" "
+        << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
+        << ">"
+        << streamUrl
+        << "</res>"
+        << "<upnp:class>object.item." << (isAudio ? "audioItem" : "videoItem") << "</upnp:class>"
+        << "</item>"
+        << "</DIDL-Lite>";
+
+    return didl.str();
+}

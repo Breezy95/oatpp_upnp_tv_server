@@ -212,6 +212,9 @@ CMAKE_STRIP:FILEPATH=/usr/bin/strip
 //Path to a program.
 CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 
+//No help, variable specified on the command line.
+CMAKE_TOOLCHAIN_FILE:UNINITIALIZED=/usr/local/share/vcpkg/scripts/buildsystems/vcpkg.cmake
+
 //If this value is on, makefiles will be generated without the
 // .SILENT directive, and all commands will be echoed to the console
 // during the make.  This is useful for debugging only. With Visual
@@ -246,11 +249,17 @@ PKG_CONFIG_ARGN:STRING=
 //pkg-config executable
 PKG_CONFIG_EXECUTABLE:FILEPATH=/usr/bin/pkg-config
 
+//No help, variable specified on the command line.
+PKG_CONFIG_USE_CMAKE_PREFIX_PATH:UNINITIALIZED=ON
+
+//No help, variable specified on the command line.
+VCPKG_TARGET_TRIPLET:UNINITIALIZED=x64-linux
+
 //The directory containing a CMake configuration file for oatpp-ssdp.
 oatpp-ssdp_DIR:PATH=/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp
 
 //The directory containing a CMake configuration file for oatpp.
-oatpp_DIR:PATH=oatpp_DIR-NOTFOUND
+oatpp_DIR:PATH=/usr/local/share/vcpkg/installed/x64-linux/share/oatpp
 
 //Path to a library.
 pkgcfg_lib_FFM_LIBAVCODEC_avcodec:FILEPATH=/usr/lib/x86_64-linux-gnu/libavcodec.so
@@ -287,6 +296,9 @@ pkgcfg_lib_PUPNP_ixml:FILEPATH=/usr/lib/x86_64-linux-gnu/libixml.so
 
 //Path to a library.
 pkgcfg_lib_PUPNP_upnp:FILEPATH=/usr/lib/x86_64-linux-gnu/libupnp.so
+
+//Dependencies for the target
+upnptvserver-lib_LIB_DEPENDS:STATIC=general;oatpp::oatpp;general;oatpp::oatpp-test;general;oatpp::oatpp-ssdp;
 
 //Value Computed by CMake
 upnptvserver_BINARY_DIR:STATIC=/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build

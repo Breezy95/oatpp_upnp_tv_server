@@ -118,8 +118,8 @@ upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavcodec.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavutil.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so
 upnptvserver-test: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a
-upnptvserver-test: /usr/local/lib/oatpp-1.3.0/liboatpp-test.a
-upnptvserver-test: /usr/local/lib/oatpp-1.3.0/liboatpp.a
+upnptvserver-test: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a
+upnptvserver-test: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libupnp.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libixml.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libgupnp-dlna-2.0.so

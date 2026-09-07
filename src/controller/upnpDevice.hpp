@@ -43,6 +43,14 @@ inline std::string toLower(std::string value)
     return value;
 }
 
+inline std::string fileStem(const std::string &filePath)
+{
+    const auto slashPos = filePath.find_last_of("/\\");
+    std::string name = slashPos == std::string::npos ? filePath : filePath.substr(slashPos + 1);
+    const auto dotPos = name.find_last_of('.');
+    return dotPos == std::string::npos ? name : name.substr(0, dotPos);
+}
+
 inline AudioKind detectAudioKind(const std::string &filePath)
 {
     const auto normalized = toLower(filePath);
@@ -395,10 +403,22 @@ public:
             return createDtoResponse(Status::CODE_500, err);
         }
 
-        const std::string mediaType = req->mediaType ? req->mediaType->std_str() : "audio";
-        const bool isAudio = mediaType == "audio" || mediaType == "mp3" || mediaType == "wav";
+        const std::string sourceType = req->sourceType ? req->sourceType->std_str() : "file";
+        const std::string mediaType = req->mediaType ? req->mediaType->std_str() : "video";
+        const std::string streamUrl = req->streamUrl ? req->streamUrl->std_str() : "";
+        const std::string mimeType = req->mimeType ? req->mimeType->std_str() : "";
+        const std::string title = req->title ? req->title->std_str() : "";
         std::string mediaUrl = req->mediaUrl ? req->mediaUrl->std_str() : "";
         std::string filePath = req->filePath ? req->filePath->std_str() : "";
+
+        const bool isExplicitStream = !streamUrl.empty() || sourceType == "stream" || sourceType == "screen" || sourceType == "desktop" || sourceType == "vlc" || sourceType == "live";
+        const bool isAudio = isExplicitStream
+            ? (mediaType == "audio" || mediaType == "mp3" || mediaType == "wav" || sourceType == "audio")
+            : (mediaType == "audio" || mediaType == "mp3" || mediaType == "wav");
+
+        if (isExplicitStream && mediaUrl.empty())
+            mediaUrl = streamUrl;
+
         if (mediaUrl.empty() && !filePath.empty())
         {
             std::string cleanPath = filePath;
@@ -410,7 +430,7 @@ public:
         {
             auto err = UpnpErrorDTO::createShared();
             err->statusCode = 400;
-            err->message = "mediaUrl or filePath is required";
+            err->message = "mediaUrl, streamUrl, or filePath is required";
             return createDtoResponse(Status::CODE_400, err);
         }
 
@@ -419,12 +439,18 @@ public:
         const std::string serviceType = req->serviceType ? req->serviceType->std_str() : "urn:schemas-upnp-org:service:AVTransport:1";
         const std::string instanceId = req->instanceId ? req->instanceId->std_str() : "0";
 
+        const std::string itemTitle = !title.empty() ? title
+            : filePath.empty() ? (isAudio ? "Audio stream" : "Video stream")
+            : fileStem(filePath);
+        const std::string metadata = isExplicitStream
+            ? generateStreamDidlLite(itemTitle, mediaUrl, isAudio ? "audio" : "video", mimeType)
+            : (isAudio ? generateDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl)
+                       : generateVideoDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl));
+
         std::vector<actionArg> setArgs = {
             {"InstanceID", "in", "A_ARG_TYPE_InstanceID", instanceId},
             {"CurrentURI", "in", "AVTransportURI", mediaUrl},
-            {"CurrentURIMetaData", "in", "AVTransportURIMetaData",
-             isAudio ? generateDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl)
-                     : generateVideoDidlLite(filePath.empty() ? mediaUrl : filePath, mediaUrl)}
+            {"CurrentURIMetaData", "in", "AVTransportURIMetaData", metadata}
         };
 
         IXML_Document *setDoc = createActionDocument("SetAVTransportURI", serviceId, setArgs);
@@ -461,7 +487,7 @@ public:
 
         auto response = MessageDto::createShared();
         response->statusCode = 200;
-        response->message = isAudio ? "Audio queued on TV" : "Video queued on TV";
+        response->message = isAudio ? "Audio stream queued on TV" : "Video stream queued on TV";
         return createDtoResponse(Status::CODE_200, response);
     }
 

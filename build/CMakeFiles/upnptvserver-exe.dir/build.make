@@ -102,8 +102,8 @@ upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libavcodec.so
 upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libavutil.so
 upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so
 upnptvserver-exe: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-ssdp.a
-upnptvserver-exe: /usr/local/lib/oatpp-1.3.0/liboatpp-test.a
-upnptvserver-exe: /usr/local/lib/oatpp-1.3.0/liboatpp.a
+upnptvserver-exe: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp-test.a
+upnptvserver-exe: /usr/local/share/vcpkg/installed/x64-linux/debug/lib/oatpp-1.3.0/liboatpp.a
 upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libupnp.so
 upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libixml.so
 upnptvserver-exe: /usr/lib/x86_64-linux-gnu/libgupnp-dlna-2.0.so

@@ -11,10 +11,6 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.31.6/CMakeCCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.31.6/CMakeSystem.cmake"
-  "/usr/local/lib/cmake/oatpp-1.3.0/oatppConfig.cmake"
-  "/usr/local/lib/cmake/oatpp-1.3.0/oatppConfigVersion.cmake"
-  "/usr/local/lib/cmake/oatpp-1.3.0/oatppTargets-noconfig.cmake"
-  "/usr/local/lib/cmake/oatpp-1.3.0/oatppTargets.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCXXInformation.cmake"
   "/usr/local/share/cmake-3.31/Modules/CMakeCommonLanguageInclude.cmake"
@@ -54,6 +50,11 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp/oatpp-ssdpTargets-debug.cmake"
   "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp/oatpp-ssdpTargets-release.cmake"
   "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp-ssdp/oatpp-ssdpTargets.cmake"
+  "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp/oatppConfig.cmake"
+  "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp/oatppConfigVersion.cmake"
+  "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp/oatppTargets-debug.cmake"
+  "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp/oatppTargets-release.cmake"
+  "/usr/local/share/vcpkg/installed/x64-linux/share/oatpp/oatppTargets.cmake"
   )
 
 # The corresponding makefile is:

@@ -83,8 +83,12 @@ class EnqueueVidRequestDTO : public BaseTVDTO {
 class SendMediaRequestDTO : public BaseTVDTO {
   DTO_INIT(SendMediaRequestDTO, BaseTVDTO)
   DTO_FIELD(String, mediaUrl);
+  DTO_FIELD(String, streamUrl);
   DTO_FIELD(String, filePath);
   DTO_FIELD(String, mediaType) = "audio";
+  DTO_FIELD(String, sourceType) = "file";
+  DTO_FIELD(String, title);
+  DTO_FIELD(String, mimeType);
   DTO_FIELD(String, serviceType) = "urn:schemas-upnp-org:service:AVTransport:1";
   DTO_FIELD(String, serviceId) = "urn:upnp-org:serviceId:AVTransport";
   DTO_FIELD(String, instanceId) = "0";
