@@ -10,12 +10,22 @@
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 
 #include "oatpp/core/macro/component.hpp"
+#include "DeviceDescriptorComponent.hpp"
 
 /**
  * Test Components config
  */
 class TestComponent {
 public:
+
+  OATPP_CREATE_COMPONENT(std::shared_ptr<DeviceDescriptorComponent::DeviceDescriptor>, deviceDescriptor)("deviceDescriptor", [] {
+    auto desc = std::make_shared<DeviceDescriptorComponent::DeviceDescriptor>();
+    desc->ipPort = "127.0.0.1:8000";
+    desc->mac = "testmac";
+    desc->sn = "1000000471337";
+    desc->uuid = "2f402f80-da50-11e1-9b23-testmac";
+    return desc;
+  }());
 
   /**
    * Create oatpp virtual network interface for test networking

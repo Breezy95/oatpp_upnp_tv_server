@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <upnp/upnp.h>
-#include <UpnpDiscovery.h>
+#include <upnp/UpnpDiscovery.h>
 #include <vector>
 
 struct deviceInfo

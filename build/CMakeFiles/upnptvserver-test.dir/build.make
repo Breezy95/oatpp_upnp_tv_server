@@ -113,6 +113,10 @@ upnptvserver-test: CMakeFiles/upnptvserver-test.dir/test/TestController.cpp.o
 upnptvserver-test: CMakeFiles/upnptvserver-test.dir/build.make
 upnptvserver-test: CMakeFiles/upnptvserver-test.dir/compiler_depend.ts
 upnptvserver-test: libupnptvserver-lib.a
+upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavformat.so
+upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavcodec.so
+upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavutil.so
+upnptvserver-test: /usr/lib/x86_64-linux-gnu/libgupnp-av-1.0.so
 upnptvserver-test: /usr/local/lib/oatpp-1.3.0/liboatpp-ssdp.a
 upnptvserver-test: /usr/local/lib/oatpp-1.3.0/liboatpp-test.a
 upnptvserver-test: /usr/local/lib/oatpp-1.3.0/liboatpp.a
@@ -122,9 +126,6 @@ upnptvserver-test: /usr/lib/x86_64-linux-gnu/libgupnp-dlna-2.0.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libgobject-2.0.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libglib-2.0.so
 upnptvserver-test: /usr/lib/x86_64-linux-gnu/libxml2.so
-upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavformat.so
-upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavcodec.so
-upnptvserver-test: /usr/lib/x86_64-linux-gnu/libavutil.so
 upnptvserver-test: CMakeFiles/upnptvserver-test.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable upnptvserver-test"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/upnptvserver-test.dir/link.txt --verbose=$(VERBOSE)

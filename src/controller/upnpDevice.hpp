@@ -1,11 +1,15 @@
-#ifndef upnpDevice
+#ifndef UPNP_DEVICE_HPP
+#define UPNP_DEVICE_HPP
+
 #include <dto/DTOs.hpp>
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 #include "oatpp/web/server/api/ApiController.hpp"
 #include <string>
+#include <algorithm>
+#include <cctype>
 #include <upnp/upnp.h>
-#include "upnptools.h"
+#include <upnp/upnptools.h>
 #include <iostream>
 #include "vector"
 #include <DeviceDescriptorComponent.hpp>
@@ -18,61 +22,63 @@
 #include <iostream>
 #include <fstream>
 
-extern "C" {
-    #include "libavformat/avformat.h"
-#include "libavcodec/avcodec.h"
-#include <libavutil/dict.h>
-#include "gupnp-av-1.0/libgupnp-av/gupnp-av.h"
-#include "gupnp-dlna-2.0/libgupnp-dlna/gupnp-dlna.h"
-}
-
 enum class AudioKind
 {
     LPCM,
     MP3,
     UNKNOWN
 };
+
 struct DlnaHeaders
 {
     std::string contentType;
     std::string contentFeatures;
 };
-//In the future create a template
-DlnaHeaders pickAudioDlnaHeaders(AVCodecID codec,
-                                 int sampleRate,
-                                 int channels)
+
+inline std::string toLower(std::string value)
+{
+    std::transform(value.begin(), value.end(), value.begin(), [](unsigned char ch) {
+        return static_cast<char>(std::tolower(ch));
+    });
+    return value;
+}
+
+inline AudioKind detectAudioKind(const std::string &filePath)
+{
+    const auto normalized = toLower(filePath);
+    if (normalized.find(".mp3") != std::string::npos ||
+        normalized.find(".m4a") != std::string::npos ||
+        normalized.find(".aac") != std::string::npos)
+        return AudioKind::MP3;
+    if (normalized.find(".wav") != std::string::npos ||
+        normalized.find(".pcm") != std::string::npos ||
+        normalized.find(".flac") != std::string::npos)
+        return AudioKind::LPCM;
+    return AudioKind::UNKNOWN;
+}
+
+inline DlnaHeaders pickAudioDlnaHeaders(AudioKind codec,
+                                       int sampleRate,
+                                       int channels)
 {
     DlnaHeaders h;
 
-    if (codec == AV_CODEC_ID_PCM_S16LE)
+    if (codec == AudioKind::LPCM)
     {
-        // WAV / LPCM
-        h.contentType =
-            "audio/L16;rate=" + std::to_string(sampleRate) +
-            ";channels=" + std::to_string(channels);
-
+        h.contentType = "audio/L16;rate=" + std::to_string(sampleRate) +
+                        ";channels=" + std::to_string(channels);
         h.contentFeatures =
             "DLNA.ORG_PN=LPCM;"
             "DLNA.ORG_OP=01;"
             "DLNA.ORG_FLAGS=01700000000000000000000000000000";
     }
-    else if (codec == AV_CODEC_ID_MP3)
-    {
-        h.contentType = "audio/mpeg";
-
-        h.contentFeatures =
-            "DLNA.ORG_PN=MP3;"
-            "DLNA.ORG_OP=01;"
-            "DLNA.ORG_FLAGS=01700000000000000000000000000000";
-    }
     else
     {
-        // Fallback (works on Samsung)
         h.contentType = "audio/mpeg";
         h.contentFeatures =
             "DLNA.ORG_PN=MP3;"
             "DLNA.ORG_OP=01;"
-            "DLNA.ORG_FLAGS=01700000000000000000000000000000";
+            "DLNA.ORG_FLAGS=01700000000000000000000000000000000";
     }
 
     return h;
@@ -297,30 +303,9 @@ public:
     ENDPOINT("GET", "/media/audio/{resourcePath}", serveResourceURI, PATH(String, resourcePath))
     {
         std::string filePath = std::string("media/audio/") + resourcePath;
-        AVFormatContext *fmt = nullptr;
-        avformat_open_input(&fmt, filePath.c_str(), nullptr, nullptr);
-        avformat_find_stream_info(fmt, nullptr);
-        // std::cout <<
-        AVStream *audio = nullptr;
-        for (unsigned i = 0; i < fmt->nb_streams; i++)
-        {
-            if (fmt->streams[i]->codecpar->codec_type == AVMEDIA_TYPE_AUDIO)
-            {
-                audio = fmt->streams[i];
-                break;
-            }
-        }
-        if (!audio)
-        {
-            avformat_close_input(&fmt);
-            throw std::runtime_error("No audio stream");
-        }
-
-        AVCodecParameters *cp = audio->codecpar;
-
-        int sampleRate = cp->sample_rate;
-        int channels = cp->ch_layout.nb_channels;
-        avformat_close_input(&fmt);
+        const auto audioKind = detectAudioKind(filePath);
+        const int sampleRate = 44100;
+        const int channels = 2;
 
         std::ifstream file(filePath, std::ios::binary | std::ios::ate);
         if (!file.is_open())
@@ -335,12 +320,11 @@ public:
         file.close();
 
         auto response = ResponseFactory::createResponse(Status::CODE_200, fileContent);
-        auto headers = pickAudioDlnaHeaders(codecId, sampleRate, channels);
-        response->putHeader("Content-Type", h.contentType.c_str());
-        response->putHeader("ContentFeatures.DLNA.ORG", h.contentFeatures.c_str());
+        const auto headers = pickAudioDlnaHeaders(audioKind, sampleRate, channels);
+        response->putHeader("Content-Type", headers.contentType.c_str());
+        response->putHeader("ContentFeatures.DLNA.ORG", headers.contentFeatures.c_str());
         response->putHeader("Scid.DLNA.ORG", "839080694");
         response->putHeader("TransferMode.DLNA.ORG", "Streaming");
-        // response->putHeader("Content-Length", "463500");
         response->putHeader("Connection", "Keep-Alive");
         return response;
     }
@@ -447,4 +431,4 @@ public:
     }
 };
 
-#endif upnpDevice
+#endif // UPNP_DEVICE_HPP

@@ -3,9 +3,8 @@
 
 #include <string>
 #include <vector>
-#include <upnpdebug.h>
-#include <upnptools.h>
-#include "ixml.h"
+#include <upnp/ixml.h>
+#include <upnp/upnptools.h>
 #include <map>
 
 
