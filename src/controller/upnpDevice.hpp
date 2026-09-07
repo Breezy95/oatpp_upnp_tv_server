@@ -150,19 +150,20 @@ inline std::string buildContentDirectoryDIDL(const std::string &objectId,
         ? "http-get:*:audio/mpeg:DLNA.ORG_PN=MP3;DLNA.ORG_FLAGS=ED100000000000000000000000000000"
         : "http-get:*:video/mp4:DLNA.ORG_PN=AVC_MP4_BL_L3L_SD_AAC;DLNA.ORG_FLAGS=ED100000000000000000000000000000";
     const std::string resolvedObjectId = objectId.empty() ? "0" : objectId;
+   const std::string safeTitle = title.empty() ? (isAudio ? "Audio stream" : "Video stream") : title;
 
-    std::ostringstream oss;
-    oss << "<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
-        << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
-        << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
-        << "<item id=\"" << xmlEscape(resolvedObjectId) << "\" parentID=\"0\" restricted=\"false\">"
-        << "<dc:title>" << xmlEscape(title.empty() ? (isAudio ? "Audio stream" : "Video stream") : title) << "</dc:title>"
-        << "<res protocolInfo=\"" << protocolInfo << "\" "
-        << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
-        << ">" << xmlEscape(streamUrl) << "</res>"
-        << "<upnp:class>" << itemClass << "</upnp:class>"
-        << "</item></DIDL-Lite>";
-    return oss.str();
+   std::ostringstream oss;
+   oss << "<DIDL-Lite xmlns=\"urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/\" "
+       << "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+       << "xmlns:upnp=\"urn:schemas-upnp-org:metadata-1-0/upnp/\">"
+       << "<item id=\"" << xmlEscape(resolvedObjectId) << "\" parentID=\"0\" restricted=\"false\">"
+       << "<dc:title>" << xmlEscape(safeTitle) << "</dc:title>"
+       << "<upnp:class>" << itemClass << "</upnp:class>"
+       << "<res protocolInfo=\"" << protocolInfo << "\" "
+       << (isAudio ? "sampleFrequency=\"44100\" nrAudioChannels=\"2\" bitrate=\"320000\"" : "resolution=\"1280x720\" bitrate=\"4500000\"")
+       << " size=\"1048576\" duration=\"0:05:00\">" << xmlEscape(streamUrl) << "</res>"
+       << "</item></DIDL-Lite>";
+   return oss.str();
 }
 
 inline std::string buildContentDirectoryBrowseResponse(const std::string &objectId,
@@ -170,32 +171,45 @@ inline std::string buildContentDirectoryBrowseResponse(const std::string &object
                                                     const std::string &streamUrl,
                                                     const std::string &mediaType)
 {
-    const std::string result = buildContentDirectoryDIDL(objectId, title, streamUrl, mediaType);
-    std::ostringstream oss;
-    oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
-        << "<s:Body><u:BrowseResponse xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
-        << "<Result>" << xmlEscape(result) << "</Result>"
-        << "<NumberReturned>1</NumberReturned>"
-        << "<TotalMatches>1</TotalMatches>"
-        << "<UpdateID>0</UpdateID>"
-        << "</u:BrowseResponse></s:Body></s:Envelope>";
-    return oss.str();
+   const std::string result = buildContentDirectoryDIDL(objectId, title, streamUrl, mediaType);
+   std::ostringstream oss;
+   oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+       << "<s:Body><u:BrowseResponse xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
+       << "<Result>" << xmlEscape(result) << "</Result>"
+       << "<NumberReturned>1</NumberReturned>"
+       << "<TotalMatches>1</TotalMatches>"
+       << "<UpdateID>0</UpdateID>"
+       << "</u:BrowseResponse></s:Body></s:Envelope>";
+   return oss.str();
 }
 
 inline std::string buildContentDirectoryActionResponse(const std::string &actionName,
                                                     const std::string &payload)
 {
-    std::ostringstream oss;
-    oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
-        << "<s:Body><u:" << actionName << "Response xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
-        << payload
-        << "</u:" << actionName << "Response></s:Body></s:Envelope>";
-    return oss.str();
+   std::ostringstream oss;
+   oss << "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">"
+       << "<s:Body><u:" << actionName << "Response xmlns:u=\"urn:schemas-upnp-org:service:ContentDirectory:1\">"
+       << payload
+       << "</u:" << actionName << "Response></s:Body></s:Envelope>";
+   return oss.str();
+}
+
+inline std::string extractSoapElementValue(const std::string &soap, const std::string &elementName)
+{
+   const std::string openTag = "<" + elementName + ">";
+   const std::string closeTag = "</" + elementName + ">";
+   const auto start = soap.find(openTag);
+   if (start == std::string::npos)
+       return {};
+   const auto end = soap.find(closeTag, start + openTag.size());
+   if (end == std::string::npos)
+       return {};
+   return soap.substr(start + openTag.size(), end - start - openTag.size());
 }
 
 inline std::string contentDirectoryProfileXml()
 {
-    return R"(<?xml version="1.0" encoding="utf-8"?>
+   return R"(<?xml version="1.0" encoding="utf-8"?>
 <scpd xmlns="urn:schemas-upnp-org:service-1-0">
   <specVersion><major>1</major><minor>0</minor></specVersion>
   <actionList>
@@ -212,6 +226,18 @@ inline std::string contentDirectoryProfileXml()
         <argument><name>NumberReturned</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_Count</relatedStateVariable></argument>
         <argument><name>TotalMatches</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_Count</relatedStateVariable></argument>
         <argument><name>UpdateID</name><direction>out</direction><relatedStateVariable>A_ARG_TYPE_UpdateID</relatedStateVariable></argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetSearchCapabilities</name>
+      <argumentList>
+        <argument><name>SearchCaps</name><direction>out</direction><relatedStateVariable>SearchCapabilities</relatedStateVariable></argument>
+      </argumentList>
+    </action>
+    <action>
+      <name>GetSortCapabilities</name>
+      <argumentList>
+        <argument><name>SortCaps</name><direction>out</direction><relatedStateVariable>SortCapabilities</relatedStateVariable></argument>
       </argumentList>
     </action>
     <action>
@@ -421,12 +447,15 @@ public:
 
         std::string responseBody;
         const std::string host = m_desc && m_desc->ipPort ? std::string(m_desc->ipPort->c_str()) : std::string("127.0.0.1:8000");
+
         if (actionName == "Browse")
         {
-            std::string title = "Desktop Stream";
-            std::string mediaType = "video";
-            std::string streamUrl = std::string("http://") + host + "/stream/live/desktop.m3u8";
-            responseBody = buildContentDirectoryBrowseResponse("0", title, streamUrl, mediaType);
+            const std::string objectId = extractSoapElementValue(soapBody, "ObjectID");
+            const std::string browseFlag = extractSoapElementValue(soapBody, "BrowseFlag");
+            const std::string title = objectId == "0" ? "Desktop Stream" : "TV Media Item";
+            const std::string mediaType = browseFlag == "BrowseMetadata" ? "video" : "video";
+            const std::string streamUrl = std::string("http://") + host + "/stream/live/desktop.m3u8";
+            responseBody = buildContentDirectoryBrowseResponse(objectId.empty() ? "0" : objectId, title, streamUrl, mediaType);
         }
         else if (actionName == "GetSystemUpdateID")
         {
@@ -434,14 +463,17 @@ public:
         }
         else if (actionName == "GetSearchCapabilities")
         {
-            responseBody = buildContentDirectoryActionResponse(actionName, "<SearchCaps></SearchCaps>");
+            responseBody = buildContentDirectoryActionResponse(actionName, "<SearchCaps>dc:title,res,upnp:class</SearchCaps>");
         }
         else if (actionName == "GetSortCapabilities")
         {
-            responseBody = buildContentDirectoryActionResponse(actionName, "<SortCaps></SortCaps>");
+            responseBody = buildContentDirectoryActionResponse(actionName, "<SortCaps>dc:title,upnp:class</SortCaps>");
         }
 
-        return createResponse(Status::CODE_200, responseBody);
+        auto response = createResponse(Status::CODE_200, responseBody);
+        response->putHeader("Content-Type", "text/xml; charset=utf-8");
+        response->putHeader("Connection", "close");
+        return response;
     }
 
     // try with a simple volume change

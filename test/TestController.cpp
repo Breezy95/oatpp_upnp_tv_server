@@ -54,6 +54,22 @@ void testLiveStreamMetadata() {
  OATPP_ASSERT(audioStream.find("http://192.168.0.42:5001/audio") != std::string::npos);
 }
 
+void testContentDirectoryContract() {
+ const auto profile = contentDirectoryProfileXml();
+ OATPP_ASSERT(profile.find("<name>Browse</name>") != std::string::npos);
+ OATPP_ASSERT(profile.find("<name>GetSearchCapabilities</name>") != std::string::npos);
+ OATPP_ASSERT(profile.find("<name>GetSortCapabilities</name>") != std::string::npos);
+ OATPP_ASSERT(profile.find("BrowseDirectChildren") != std::string::npos);
+
+ const auto browse = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://192.168.0.212:8000/stream/live/desktop.m3u8", "video");
+ OATPP_ASSERT(browse.find("BrowseResponse") != std::string::npos);
+ OATPP_ASSERT(browse.find("<Result>") != std::string::npos);
+ OATPP_ASSERT(browse.find("DIDL-Lite") != std::string::npos);
+ OATPP_ASSERT(browse.find("object.item.videoItem") != std::string::npos);
+ OATPP_ASSERT(browse.find("Desktop Stream") != std::string::npos);
+ OATPP_ASSERT(browse.find("NumberReturned>1</NumberReturned>") != std::string::npos);
+}
+
 void testUpnpClientCallbackParsing() {
  const auto discovered = UpnpClient::parseDiscoveredDevice(
      "uuid:demo-device",
@@ -153,6 +169,7 @@ void MyControllerTest::onRun() {
 
  testDlnaFileDetectionAndHeaders();
  testLiveStreamMetadata();
+ testContentDirectoryContract();
  testUpnpClientCallbackParsing();
  const auto contentDirectory = buildContentDirectoryBrowseResponse("0", "Desktop Stream", "http://127.0.0.1:8000/stream/live/desktop.m3u8", "video");
  OATPP_ASSERT(contentDirectory.find("DIDL-Lite") != std::string::npos);
