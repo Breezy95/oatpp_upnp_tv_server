@@ -17,8 +17,8 @@ class MyApiTestClient : public oatpp::web::client::ApiClient {
   API_CLIENT_INIT(MyApiTestClient)
 
   API_CALL("GET", "/upnp/hello", getHelloWorld)
-
-  // TODO - add more client API calls here
+  API_CALL("GET", "/upnp/devices", getDeviceList)
+  API_CALL("POST", "/upnp/search", searchDevices, BODY_DTO(Object<UpnpSearchRequest>, body))
 
 };
 

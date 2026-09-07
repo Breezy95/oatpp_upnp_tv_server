@@ -1,0 +1,30 @@
+Start testing: Sep 07 08:00 UTC
+----------------------------------------------------------
+1/1 Testing: project-tests
+1/1 Test: project-tests
+Command: "/home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build/upnptvserver-test"
+Directory: /home/runner/work/oatpp_upnp_tv_server/oatpp_upnp_tv_server/build
+"project-tests" start time: Sep 07 08:00 UTC
+Output:
+----------------------------------------------------------
+[32m I [0m|2026-09-07 08:00:48 1788768048406657| TEST[MyControllerTest]:[1mSTART[0m...
+[34m D [0m|2026-09-07 08:00:48 1788768048407684| [1;34mClientServerTestRunner[0m:[1;34mRunning server on port 0. Timeout 600000000(micro)[0m
+[32m I [0m|2026-09-07 08:00:48 1788768048408486| upnpdevice: starting search	ST: ssdp:all, timeout: 1 
+[34m D [0m|2026-09-07 08:00:49 1788768049109857| [1;34mClientServerTestRunner[0m:[1;34mFinished with time 702169(micro). Stopping server...[0m
+[32m I [0m|2026-09-07 08:00:50 1788768050112122| TEST[MyControllerTest]:[1mFINISHED[0m - [1;32msuccess![0m
+[32m I [0m|2026-09-07 08:00:50 1788768050112155| TEST[MyControllerTest]:[33m1705415(micro), 146(objs)[0m
+
+
+Environment:
+objectsCount = 0
+objectsCreated = 146
+
+<end of output>
+Test time =   1.71 sec
+----------------------------------------------------------
+Test Passed.
+"project-tests" end time: Sep 07 08:00 UTC
+"project-tests" time elapsed: 00:00:01
+----------------------------------------------------------
+
+End testing: Sep 07 08:00 UTC

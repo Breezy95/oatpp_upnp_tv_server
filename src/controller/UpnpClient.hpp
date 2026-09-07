@@ -28,7 +28,7 @@ struct deviceInfo
 class UpnpClient
 {
 public:
-    explicit UpnpClient(uint16_t port = 0);
+    explicit UpnpClient(uint16_t port = 0, bool initialize = true);
     ~UpnpClient();
 
     UpnpClient(const UpnpClient &) = delete;
@@ -38,9 +38,14 @@ public:
     std::unordered_map<std::string, deviceInfo> devices() const;
     void updateXml(const std::string &location, const std::string &xml);
     int search(int maximumWait, const std::string &searchTarget);
+    static int callback(Upnp_EventType eventType, const void *event, void *cookie);
+
+    static deviceInfo parseDiscoveredDevice(const std::string &deviceId,
+                                           const std::string &location,
+                                           const char *deviceType,
+                                           const char *serviceType);
 
 private:
-    static int callback(Upnp_EventType eventType, const void *event, void *cookie);
     void handleDiscoveryEvent(Upnp_EventType eventType, const UpnpDiscovery *event);
 
     UpnpClient_Handle m_handle{-1};

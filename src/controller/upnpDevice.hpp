@@ -69,16 +69,14 @@ inline DlnaHeaders pickAudioDlnaHeaders(AudioKind codec,
                         ";channels=" + std::to_string(channels);
         h.contentFeatures =
             "DLNA.ORG_PN=LPCM;"
-            "DLNA.ORG_OP=01;"
-            "DLNA.ORG_FLAGS=01700000000000000000000000000000";
+            "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
     }
     else
     {
         h.contentType = "audio/mpeg";
         h.contentFeatures =
             "DLNA.ORG_PN=MP3;"
-            "DLNA.ORG_OP=01;"
-            "DLNA.ORG_FLAGS=01700000000000000000000000000000000";
+            "DLNA.ORG_FLAGS=ED100000000000000000000000000000";
     }
 
     return h;
@@ -385,14 +383,6 @@ public:
             return createDtoResponse(Status::CODE_400, upnpError);
         }
         return createResponse(Status::CODE_200, ixmlDocumenttoString(resp));
-    }
-
-    ENDPOINT("POST", "/upnp/loadVideo", playVideo, BODY_DTO(Object<EnqueueVidRequestDTO>, req))
-    {
-        auto resource = req->mediaResourceUrl;
-        auto deviceAddress = req->deviceAddress;
-        // int ret =UpnpSendActionAsync(Hnd, req->deviceAddress->c_str(),);
-        return createDtoResponse(Status::CODE_200, String("Placeholder"));
     }
 
     ENDPOINT("POST", "/upnp/search", upnpSearch, BODY_DTO(Object<UpnpSearchRequest>, req))
