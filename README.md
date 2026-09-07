@@ -82,6 +82,112 @@ Set the `MEDIA_ROOT` environment variable to serve a different content directory
 MEDIA_ROOT=/srv/movies ./build/upnptvserver-exe
 ```
 
+## Typical user flow
+
+The same end-to-end flow — discover a renderer, pick some media, start
+playback — can be followed either from the browser UI or purely through API
+calls.
+
+### 0. Start the server
+
+```bash
+cmake -S . -B build && cmake --build build -j
+MEDIA_ROOT=/srv/movies DEVICE_STORE=./devices.json ./build/upnptvserver-exe
+```
+
+The server listens on port `8000`. Media must live under `$MEDIA_ROOT/video`
+and, optionally, `$MEDIA_ROOT/audio`.
+
+### From the UI
+
+1. Open `http://<server-host>:8000/`. The page lists every video found in the
+   content directory.
+2. In the **Renderers** panel press **Scan network**. This sends an SSDP
+   search, waits for replies, downloads each device description and stores the
+   discovered renderers.
+3. Select the target renderer in the dropdown.
+4. For the media row you want, press either:
+   - **Play here** to stream the file in the browser player, or
+   - **Send to TV** to hand the file to the selected renderer.
+5. Press **Forget** to drop a renderer you no longer care about.
+
+### Through API calls
+
+1. Discover and remember renderers:
+
+   ```bash
+   curl -X POST http://localhost:8000/api/devices/scan \
+     -H 'Content-Type: application/json' \
+     -d '{"searchType":"urn:schemas-upnp-org:device:MediaRenderer:1","mx":3}'
+   ```
+
+   The response contains the known devices, each with `deviceId`,
+   `friendlyName`, `controlUrl`, `serviceType`, `serviceId`, `ipAddr`, `port`
+   and `lastSeen`.
+
+2. List the remembered renderers without rescanning:
+
+   ```bash
+   curl http://localhost:8000/api/devices
+   ```
+
+3. List the playable media:
+
+   ```bash
+   curl http://localhost:8000/api/media/video
+   ```
+
+4. Send a library file to the renderer, using the `controlUrl` from step 1 as
+   `actionUrl`:
+
+   ```bash
+   curl -X POST http://localhost:8000/upnp/sendMedia \
+     -H 'Content-Type: application/json' \
+     -d '{"actionUrl":"http://192.168.0.42:52235/upnp/control/AVTransport1",
+          "filePath":"BigBuckBunny.mp4",
+          "mediaType":"video",
+          "sourceType":"file",
+          "title":"Big Buck Bunny"}'
+   ```
+
+   The server resolves the absolute media URL, generates the DIDL-Lite
+   metadata and then sends `SetAVTransportURI` followed by `Play`. UPnP
+   failures are reported as `422` responses carrying `upnpErrorCode`.
+
+5. Send a live or external source instead of a library file:
+
+   ```bash
+   curl -X POST http://localhost:8000/upnp/sendMedia \
+     -H 'Content-Type: application/json' \
+     -d '{"actionUrl":"http://192.168.0.42:52235/upnp/control/AVTransport1",
+          "sourceType":"stream",
+          "streamUrl":"http://192.168.0.10:8080/desktop.ts",
+          "mediaType":"video",
+          "mimeType":"video/mpeg",
+          "title":"Desktop"}'
+   ```
+
+6. Optionally inspect or control the renderer:
+   - `POST /upnp/getProtocolInfo` to check what the renderer accepts before
+     casting.
+   - `POST /upnp/sendAction` for any other AVTransport/RenderingControl action
+     such as `Pause`, `Stop` or `SetVolume`.
+   - `GET /upnp/getVolume` to read the current volume.
+
+7. Forget a renderer once you are done with it:
+
+   ```bash
+   curl -X DELETE http://localhost:8000/api/devices/<url-encoded-deviceId>
+   ```
+
+### What the renderer does in return
+
+While playing, the TV talks back to this server: it fetches
+`GET /description.xml`, then the referenced `GET /profiles/{profileName}`,
+browses the content with `POST /upnp/services/content-directory/control` and
+finally issues `HEAD`/`GET /media/video/{file}` requests with range and DLNA
+headers to stream the file.
+
 ## Tests
 
 To run tests (if built):
