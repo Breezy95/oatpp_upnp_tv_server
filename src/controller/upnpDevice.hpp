@@ -12,6 +12,7 @@
 #include "oatpp/parser/json/mapping/ObjectMapper.hpp"
 #include "oatpp/web/protocol/http/incoming/Request.hpp"
 #include "ixmlfuncs.hpp"
+#include "UpnpClient.hpp"
 #include <regex>
 
 #include <iostream>
@@ -36,22 +37,6 @@ struct DlnaHeaders
     std::string contentType;
     std::string contentFeatures;
 };
-struct deviceInfo
-{
-    std::string deviceId;
-    std::string deviceType;
-    std::string friendlyName;
-    std::string manufacturer;
-    std::string modelName;
-    std::string serviceType;
-    std::string serviceId;
-    std::string ipAddr;
-    uint16_t port;
-    std::string locationUrl;
-    std::vector<std::string> scpd_urls;
-    std::string xmlString;
-};
-
 //In the future create a template
 DlnaHeaders pickAudioDlnaHeaders(AVCodecID codec,
                                  int sampleRate,
@@ -93,41 +78,27 @@ DlnaHeaders pickAudioDlnaHeaders(AVCodecID codec,
     return h;
 }
 
-void parseDeviceForSCPDs(IXML_Document *deviceMainXML, std::vector<std::string> &scpd_urls, const std::string &baseUrl);
+void parseDeviceForSCPDs(IXML_Document *deviceMainXML,
+                         std::vector<std::string> &scpd_urls,
+                         const std::string &baseUrl);
 
 class upnpController : public oatpp::web::server::api::ApiController
 {
 private:
     OATPP_COMPONENT(std::shared_ptr<DeviceDescriptorComponent::DeviceDescriptor>, m_desc);
+    std::shared_ptr<UpnpClient> m_upnp;
 
 public:
-    static std::shared_ptr<upnpController> createShared(OATPP_COMPONENT(std::shared_ptr<ObjectMapper>, objectMapper))
+    static std::shared_ptr<upnpController> createShared(
+        const std::shared_ptr<ObjectMapper> &objectMapper,
+        const std::shared_ptr<UpnpClient> &upnp)
     {
-        return std::shared_ptr<upnpController>(std::make_shared<upnpController>(objectMapper));
+        return std::make_shared<upnpController>(objectMapper, upnp);
     }
 
-    upnpController(const std::shared_ptr<ObjectMapper> &objectMapper) : oatpp::web::server::api::ApiController(objectMapper)
-    {
-        UpnpInit2(nullptr, 0);
-        // this->Hnd =
-        int ret = UpnpRegisterClient(upnpController::upnpCallback, this, &this->Hnd);
-        if (ret != UPNP_E_SUCCESS)
-        {
-            OATPP_LOGI("upnpdevice", " client register failure, err code:  %d", ret)
-            throw std::runtime_error("Failed to register UPnP client");
-        }
-        OATPP_LOGI("upnpdevice", " client register success, err code:  %d", ret)
-    }
-
-    ~upnpController()
-    {
-        if (Hnd != -1)
-            UpnpUnRegisterClient(Hnd);
-    };
-    static int upnpCallback(Upnp_EventType EventType, const void *Event, void *Cookie);
-    UpnpClient_Handle Hnd;
-    std::unordered_map<std::string, deviceInfo> deviceList;
-    // int setTvControlUrl(std::string url);
+    upnpController(const std::shared_ptr<ObjectMapper> &objectMapper,
+                   const std::shared_ptr<UpnpClient> &upnp)
+        : oatpp::web::server::api::ApiController(objectMapper), m_upnp(upnp) {}
 
 public:
 #include OATPP_CODEGEN_BEGIN(ApiController)
@@ -150,7 +121,7 @@ public:
                    actionDTO->serviceType ? actionDTO->serviceType->c_str() : "(null)",
                    actionDTO->serviceId ? actionDTO->serviceId->c_str() : "(null)");
 
-        int ret = UpnpSendAction(this->Hnd, actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
+        int ret = UpnpSendAction(m_upnp->handle(), actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
         if (ret != 0)
         {
             auto error = UpnpErrorDTO::createShared();
@@ -196,7 +167,7 @@ public:
             port = m[2].matched ? m[2].str() : ""; // "52235" or empty
         }
 
-        this->deviceList[host + "/" + port].xmlString = xmlStr;
+        m_upnp->updateXml(msg->c_str(), xmlStr);
         return createResponse(Status::CODE_200, xmlStr);
     }
 
@@ -218,7 +189,7 @@ public:
         auto actionDoc = createActionDocument(actionDTO->actionName, actionDTO->serviceId, args);
         IXML_Document *resp;
         OATPP_LOGI("createAction", "action document:\n %s\n", ixmlDocumenttoString(actionDoc));
-        int ret = UpnpSendAction(this->Hnd, actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
+        int ret = UpnpSendAction(m_upnp->handle(), actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
         if (ret != 0)
         {
             auto error = UpnpErrorDTO::createShared();
@@ -232,6 +203,7 @@ public:
 
     ENDPOINT("GET", "/upnp/devices", getDeviceList)
     {
+        auto deviceList = m_upnp->devices();
         if (deviceList.empty())
             return createResponse(Status::CODE_200, "Empty device list");
         auto dto = UpnpDeviceListResponse::createShared();
@@ -259,7 +231,7 @@ public:
         String devicePath = req->actionUrl;
         IXML_Document *action = createGetProtocolInfoDocument();
         IXML_Document *resp = nullptr;
-        int ret = UpnpSendAction(this->Hnd, devicePath->c_str(), req->serviceType->c_str(), nullptr, action, &resp);
+        int ret = UpnpSendAction(m_upnp->handle(), devicePath->c_str(), req->serviceType->c_str(), nullptr, action, &resp);
 
         if (ret != UPNP_E_SUCCESS)
         {
@@ -416,7 +388,7 @@ public:
         // ixmlDocument_free(b);
         IXML_Document *resp;
         OATPP_LOGI("SET RESOURCE", "SETRESOURCE DOC: \n %s", ixmlDocumenttoString(actionDoc))
-        int ret = UpnpSendAction(this->Hnd, actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
+        int ret = UpnpSendAction(m_upnp->handle(), actionDTO->actionUrl->c_str(), actionDTO->serviceType->c_str(), nullptr, actionDoc, &resp);
         if (ret != UPNP_E_SUCCESS)
         {
             auto upnpError = UpnpErrorDTO::createShared();
@@ -446,7 +418,7 @@ public:
         int timeout = (int)req->mx;
         OATPP_LOGI("upnpdevice", " starting search\tST: %s, timeout: %d ", st->c_str(), timeout);
 
-        int ret = UpnpSearchAsync(Hnd, timeout, st->c_str(), this);
+        int ret = m_upnp->search(timeout, st->c_str());
         if (ret != UPNP_E_SUCCESS)
         {
             auto err = UpnpErrorDTO::createShared();

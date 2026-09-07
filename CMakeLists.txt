@@ -117,5 +117,3 @@ set_target_properties(${project_name}-lib ${project_name}-exe ${project_name}-te
 
 enable_testing()
 add_test(project-tests ${project_name}-test)
-
-

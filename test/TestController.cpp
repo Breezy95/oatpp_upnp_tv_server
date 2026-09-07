@@ -1,6 +1,7 @@
 #include "TestController.hpp"
 
 #include "controller/upnpDevice.hpp"
+#include "controller/UpnpClient.hpp"
 #include "app/MyApiTestClient.hpp"
 #include "app/TestComponent.hpp"
 
@@ -22,7 +23,8 @@ void MyControllerTest::onRun() {
     OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
 
     /* Add upnp endpoints to the router of the test server */
-    runner.addController(std::make_shared<upnpController>(objectMapper));
+    auto upnp = std::make_shared<UpnpClient>();
+    runner.addController(std::make_shared<upnpController>(objectMapper, upnp));
 
   /* Run test */
   runner.run([this, &runner] {
