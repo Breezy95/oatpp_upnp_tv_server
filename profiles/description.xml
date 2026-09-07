@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root xmlns="urn:schemas-upnp-org:device-1-0">
+  <specVersion>
+    <major>1</major>
+    <minor>0</minor>
+  </specVersion>
+  <device>
+    <deviceType>urn:schemas-upnp-org:device:MediaServer:1</deviceType>
+    <friendlyName>Oat++ UPnP TV Server</friendlyName>
+    <manufacturer>Oat++ UPnP TV Server</manufacturer>
+    <manufacturerURL>https://github.com/Breezy95/oatpp_upnp_tv_server</manufacturerURL>
+    <modelDescription>UPnP/DLNA media server</modelDescription>
+    <modelName>OatppUpnpTvServer</modelName>
+    <modelNumber>1</modelNumber>
+    <serialNumber>1000000471337</serialNumber>
+    <UDN>uuid:2f402f80-da50-11e1-9b23-be5a0a70cafe</UDN>
+    <serviceList>
+      <service>
+        <serviceType>urn:schemas-upnp-org:service:ContentDirectory:1</serviceType>
+        <serviceId>urn:upnp-org:serviceId:ContentDirectory</serviceId>
+        <SCPDURL>/profiles/contentdirectory.xml</SCPDURL>
+        <controlURL>/upnp/services/content-directory/control</controlURL>
+        <eventSubURL>/upnp/services/content-directory/events</eventSubURL>
+      </service>
+      <service>
+        <serviceType>urn:schemas-upnp-org:service:ConnectionManager:1</serviceType>
+        <serviceId>urn:upnp-org:serviceId:ConnectionManager</serviceId>
+        <SCPDURL>/profiles/connectionmanager.xml</SCPDURL>
+        <controlURL>/upnp/services/connection-manager/control</controlURL>
+        <eventSubURL>/upnp/services/connection-manager/events</eventSubURL>
+      </service>
+    </serviceList>
+  </device>
+</root>

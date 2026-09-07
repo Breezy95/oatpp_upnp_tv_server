@@ -6,6 +6,7 @@
 #include "upnp.h"
 #include "upnpdebug.h"
 #include "upnptools.h"
+#include "controller/UpnpClient.hpp"
 #include <iostream>
 #include <libgupnp-dlna/gupnp-dlna-profile-guesser.h>
 
@@ -16,18 +17,13 @@
  *  3) run server
  */
 void run() {
-  int upnpError =  UpnpInit2(nullptr, 8001);
-  if (upnpError != UPNP_E_SUCCESS) {
-    OATPP_LOGE("UPnP", "Failed to initialize UPnP library. Error: %d", upnpError);
-    return;
-  }
-
-  
+  auto upnp = std::make_shared<UpnpClient>(8001);
   AppComponent components;
   
 
   auto router = components.httpRouter.getObject();
-  router->addController(upnpController::createShared());
+  OATPP_COMPONENT(std::shared_ptr<oatpp::data::mapping::ObjectMapper>, objectMapper);
+  router->addController(upnpController::createShared(objectMapper, upnp));
   
 
   OATPP_COMPONENT(std::shared_ptr<oatpp::network::ConnectionHandler>, connectionHandler);
@@ -69,8 +65,6 @@ int main(int argc, const char * argv[]) {
     }
     
 
-    UpnpFinish();
-    
 
     std::cout << "\nEnvironment:\n";
     std::cout << "objectsCount = " << oatpp::base::Environment::getObjectsCount() << "\n";
