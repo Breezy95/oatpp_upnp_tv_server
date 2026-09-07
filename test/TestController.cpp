@@ -132,6 +132,8 @@ void testMediaLibraryListing() {
  OATPP_ASSERT(mediaLibrary::urlDecode("my+movie.mp4") == "my+movie.mp4");
  OATPP_ASSERT(mediaLibrary::mediaFilePath("video", mediaLibrary::urlDecode("..%2f..%2fetc%2fpasswd")).empty());
  OATPP_ASSERT(mediaLibrary::formatSize(5 * 1024 * 1024) == "5.0 MB");
+ OATPP_ASSERT(mediaLibrary::formatSize(2048) == "2.0 KB");
+ OATPP_ASSERT(mediaLibrary::formatSize(12) == "12 B");
  OATPP_ASSERT(mediaLibrary::htmlEscape("<b>&\"") == "&lt;b&gt;&amp;&quot;");
 
  std::vector<mediaLibrary::MediaFile> files;

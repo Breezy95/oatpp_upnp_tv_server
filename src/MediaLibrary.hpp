@@ -97,10 +97,12 @@ inline std::vector<MediaFile> listVideos()
     if (!std::filesystem::is_directory(dir, ec))
         return files;
 
-    for (const auto &entry : std::filesystem::directory_iterator(dir, ec))
+    auto entries = std::filesystem::directory_iterator(dir, ec);
+    if (ec)
+        return files;
+
+    for (const auto &entry : entries)
     {
-        if (ec)
-            break;
         std::error_code entryEc;
         if (!entry.is_regular_file(entryEc) || entryEc)
             continue;
@@ -201,7 +203,8 @@ inline std::string urlDecode(const std::string &value)
 }
 
 /**
- * Human readable file size, e.g. "1.4 MB".
+ * Human readable file size, e.g. "1.4 MB". Sizes below one megabyte are
+ * reported in kilobytes, and sizes below one kilobyte in bytes.
  */
 inline std::string formatSize(std::uintmax_t bytes)
 {
@@ -212,8 +215,10 @@ inline std::string formatSize(std::uintmax_t bytes)
         out << (bytes / (1024.0 * 1024.0 * 1024.0)) << " GB";
     else if (bytes >= 1024ull * 1024ull)
         out << (bytes / (1024.0 * 1024.0)) << " MB";
-    else
+    else if (bytes >= 1024ull)
         out << (bytes / 1024.0) << " KB";
+    else
+        out << bytes << " B";
     return out.str();
 }
 
